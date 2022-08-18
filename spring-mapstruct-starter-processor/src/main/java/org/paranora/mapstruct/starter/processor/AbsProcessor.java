@@ -32,7 +32,7 @@ public abstract class AbsProcessor extends AbstractProcessor {
         return presentAnnotationName.contentEquals(annotation.getQualifiedName());
     }
 
-    protected void process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment, Class<?> annotationClass, Consumer<Element> consumer) {
+    protected void processPresentAnnotation(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment, Class<?> annotationClass, Consumer<Element> consumer) {
         annotations.stream().filter(annotation -> isPresentAnnotation(annotation, annotationClass.getName())).forEach(typeElement -> {
             roundEnvironment.getElementsAnnotatedWith(typeElement).stream().forEach(element -> {
                 consumer.accept(element);

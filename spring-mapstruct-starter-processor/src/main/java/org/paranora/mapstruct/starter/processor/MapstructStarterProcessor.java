@@ -1,7 +1,6 @@
 package org.paranora.mapstruct.starter.processor;
 
 import org.paranora.mapstruct.starter.core.annotations.MPMapper;
-import org.paranora.mapstruct.starter.core.annotations.MPMappers;
 import org.paranora.mapstruct.starter.core.annotations.MPMapping;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -10,11 +9,9 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
-import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
+
 
 @SupportedAnnotationTypes(MapstructStarterProcessor.MPMapperAnnotationName)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -26,7 +23,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
 
-        process(annotations, roundEnvironment, MPMapper.class, element -> {
+        processPresentAnnotation(annotations, roundEnvironment, MPMapper.class, element -> {
             TypeMirror typeMirror = element.asType();
             ElementKind kind = element.getKind();
             print("typeMirror = " + typeMirror.toString());
