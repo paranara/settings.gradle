@@ -1,5 +1,6 @@
 package org.paranora.mapstruct.starter.processor;
 
+import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.starter.core.annotations.MPMapper;
 import org.paranora.mapstruct.starter.core.annotations.MPMapping;
 
@@ -8,9 +9,12 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.function.Function;
 
 
 @SupportedAnnotationTypes(MapstructStarterProcessor.MPMapperAnnotationName)
@@ -30,13 +34,26 @@ public class MapstructStarterProcessor extends AbsProcessor {
             print("kind = " + kind.toString());
 
             if (ElementKind.CLASS == kind) {
-                element.getEnclosedElements().stream().filter(e->ElementKind.FIELD == e.getKind()).forEach(e -> {
+                element.getEnclosedElements().stream().filter(e -> ElementKind.FIELD == e.getKind()).forEach(e -> {
                     VariableElement variableElement = (VariableElement) e;
                     print("class %s field : %s ", typeMirror.toString(), variableElement.getSimpleName());
-                    MPMapping mpMapping[]=variableElement.getAnnotationsByType(MPMapping.class);
-                    if(null!=mpMapping) {
+                    MPMapping mpMapping[] = variableElement.getAnnotationsByType(MPMapping.class);
+                    if (null != mpMapping) {
                         Arrays.stream(mpMapping).forEach(mapping -> {
-                            print("class %s field : %s , annotation : %s , [targer : %s]", typeMirror.toString(), variableElement.getSimpleName(), MPMapping.class.getSimpleName(),mapping.target());
+
+                            Arrays.stream(MPMapping.class.getDeclaredFields()).forEach(f->{
+                                try {
+                                    print("class %s field : %s , annotation : %s , [%s : %s]", typeMirror.toString(), variableElement.getSimpleName(), MPMapping.class.getSimpleName(), f.getName(),f.get(f));
+                                } catch (IllegalAccessException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            });
+
+                            print("class %s field : %s , annotation : %s , [targerClass : %s]", typeMirror.toString()
+                                    , variableElement.getSimpleName()
+                                    , MPMapping.class.getSimpleName()
+                                    , getAnnotationClassNameAttribute(mapping, (annotation -> ((MPMapping) annotation).targetClass())));
+                            print("class %s field : %s , annotation : %s , [targer : %s]", typeMirror.toString(), variableElement.getSimpleName(), MPMapping.class.getSimpleName(), mapping.target());
                         });
                     }
 
@@ -52,7 +69,6 @@ public class MapstructStarterProcessor extends AbsProcessor {
 //                    });
                 });
             }
-
 
             print("process");
             MPMapper mpMapper = element.getAnnotation(MPMapper.class);
@@ -74,6 +90,20 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
         return false;
     }
+
+
+    private String getAnnotationClassNameAttribute(Annotation annotation, Function<Annotation, Class<?>> readAction) {
+        String result = null;
+        try {
+            Class<?> classType = readAction.apply(annotation);
+            result=classType.getName();
+        } catch (MirroredTypeException mte) {
+            TypeMirror typeMirror = mte.getTypeMirror();
+            result = typeMirror.toString();
+        }
+        return result;
+    }
+
 
     @Override
     protected String prefix() {

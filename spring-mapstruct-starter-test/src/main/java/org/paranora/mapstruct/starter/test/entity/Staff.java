@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Staff {
 
-    @MPMapping(target = "staffName")
+    @MPMapping(target = "staffName",targetClass = StaffRequestDTO.class)
     private String name;
     private Integer age;
     private Integer sex;

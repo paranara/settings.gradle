@@ -7,6 +7,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
 
     implementation group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
+    implementation group: 'com.squareup', name: 'javapoet', version: javapoetVersion
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
     testImplementation group: 'junit', name: 'junit', version: junitVersion

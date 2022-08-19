@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.processor;
+package org.paranora.mapstruct.starter.processor.generator;
 
 
 import java.io.Writer;
