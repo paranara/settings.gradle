@@ -34,17 +34,26 @@ public class TestMain {
 
         Arrays.stream(MPMapping.class.getDeclaredMethods()).forEach(m -> {
             TypeName typeName = TypeName.get(m.getReturnType());
+            String messageFormat = "%s, %s type : %s , name : %s, class : %s , value : %s";
+            String methodReturnTypeLevel = "base";
             if (typeName.isPrimitive()) {
-                print(String.format("%s, base type : %s , name : %s,%s", MPMapping.class.getSimpleName(),typeName.toString(), m.getName(),typeName.getClass()));
+                methodReturnTypeLevel = "base";
             } else {
                 if (typeName instanceof ClassName) {
-                    print(String.format("%s,class type : %s , name : %s,%s", MPMapping.class.getSimpleName(),typeName.toString(), m.getName(),typeName.getClass()));
-                }else if (typeName instanceof ArrayTypeName) {
-                    print(String.format("%s,array type : %s , name : %s,%s", MPMapping.class.getSimpleName(),typeName.toString(), m.getName(),typeName.getClass()));
+                    methodReturnTypeLevel = "class";
+                } else if (typeName instanceof ArrayTypeName) {
+                    methodReturnTypeLevel = "array";
                 } else {
-                    print(String.format("%s,unknow type : %s , name : %s,%s", MPMapping.class.getSimpleName(),typeName.toString(), m.getName(),typeName.getClass()));
                 }
             }
+            Object v = m.getDefaultValue();
+            print(String.format(messageFormat
+                    , MPMapping.class.getSimpleName()
+                    , methodReturnTypeLevel
+                    , typeName.toString()
+                    , m.getName()
+                    , typeName.getClass()
+                    , v.toString()));
         });
 
         String className = MPMapper.class.getName();
@@ -89,6 +98,15 @@ public class TestMain {
         CodeBlock codeBlockA = CodeBlock.builder()
                 .add("$T.$L", NullValueCheckStrategy.class, "ON_IMPLICIT_CONVERSION")
                 .build();
+
+        MethodSpec setItemNameMethod = MethodSpec.methodBuilder("setTest")
+                .addModifiers( Modifier.PUBLIC)
+                .returns(void.class)
+                .addParameter(String.class,"itemName")
+                .addStatement("this.$L=$L",itemName.name,itemName.name)
+                .build();
+
+        AnnotationSpec annotationSpecA = AnnotationSpec.builder(ClassName.get(Override.class)).build();
 
 
         print("test_main_method_a  end");

@@ -1,5 +1,6 @@
 package org.paranora.mapstruct.starter.core.java.generator;
 
+import com.squareup.javapoet.CodeBlock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +13,11 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldDefinition {
-    protected Class<?> type;
+public class MethodDefinition {
     protected String name;
     protected Modifier accession;
-    protected Object initializationValue;
-    protected List<AnnotationDefinition> annotations;
+    protected Class<?> returnType;
+    protected List<MethodParameterDefinition> parameters;
+    protected CodeBlock code;
+    protected AnnotationDefinition annotations;
 }

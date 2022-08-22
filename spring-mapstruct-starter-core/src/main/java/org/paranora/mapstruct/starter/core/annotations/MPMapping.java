@@ -96,4 +96,5 @@ public @interface MPMapping {
             annotation = Mapping.class
     )
     Class<? extends Annotation> mappingControl() default MappingControl.class;
+
 }

@@ -4,18 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldDefinition {
-    protected Class<?> type;
+@SuperBuilder
+public class InterfaceDefinition {
     protected String name;
     protected Modifier accession;
-    protected Object initializationValue;
     protected List<AnnotationDefinition> annotations;
+    protected List<MethodDefinition> methods;
 }
