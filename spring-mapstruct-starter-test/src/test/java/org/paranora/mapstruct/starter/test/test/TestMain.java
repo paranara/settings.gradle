@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.lang.model.element.Modifier;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
@@ -32,7 +33,11 @@ public class TestMain {
     public void test_main_method_a() throws Exception {
         print("test_main_method_a begin.");
 
-        Arrays.stream(MPMapping.class.getDeclaredMethods()).forEach(m -> {
+        Field field=Staff.class.getDeclaredField("name");
+        field.setAccessible(true);
+        Annotation annotation=field.getDeclaredAnnotation(MPMapping.class);
+
+        Arrays.stream(annotation.getClass().getDeclaredMethods()).forEach(m -> {
             TypeName typeName = TypeName.get(m.getReturnType());
             String messageFormat = "%s, %s type : %s , name : %s, class : %s , value : %s";
             String methodReturnTypeLevel = "base";
@@ -53,7 +58,7 @@ public class TestMain {
                     , typeName.toString()
                     , m.getName()
                     , typeName.getClass()
-                    , v.toString()));
+                    , v));
         });
 
         String className = MPMapper.class.getName();

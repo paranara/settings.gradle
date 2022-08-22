@@ -10,7 +10,7 @@ import org.springframework.core.annotation.AliasFor;
 import java.lang.annotation.*;
 
 @Target({ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 //@Repeatable(MPMappings.class)
 @Mapping(target = "")
 public @interface MPMapping {

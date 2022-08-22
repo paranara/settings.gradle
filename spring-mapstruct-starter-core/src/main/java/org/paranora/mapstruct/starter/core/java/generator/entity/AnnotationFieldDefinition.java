@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.core.java.generator;
+package org.paranora.mapstruct.starter.core.java.generator.entity;
 
 import com.squareup.javapoet.TypeName;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnnotationDefinition {
+public class AnnotationFieldDefinition {
     protected String name;
     protected TypeName typeName;
     protected Type type;

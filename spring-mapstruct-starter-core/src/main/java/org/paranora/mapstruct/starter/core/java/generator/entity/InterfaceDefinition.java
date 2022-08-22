@@ -1,7 +1,7 @@
-package org.paranora.mapstruct.starter.core.java.generator;
+package org.paranora.mapstruct.starter.core.java.generator.entity;
 
+import com.squareup.javapoet.TypeName;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -18,4 +18,5 @@ public class InterfaceDefinition {
     protected Modifier accession;
     protected List<AnnotationDefinition> annotations;
     protected List<MethodDefinition> methods;
+    protected List<TypeName> superInterfaces;
 }

@@ -3,7 +3,7 @@ package org.paranora.mapstruct.starter.core.annotations;
 
 import java.lang.annotation.*;
 
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface MPMappers {
     MPMapper[] value();

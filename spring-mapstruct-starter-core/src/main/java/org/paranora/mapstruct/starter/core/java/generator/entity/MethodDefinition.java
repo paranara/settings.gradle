@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.core.java.generator;
+package org.paranora.mapstruct.starter.core.java.generator.entity;
 
 import com.squareup.javapoet.CodeBlock;
 import lombok.AllArgsConstructor;
