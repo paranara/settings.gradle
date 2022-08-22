@@ -9,6 +9,8 @@ dependencies {
     implementation group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
     implementation group: 'com.squareup', name: 'javapoet', version: javapoetVersion
 
+    implementation group: 'org.eclipse.jdt', name: 'org.eclipse.jdt.annotation', version: eclipseJdtVersion
+
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
     testImplementation group: 'junit', name: 'junit', version: junitVersion
 }
