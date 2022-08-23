@@ -4,6 +4,6 @@ import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationDefin
 
 import java.lang.annotation.Annotation;
 
-public interface AnnotationDefinitionCreator<T extends Annotation> {
+public interface AnnotationDefinitionCreator<T> {
     AnnotationDefinition create(T arg);
 }

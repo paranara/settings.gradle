@@ -6,6 +6,7 @@ import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationField
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,12 +18,10 @@ public class DefaultAnnotationDefinitionCreator implements AnnotationDefinitionC
         annotationDefinition.setFields(new ArrayList<>());
         Arrays.stream(arg.annotationType().getDeclaredMethods()).forEach(m -> {
             try {
-                annotationDefinition.getFields().add(AnnotationFieldDefinition.builder()
-                        .name(m.getName())
-                        .type(m.getReturnType())
-                        .typeName(TypeName.get(m.getReturnType()))
-                        .value(m.invoke(arg,new  Class[0]))
-                        .build());
+                AnnotationFieldDefinition annotationFieldDefinition=createField(arg,m);
+                if(null!=annotationFieldDefinition) {
+                    annotationDefinition.getFields().add(annotationFieldDefinition);
+                }
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             } catch (InvocationTargetException e) {
@@ -30,5 +29,17 @@ public class DefaultAnnotationDefinitionCreator implements AnnotationDefinitionC
             }
         });
         return annotationDefinition;
+    }
+
+    protected AnnotationFieldDefinition createField(Annotation annotation, Method method) throws InvocationTargetException, IllegalAccessException {
+        if (method.getReturnType() != Class.class) {
+            return AnnotationFieldDefinition.builder()
+                    .name(method.getName())
+                    .type(method.getReturnType())
+                    .typeName(TypeName.get(method.getReturnType()))
+                    .value(method.invoke(annotation, new Object[]{}))
+                    .build();
+        }
+        return null;
     }
 }

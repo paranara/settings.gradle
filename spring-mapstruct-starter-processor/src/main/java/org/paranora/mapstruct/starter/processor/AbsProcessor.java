@@ -3,14 +3,13 @@ package org.paranora.mapstruct.starter.processor;
 import lombok.Getter;
 
 import javax.annotation.processing.*;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -43,7 +42,25 @@ public abstract class AbsProcessor extends AbstractProcessor {
         });
     }
 
-    protected void eachClassFields(Element element, Consumer<? super  VariableElement> consumer) {
+    protected Optional<? extends AnnotationMirror> getAnnotationMirror(Element element, Class<?> clazz) {
+        return element.getAnnotationMirrors().stream().filter(t->t.getAnnotationType().toString().equalsIgnoreCase(clazz.getName())).findFirst();
+    }
+
+    protected AnnotationValue getAnnotationValue(AnnotationMirror annotationMirror, String key) {
+        Optional<? extends Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> entry= annotationMirror.getElementValues().entrySet().stream().filter(es->es.getKey().getSimpleName().toString().equalsIgnoreCase(key)).findFirst();
+        if(entry.isPresent()){
+            return entry.get().getValue();
+        }
+        return null;
+    }
+
+    protected void processAnnotationMirrorFields(AnnotationMirror annotationMirror, Consumer<Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> consumer) {
+        annotationMirror.getElementValues().entrySet().stream().forEach(en->{
+            consumer.accept(en);
+        });
+    }
+
+    protected void processClassFields(Element element, Consumer<? super  VariableElement> consumer) {
         TypeMirror typeMirror = element.asType();
         ElementKind kind = element.getKind();
         print("typeMirror = " + typeMirror.toString());
