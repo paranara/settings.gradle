@@ -44,10 +44,12 @@ public class MapstructStarterProcessor extends AbsProcessor {
                        if (TypeName.get(en.getKey().getReturnType()).toString().equals(new Object(){}.getClass().getName())) {
                             print(" is class type by paranora , name : %s", en.getKey().getSimpleName());
                         }
+                        TypeMirror typeMirrorA = en.getKey().asType();
+                        Element elementA = typesUtils.asElement(typeMirrorA);
+
                     });
                 }
             });
-            print(Class.class.getClass().getTypeName());
             print("process");
         });
         return false;
