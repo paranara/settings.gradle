@@ -4,9 +4,10 @@ package org.paranora.mapstruct.starter.test.entity.dto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
-@SuperBuilder
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class StaffRequestDTO {
     private String staffName;
     private Integer staffAge;

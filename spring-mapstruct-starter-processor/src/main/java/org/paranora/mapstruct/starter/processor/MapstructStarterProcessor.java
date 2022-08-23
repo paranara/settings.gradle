@@ -1,5 +1,7 @@
 package org.paranora.mapstruct.starter.processor;
 
+import com.squareup.javapoet.ArrayTypeName;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.starter.core.annotations.MPMapper;
 import org.paranora.mapstruct.starter.core.annotations.MPMapping;
@@ -12,6 +14,8 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.function.Function;
@@ -23,39 +27,80 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
     public static final String MPMapperAnnotationName = "org.paranora.mapstruct.starter.core.annotations.MPMapper";
 
-    @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
+    public boolean processA(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
-
         processPresentAnnotation(annotations, roundEnvironment, MPMapper.class, element -> {
             TypeMirror typeMirror = element.asType();
-            ElementKind kind = element.getKind();
-            print("typeMirror = " + typeMirror.toString());
-            print("kind = " + kind.toString());
+            eachClassFields(element, variableElement -> {
+                print("class %s field : %s ", typeMirror.toString(), variableElement.getSimpleName());
+                MPMapping annotation = variableElement.getAnnotation(MPMapping.class);
+                if (null != annotation) {
+                    Arrays.stream(annotation.annotationType().getDeclaredMethods()).forEach(m -> {
+                        TypeName typeName = TypeName.get(m.getReturnType());
+                        Class<?> returnType = m.getReturnType();
+                        String messageFormat = "%s, %s type : %s , name : %s, class : %s , value : %s , returnType: %s .";
+                        String methodReturnTypeLevel = "base";
+                        if (typeName.isPrimitive()) {
+                            methodReturnTypeLevel = "base";
+                        } else {
+                            if (typeName instanceof ClassName) {
+                                methodReturnTypeLevel = "class";
+                            } else if (typeName instanceof ArrayTypeName) {
+                                methodReturnTypeLevel = "array";
+                            } else {
+                            }
+                        }
+                        Object v = null;
+                        try {
+                            v = m.invoke(annotation, null);
+                        } catch (IllegalAccessException e) {
+                            print("IllegalAccessException");
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            print("InvocationTargetException");
+                            e.printStackTrace();
+                        } catch (MirroredTypeException mte) {
+                            print("MirroredTypeException");
+                            TypeName tn = ClassName.get(mte.getTypeMirror());
+                            if (tn.equals(TypeName.get(void.class))) {
+                                v = null;
+                            } else {
+                                v = tn;
+                            }
+                        }
 
-            if (ElementKind.CLASS == kind) {
-                element.getEnclosedElements().stream().filter(e -> ElementKind.FIELD == e.getKind()).forEach(e -> {
-                    VariableElement variableElement = (VariableElement) e;
-                    print("class %s field : %s ", typeMirror.toString(), variableElement.getSimpleName());
-                    MPMapping mpMapping[] = variableElement.getAnnotationsByType(MPMapping.class);
-                    if (null != mpMapping) {
-                        Arrays.stream(mpMapping).forEach(mapping -> {
+                        print(String.format(messageFormat
+                                , MPMapping.class.getSimpleName()
+                                , methodReturnTypeLevel
+                                , typeName
+                                , m.getName()
+                                , typeName.getClass()
+                                , v
+                                , returnType));
+                    });
+                }
 
-                            Arrays.stream(MPMapping.class.getDeclaredFields()).forEach(f->{
-                                try {
-                                    print("class %s field : %s , annotation : %s , [%s : %s]", typeMirror.toString(), variableElement.getSimpleName(), MPMapping.class.getSimpleName(), f.getName(),f.get(f));
-                                } catch (IllegalAccessException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-                            });
+                print("process 00000");
 
-                            print("class %s field : %s , annotation : %s , [targerClass : %s]", typeMirror.toString()
-                                    , variableElement.getSimpleName()
-                                    , MPMapping.class.getSimpleName()
-                                    , getAnnotationClassNameAttribute(mapping, (annotation -> ((MPMapping) annotation).targetClass())));
-                            print("class %s field : %s , annotation : %s , [targer : %s]", typeMirror.toString(), variableElement.getSimpleName(), MPMapping.class.getSimpleName(), mapping.target());
-                        });
-                    }
+
+//                MPMapping mpMapping[] = variableElement.getAnnotationsByType(MPMapping.class);
+//                if (null != mpMapping) {
+//                    Arrays.stream(mpMapping).forEach(mapping -> {
+//                        Arrays.stream(MPMapping.class.getDeclaredFields()).forEach(f -> {
+//                            try {
+//                                print("class %s field : %s , annotation : %s , [%s : %s]", typeMirror.toString(), variableElement.getSimpleName(), MPMapping.class.getSimpleName(), f.getName(), f.get(f));
+//                            } catch (IllegalAccessException ex) {
+//                                throw new RuntimeException(ex);
+//                            }
+//                        });
+//
+//                        print("class %s field : %s , annotation : %s , [targerClass : %s]", typeMirror.toString()
+//                                , variableElement.getSimpleName()
+//                                , MPMapping.class.getSimpleName()
+//                                , getAnnotationClassNameAttribute(mapping, (annotation -> ((MPMapping) annotation).targetClass())));
+//                        print("class %s field : %s , annotation : %s , [targer : %s]", typeMirror.toString(), variableElement.getSimpleName(), MPMapping.class.getSimpleName(), mapping.target());
+//                    });
+//                }
 
 //                    variableElement.getAnnotationMirrors().stream().filter(annotationMirror -> MPMapping.class.getName().equalsIgnoreCase(annotationMirror.getAnnotationType().toString())).forEach(annotationMirror -> {
 //                        Class annotationClass= null;
@@ -67,8 +112,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
 //                        MPMapping annotation= (MPMapping) variableElement.getAnnotation(annotationClass);
 //                        print("class %s field : %s , annotation : %s", typeMirror.toString(), variableElement.getSimpleName(), annotation.toString());
 //                    });
-                });
-            }
+            });
 
             print("process");
             MPMapper mpMapper = element.getAnnotation(MPMapper.class);
@@ -87,16 +131,83 @@ public class MapstructStarterProcessor extends AbsProcessor {
             print("classFullName = " + classFullName);
             print("enclosingQualifiedname = " + enclosingQualifiedname);
         });
-
         return false;
     }
 
+    @Override
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
+        print("entry.");
+
+        for (TypeElement typeElement : annotations) {
+            if (isPresentAnnotation(typeElement, MPMapper.class.getName())) {
+                TypeMirror typeMirror = typeElement.asType();
+                print("process 1"+typeElement.getKind());
+                for(Element elementA : roundEnvironment.getElementsAnnotatedWith(typeElement)){
+                    if (ElementKind.CLASS == elementA.getKind()) {
+                        for (Element element : typeElement.getEnclosedElements()) {
+                            if (ElementKind.FIELD == element.getKind()) {
+                                VariableElement variableElement = (VariableElement) element;
+                                Annotation annotation = variableElement.getAnnotation(MPMapping.class);
+                                if (null != annotation) {
+                                    for (Method m : annotation.annotationType().getDeclaredMethods()) {
+                                        TypeName typeName = TypeName.get(m.getReturnType());
+                                        Class<?> returnType = m.getReturnType();
+                                        String messageFormat = "%s, %s type : %s , name : %s, class : %s , value : %s , returnType: %s .";
+                                        String methodReturnTypeLevel = "base";
+                                        if (typeName.isPrimitive()) {
+                                            methodReturnTypeLevel = "base";
+                                        } else {
+                                            if (typeName instanceof ClassName) {
+                                                methodReturnTypeLevel = "class";
+                                            } else if (typeName instanceof ArrayTypeName) {
+                                                methodReturnTypeLevel = "array";
+                                            } else {
+                                            }
+                                        }
+                                        Object v = null;
+                                        try {
+                                            v = m.invoke(annotation, null);
+                                        } catch (IllegalAccessException e) {
+                                            print("IllegalAccessException");
+                                            e.printStackTrace();
+                                        } catch (InvocationTargetException e) {
+                                            print("InvocationTargetException");
+                                            e.printStackTrace();
+                                        } catch (MirroredTypeException mte) {
+                                            print("MirroredTypeException");
+                                            TypeName tn = ClassName.get(mte.getTypeMirror());
+                                            if (tn.equals(TypeName.get(void.class))) {
+                                                v = null;
+                                            } else {
+                                                v = tn;
+                                            }
+                                        }
+
+                                        print(String.format(messageFormat
+                                                , MPMapping.class.getSimpleName()
+                                                , methodReturnTypeLevel
+                                                , typeName
+                                                , m.getName()
+                                                , typeName.getClass()
+                                                , v
+                                                , returnType));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
 
     private String getAnnotationClassNameAttribute(Annotation annotation, Function<Annotation, Class<?>> readAction) {
         String result = null;
         try {
             Class<?> classType = readAction.apply(annotation);
-            result=classType.getName();
+            result = classType.getName();
         } catch (MirroredTypeException mte) {
             TypeMirror typeMirror = mte.getTypeMirror();
             result = typeMirror.toString();

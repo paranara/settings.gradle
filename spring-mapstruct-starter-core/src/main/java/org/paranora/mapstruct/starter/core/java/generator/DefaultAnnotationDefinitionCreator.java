@@ -21,7 +21,7 @@ public class DefaultAnnotationDefinitionCreator implements AnnotationDefinitionC
                         .name(m.getName())
                         .type(m.getReturnType())
                         .typeName(TypeName.get(m.getReturnType()))
-                        .value(m.invoke(arg,null))
+                        .value(m.invoke(arg,new  Class[0]))
                         .build());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);

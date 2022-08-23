@@ -14,11 +14,11 @@ import java.util.Date;
 @MPMapper(target = StaffRequestDTO.class)
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Staff {
 
-    @MPMapping(target = "staffName",targetClass = StaffRequestDTO.class,nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
+    @MPMapping(target = "staffName", source = "abc", targetClass = StaffRequestDTO.class, nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
     private String name;
     private Integer age;
     private Integer sex;

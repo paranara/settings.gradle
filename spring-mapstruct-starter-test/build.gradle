@@ -2,6 +2,7 @@
 
 dependencies {
     implementation project(':spring-mapstruct-starter-core')
+
     annotationProcessor project(':spring-mapstruct-starter-processor')
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
