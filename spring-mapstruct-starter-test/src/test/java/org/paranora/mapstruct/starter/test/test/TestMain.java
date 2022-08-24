@@ -34,6 +34,24 @@ public class TestMain {
     public void test_main_method_a() throws Exception {
         print("test_main_method_a begin.");
 
+        testB();
+
+        print("test_main_method_a  end");
+    }
+
+    public void testB() {
+        CodeBlock codeBlockA = CodeBlock.of("$T.$L", String.class, "a");
+
+        String[] dependsOn=new String[]{"a","b"};
+        CodeBlock codeBlockB =CodeBlock.builder().add("$L",
+                Arrays.stream(dependsOn)
+                        .map(type -> CodeBlock.of("$T.$L", String.class,type))
+                        .collect(CodeBlock.joining(",", "{", "}"))).build();
+
+        print(codeBlockB.toString());
+    }
+
+    public void testA() throws NoSuchFieldException {
         Field field = Staff.class.getDeclaredField("name");
         field.setAccessible(true);
         Annotation annotation = field.getDeclaredAnnotation(MPMapping.class);
@@ -58,7 +76,7 @@ public class TestMain {
 
             Object v = null;
             try {
-                v = m.invoke(annotation, null);
+                v = m.invoke(annotation, new Object[]{});
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -125,9 +143,6 @@ public class TestMain {
                 .build();
 
         AnnotationSpec annotationSpecA = AnnotationSpec.builder(ClassName.get(Override.class)).build();
-
-
-        print("test_main_method_a  end");
     }
 
     public void print(String msg) {

@@ -18,7 +18,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class Staff {
 
-    @MPMapping(target = "staffName", source = "abc", targetClass = StaffRequestDTO.class, nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION,qualifiedBy = MPMapping.class)
+    @MPMapping(target = "staffName"
+            , source = "abc"
+            , targetClass = StaffRequestDTO.class
+            , nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
+            , dependsOn = {"a", "b"}
+            , qualifiedBy = {MPMapping.class, MPMapper.class})
     private String name;
     private Integer age;
     private Integer sex;

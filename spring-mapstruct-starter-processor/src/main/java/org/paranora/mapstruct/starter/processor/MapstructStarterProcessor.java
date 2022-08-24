@@ -1,10 +1,11 @@
 package org.paranora.mapstruct.starter.processor;
 
-import com.squareup.javapoet.ArrayTypeName;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.*;
 import org.paranora.mapstruct.starter.core.annotations.MPMapper;
 import org.paranora.mapstruct.starter.core.annotations.MPMapping;
+import org.paranora.mapstruct.starter.core.java.generator.CustomAnnotationValueVisitor;
+import org.paranora.mapstruct.starter.core.java.generator.DefaultMirrorAnnotationDefinitionCreator;
+import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationDefinition;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -14,10 +15,10 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.reflect.ParameterizedType;
+import java.util.*;
 import java.util.function.Function;
 
 
@@ -31,30 +32,107 @@ public class MapstructStarterProcessor extends AbsProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
         processPresentAnnotation(annotations, roundEnvironment, MPMapper.class, element -> {
-            TypeMirror typeMirror = element.asType();
             processClassFields(element, variableElement -> {
-                print("class %s field : %s ", typeMirror.toString(), variableElement.getSimpleName());
+                print("class %s field : %s ", element.asType().toString(), variableElement.getSimpleName());
                 Optional<? extends AnnotationMirror> annotationMirror = getAnnotationMirror(variableElement, MPMapping.class);
                 if (annotationMirror.isPresent()) {
-                    processAnnotationMirrorFields(annotationMirror.get(), en -> {
-                        print(String.format("key : %s , type : %s , value : %s "
-                                , en.getKey().getSimpleName().toString()
-                                , TypeName.get(en.getKey().getReturnType())
-                                , en.getValue().getValue()));
-                       if (TypeName.get(en.getKey().getReturnType()).toString().equals(new Object(){}.getClass().getName())) {
-                            print(" is class type by paranora , name : %s", en.getKey().getSimpleName());
-                        }
-                        TypeMirror typeMirrorA = en.getKey().asType();
-                        Element elementA = typesUtils.asElement(typeMirrorA);
+                    AnnotationDefinition annotationDefinition = new DefaultMirrorAnnotationDefinitionCreator().create(annotationMirror.get());
+                    annotationDefinition.getFields().stream().forEach(f -> {
+                        Object value = f.getValue();
+                        String key = f.getName();
+                        print("annotation key : %s , type : %s , value : %s ,value class : %s"
+                                , f.getName()
+                                , f.getTypeName()
+                                , value
+                                , value.getClass());
+                        if (value instanceof List && f.getTypeName() instanceof ArrayTypeName) {
+                            List listValue=(List)value;
+//                            Class<? extends List> listClass = listValue.getClass();
+//                            ParameterizedType genericSuperclass = (ParameterizedType) listClass.getGenericSuperclass();
+//                            Class elementType = (Class) genericSuperclass.getActualTypeArguments()[0];
+                            ArrayTypeName arrayTypeName = (ArrayTypeName) f.getTypeName();
+                            TypeName componentTypeName=arrayTypeName.componentType;
 
+                            print("list component type : %s",componentTypeName.getClass());
+                            listValue.forEach(e -> {
+                                print("value type %s, value object : %s", e.getClass().toString(), e.toString());
+                            });
+                        } else if (value instanceof java.lang.Boolean) {
+                            print("i found Boolean value : %s ,@ key : %s.", value, key);
+                        } else if (value instanceof java.lang.String) {
+                            print("i found String value : %s ,@ key : %s.", value, key);
+                        } else if (value instanceof java.lang.Class) {
+                            print("i found Class value : %s ,@ key : %s.", value, key);
+                        } else if (value.getClass().getName().equalsIgnoreCase("com.sun.tools.javac.code.Type")) {
+                            print("i found Class value : %s ,@ key : %s.", value, key);
+                        } else if (value instanceof TypeMirror) {
+                            print("i found Class value : %s ,@ key : %s.", value, key);
+                        } else if (value instanceof VariableElement) {
+                            print("i found Enum value : %s ,@ key : %s.", value, key);
+                        } else {
+
+                        }
                     });
                 }
             });
             print("process");
+            TypeElement elem = processingEnv.getElementUtils().getTypeElement("org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO");
+            TypeMirror tm = elem.asType();
+            TypeName tn = TypeName.get(tm);
+            print(tn.toString());
         });
         return false;
     }
 
+    protected void processAnnotationMirrorFields(AnnotationMirror annotationMirror) {
+        processAnnotationMirrorFields(annotationMirror, en -> {
+            TypeName returnType = TypeName.get(en.getKey().getReturnType());
+            String key = en.getKey().getSimpleName().toString();
+            Object value = en.getValue().accept(new CustomAnnotationValueVisitor(key, msg -> print(msg)), null);
+
+            print("key : %s , type : %s , value : %s ,value class : %s"
+                    , key
+                    , returnType
+                    , value
+                    , value.getClass());
+            if (value instanceof List) {
+                ((List) value).forEach(e -> {
+                    print(String.format("value type %s, value object : %s", e.getClass().toString(), e.toString()));
+                });
+            } else if (value instanceof java.lang.Boolean) {
+                print("i found Boolean value : %s ,@ key : %s.", value, key);
+            } else if (value instanceof java.lang.String) {
+                print("i found String value : %s ,@ key : %s.", value, key);
+            } else if (value instanceof java.lang.Class) {
+                print("i found Class value : %s ,@ key : %s.", value, key);
+            } else if (value.getClass().getName().equalsIgnoreCase("com.sun.tools.javac.code.Type")) {
+                print("i found Class value : %s ,@ key : %s.", value, key);
+            } else if (value instanceof TypeMirror) {
+                print("i found Class value : %s ,@ key : %s.", value, key);
+            } else if (value instanceof VariableElement) {
+                print("i found Enum value : %s ,@ key : %s.", value, key);
+            } else {
+
+            }
+
+            if (returnType instanceof ArrayTypeName) {
+                ArrayTypeName arrayTypeName = (ArrayTypeName) returnType;
+                TypeName arrayComponentType = arrayTypeName.componentType;
+                if (arrayComponentType.equals(TypeName.get(String.class))) {
+                    print(" is String[] type by paranora , name : %s", key);
+                } else if (arrayComponentType.toString().startsWith(Class.class.getName())) {
+                    print(" is Class[] type by paranora , name : %s", key);
+                } else {
+                }
+                print(String.format("componentType : %s", arrayTypeName.componentType));
+            }
+
+//                        Object defaultValue = en.getKey().getDefaultValue().getValue();
+//                        if (null != defaultValue) {
+//                            print(String.format("name : %s, defaultValue : %s", en.getKey().getSimpleName(), defaultValue.getClass()));
+//                        }
+        });
+    }
 
     public boolean processA(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");

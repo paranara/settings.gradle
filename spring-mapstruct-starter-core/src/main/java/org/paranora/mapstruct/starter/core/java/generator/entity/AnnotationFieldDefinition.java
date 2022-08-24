@@ -15,6 +15,6 @@ import java.lang.reflect.Type;
 public class AnnotationFieldDefinition {
     protected String name;
     protected TypeName typeName;
-    protected Type type;
+    protected Type classType;
     protected Object value;
 }

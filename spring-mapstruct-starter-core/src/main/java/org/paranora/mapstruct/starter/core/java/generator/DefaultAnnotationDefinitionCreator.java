@@ -18,8 +18,8 @@ public class DefaultAnnotationDefinitionCreator implements AnnotationDefinitionC
         annotationDefinition.setFields(new ArrayList<>());
         Arrays.stream(arg.annotationType().getDeclaredMethods()).forEach(m -> {
             try {
-                AnnotationFieldDefinition annotationFieldDefinition=createField(arg,m);
-                if(null!=annotationFieldDefinition) {
+                AnnotationFieldDefinition annotationFieldDefinition = createField(arg, m);
+                if (null != annotationFieldDefinition) {
                     annotationDefinition.getFields().add(annotationFieldDefinition);
                 }
             } catch (IllegalAccessException e) {
@@ -35,7 +35,7 @@ public class DefaultAnnotationDefinitionCreator implements AnnotationDefinitionC
         if (method.getReturnType() != Class.class) {
             return AnnotationFieldDefinition.builder()
                     .name(method.getName())
-                    .type(method.getReturnType())
+                    .classType(method.getReturnType())
                     .typeName(TypeName.get(method.getReturnType()))
                     .value(method.invoke(annotation, new Object[]{}))
                     .build();
