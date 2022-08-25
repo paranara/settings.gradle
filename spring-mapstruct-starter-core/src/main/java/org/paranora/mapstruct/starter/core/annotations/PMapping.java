@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 //@Repeatable(MPMappings.class)
 @Mapping(target = "")
-public @interface MPMapping {
+public @interface PMapping {
 
     @AliasFor(
             annotation = Mapping.class

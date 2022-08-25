@@ -1,10 +1,11 @@
 package org.paranora.mapstruct.starter.processor;
 
 import com.squareup.javapoet.*;
-import org.paranora.mapstruct.starter.core.annotations.MPMapper;
-import org.paranora.mapstruct.starter.core.annotations.MPMapping;
+import org.paranora.mapstruct.starter.core.annotations.PMapper;
+import org.paranora.mapstruct.starter.core.annotations.PMapping;
+import org.paranora.mapstruct.starter.core.java.generator.AnnotationDefinitionCreator;
 import org.paranora.mapstruct.starter.core.java.generator.CustomAnnotationValueVisitor;
-import org.paranora.mapstruct.starter.core.java.generator.DefaultMirrorAnnotationDefinitionCreator;
+import org.paranora.mapstruct.starter.core.java.generator.DefaultElementAnnotationDefinitionCreator;
 import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationDefinition;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -15,65 +16,77 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.util.*;
 import java.util.function.Function;
 
 
-@SupportedAnnotationTypes(MapstructStarterProcessor.MPMapperAnnotationName)
+@SupportedAnnotationTypes(MapstructStarterProcessor.PMapperAnnotationName)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class MapstructStarterProcessor extends AbsProcessor {
 
-    public static final String MPMapperAnnotationName = "org.paranora.mapstruct.starter.core.annotations.MPMapper";
+    protected AnnotationDefinitionCreator annotationDefinitionCreator = new DefaultElementAnnotationDefinitionCreator();
+
+    public static final String PMapperAnnotationName = "org.paranora.mapstruct.starter.core.annotations.PMapper";
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
-        processPresentAnnotation(annotations, roundEnvironment, MPMapper.class, element -> {
+        processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
+            PackageElement pkg = processingEnv.getElementUtils().getPackageOf(element);
+            print("packageName : %s", pkg.getQualifiedName());
+            if (element instanceof TypeElement) {
+                TypeElement te = (TypeElement) element;
+                String s = te.getQualifiedName().toString();
+                print("package name : %s", s.substring(0, s.lastIndexOf('.')));
+            }
+            print("class %s field : %s ", element.asType().toString(), element.getSimpleName());
+            AnnotationDefinition annotationDefinition = annotationDefinitionCreator.create(element, PMapper.class);
+            annotationDefinition.getFields().stream().forEach(f -> {
+                print("annotation key : %s , type : %s , value : %s ,value class : %s"
+                        , f.getName()
+                        , f.getTypeName()
+                        , f.getValue()
+                        , f.getValue().getClass());
+            });
             processClassFields(element, variableElement -> {
-                print("class %s field : %s ", element.asType().toString(), variableElement.getSimpleName());
-                Optional<? extends AnnotationMirror> annotationMirror = getAnnotationMirror(variableElement, MPMapping.class);
-                if (annotationMirror.isPresent()) {
-                    AnnotationDefinition annotationDefinition = new DefaultMirrorAnnotationDefinitionCreator().create(annotationMirror.get());
-                    annotationDefinition.getFields().stream().forEach(f -> {
-                        Object value = f.getValue();
-                        String key = f.getName();
-                        print("annotation key : %s , type : %s , value : %s ,value class : %s"
-                                , f.getName()
-                                , f.getTypeName()
-                                , value
-                                , value.getClass());
-                        if (value instanceof List && f.getTypeName() instanceof ArrayTypeName) {
-                            List listValue=(List)value;
+                AnnotationDefinition mpmappingAnnotationDefinition = annotationDefinitionCreator.create(variableElement, PMapping.class);
+                mpmappingAnnotationDefinition.getFields().stream().forEach(f -> {
+                    Object value = f.getValue();
+                    String key = f.getName();
+                    print("annotation key : %s , type : %s , value : %s ,value class : %s"
+                            , f.getName()
+                            , f.getTypeName()
+                            , value
+                            , value.getClass());
+                    if (value instanceof List && f.getTypeName() instanceof ArrayTypeName) {
+                        List listValue = (List) value;
 //                            Class<? extends List> listClass = listValue.getClass();
 //                            ParameterizedType genericSuperclass = (ParameterizedType) listClass.getGenericSuperclass();
 //                            Class elementType = (Class) genericSuperclass.getActualTypeArguments()[0];
-                            ArrayTypeName arrayTypeName = (ArrayTypeName) f.getTypeName();
-                            TypeName componentTypeName=arrayTypeName.componentType;
+                        ArrayTypeName arrayTypeName = (ArrayTypeName) f.getTypeName();
+                        TypeName componentTypeName = arrayTypeName.componentType;
 
-                            print("list component type : %s",componentTypeName.getClass());
-                            listValue.forEach(e -> {
-                                print("value type %s, value object : %s", e.getClass().toString(), e.toString());
-                            });
-                        } else if (value instanceof java.lang.Boolean) {
-                            print("i found Boolean value : %s ,@ key : %s.", value, key);
-                        } else if (value instanceof java.lang.String) {
-                            print("i found String value : %s ,@ key : %s.", value, key);
-                        } else if (value instanceof java.lang.Class) {
-                            print("i found Class value : %s ,@ key : %s.", value, key);
-                        } else if (value.getClass().getName().equalsIgnoreCase("com.sun.tools.javac.code.Type")) {
-                            print("i found Class value : %s ,@ key : %s.", value, key);
-                        } else if (value instanceof TypeMirror) {
-                            print("i found Class value : %s ,@ key : %s.", value, key);
-                        } else if (value instanceof VariableElement) {
-                            print("i found Enum value : %s ,@ key : %s.", value, key);
-                        } else {
+                        print("list component type : %s", componentTypeName.getClass());
+                        listValue.forEach(e -> {
+                            print("value type %s, value object : %s", e.getClass().toString(), e.toString());
+                        });
+                    } else if (value instanceof java.lang.Boolean) {
+                        print("i found Boolean value : %s ,@ key : %s.", value, key);
+                    } else if (value instanceof java.lang.String) {
+                        print("i found String value : %s ,@ key : %s.", value, key);
+                    } else if (value instanceof java.lang.Class) {
+                        print("i found Class value : %s ,@ key : %s.", value, key);
+                    } else if (value.getClass().getName().equalsIgnoreCase("com.sun.tools.javac.code.Type")) {
+                        print("i found Class value : %s ,@ key : %s.", value, key);
+                    } else if (value instanceof TypeMirror) {
+                        print("i found Class value : %s ,@ key : %s.", value, key);
+                    } else if (value instanceof VariableElement) {
+                        print("i found Enum value : %s ,@ key : %s.", value, key);
+                    } else {
 
-                        }
-                    });
-                }
+                    }
+                });
             });
             print("process");
             TypeElement elem = processingEnv.getElementUtils().getTypeElement("org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO");
@@ -136,11 +149,11 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
     public boolean processA(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
-        processPresentAnnotation(annotations, roundEnvironment, MPMapper.class, element -> {
+        processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
             TypeMirror typeMirror = element.asType();
             processClassFields(element, variableElement -> {
                 print("class %s field : %s ", typeMirror.toString(), variableElement.getSimpleName());
-                MPMapping annotation = variableElement.getAnnotation(MPMapping.class);
+                PMapping annotation = variableElement.getAnnotation(PMapping.class);
                 if (null != annotation) {
                     Arrays.stream(annotation.annotationType().getDeclaredMethods()).forEach(m -> {
                         TypeName typeName = TypeName.get(m.getReturnType());
@@ -177,7 +190,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                         }
 
                         print(String.format(messageFormat
-                                , MPMapping.class.getSimpleName()
+                                , PMapping.class.getSimpleName()
                                 , methodReturnTypeLevel
                                 , typeName
                                 , m.getName()
@@ -222,7 +235,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
             });
 
             print("process");
-            MPMapper mpMapper = element.getAnnotation(MPMapper.class);
+            PMapper pMapper = element.getAnnotation(PMapper.class);
             String classFullName = element.asType().toString();
             String className = element.getSimpleName().toString();
 
@@ -233,7 +246,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
             } else {
                 enclosingQualifiedname = ((TypeElement) enclosingElement).getQualifiedName().toString();
             }
-            print("mpMapper [name : %s] ", mpMapper.name());
+            print("mpMapper [name : %s] ", pMapper.name());
             print("className = " + className);
             print("classFullName = " + classFullName);
             print("enclosingQualifiedname = " + enclosingQualifiedname);

@@ -5,25 +5,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mapstruct.NullValueCheckStrategy;
-import org.paranora.mapstruct.starter.core.annotations.MPMapper;
-import org.paranora.mapstruct.starter.core.annotations.MPMapping;
+import org.paranora.mapstruct.starter.core.annotations.PMapper;
+import org.paranora.mapstruct.starter.core.annotations.PMapping;
 import org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO;
 
 import java.util.Date;
 
-@MPMapper(target = StaffRequestDTO.class)
+@PMapper(target = StaffRequestDTO.class)
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Staff {
 
-    @MPMapping(target = "staffName"
+    @PMapping(target = "staffName"
             , source = "abc"
             , targetClass = StaffRequestDTO.class
             , nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
             , dependsOn = {"a", "b"}
-            , qualifiedBy = {MPMapping.class, MPMapper.class})
+            , qualifiedBy = {PMapping.class, PMapper.class})
     private String name;
     private Integer age;
     private Integer sex;

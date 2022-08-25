@@ -5,8 +5,8 @@ import com.squareup.javapoet.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mapstruct.NullValueCheckStrategy;
-import org.paranora.mapstruct.starter.core.annotations.MPMapper;
-import org.paranora.mapstruct.starter.core.annotations.MPMapping;
+import org.paranora.mapstruct.starter.core.annotations.PMapper;
+import org.paranora.mapstruct.starter.core.annotations.PMapping;
 import org.paranora.mapstruct.starter.test.entity.Staff;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -18,9 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.lang.model.element.Modifier;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
 import java.util.*;
 
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, QuartzAutoConfiguration.class})
@@ -52,9 +52,9 @@ public class TestMain {
     }
 
     public void testA() throws NoSuchFieldException {
-        Field field = Staff.class.getDeclaredField("name");
+        AccessibleObject field = Staff.class.getDeclaredField("name");
         field.setAccessible(true);
-        Annotation annotation = field.getDeclaredAnnotation(MPMapping.class);
+        Annotation annotation = field.getDeclaredAnnotation(PMapping.class);
 
         Arrays.stream(annotation.annotationType().getDeclaredMethods()).forEach(m -> {
             TypeName typeName = TypeName.get(m.getReturnType());
@@ -84,7 +84,7 @@ public class TestMain {
             }
 
             print(String.format(messageFormat
-                    , MPMapping.class.getSimpleName()
+                    , PMapping.class.getSimpleName()
                     , methodReturnTypeLevel
                     , typeName
                     , m.getName()
@@ -92,7 +92,7 @@ public class TestMain {
                     , v));
         });
 
-        String className = MPMapper.class.getName();
+        String className = PMapper.class.getName();
         print(className);
 
         List<String> a = new ArrayList<>();
@@ -127,7 +127,7 @@ public class TestMain {
 
         CodeBlock.builder().add("$S", "str").build();
 
-        Field[] fields = MPMapping.class.getFields();
+        Field[] fields = PMapping.class.getFields();
 
         TypeName nullValueCheckStrategyTypeName = TypeName.get(NullValueCheckStrategy.class);
 

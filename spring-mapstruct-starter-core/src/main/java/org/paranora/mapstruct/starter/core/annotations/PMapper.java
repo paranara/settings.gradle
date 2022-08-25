@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME )
 //@Repeatable(MPMappers.class)
-public @interface MPMapper {
+public @interface PMapper {
     Class<?> target();
 
     String name() default "source";

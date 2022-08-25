@@ -5,6 +5,6 @@ import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface MPMappers {
-    MPMapper[] value();
+public @interface PMappers {
+    PMapper[] value();
 }

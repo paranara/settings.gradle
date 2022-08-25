@@ -1,12 +1,12 @@
 package org.paranora.mapstruct.starter.core.java.generator.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.TypeName;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 public class ClassDefinition extends InterfaceDefinition {
-    protected List<FieldDefinition> fields;
-    protected Type superClass;
+
+    @Builder.Default
+    protected List<FieldDefinition> fields=new ArrayList<>();
+    protected TypeName superClass;
 }

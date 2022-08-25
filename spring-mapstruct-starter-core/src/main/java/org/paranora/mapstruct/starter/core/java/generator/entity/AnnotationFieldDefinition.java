@@ -1,5 +1,6 @@
 package org.paranora.mapstruct.starter.core.java.generator.entity;
 
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,6 @@ import java.lang.reflect.Type;
 public class AnnotationFieldDefinition {
     protected String name;
     protected TypeName typeName;
-    protected Type classType;
     protected Object value;
+    protected CodeBlock codeBlock;
 }
