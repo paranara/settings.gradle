@@ -1,10 +1,10 @@
 package org.paranora.mapstruct.starter.core.java.generator.entity;
 
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class MethodDefinition extends Definition{
-    protected Modifier accession;
-    protected TypeName returnType;
+public abstract class Definition {
+    protected String packageName;
+    protected String name;
+    protected TypeName typeName;
+    protected CodeBlock code;
 
     @Builder.Default
-    protected List<MethodParameterDefinition> parameters=new ArrayList<>();
+    protected List<AnnotationDefinition> annotations=new ArrayList<>();
 }

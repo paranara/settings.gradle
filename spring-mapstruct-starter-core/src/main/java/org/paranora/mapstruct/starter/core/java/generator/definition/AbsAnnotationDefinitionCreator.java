@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.core.java.generator;
+package org.paranora.mapstruct.starter.core.java.generator.definition;
 
 import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationDefinition;
 import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationFieldDefinition;

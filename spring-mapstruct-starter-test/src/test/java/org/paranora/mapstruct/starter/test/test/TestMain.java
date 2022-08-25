@@ -48,7 +48,9 @@ public class TestMain {
                         .map(type -> CodeBlock.of("$T.$L", String.class,type))
                         .collect(CodeBlock.joining(",", "{", "}"))).build();
 
-        print(codeBlockB.toString());
+        String str=codeBlockB.toString();
+
+        print(str);
     }
 
     public void testA() throws NoSuchFieldException {

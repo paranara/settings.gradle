@@ -3,9 +3,11 @@ package org.paranora.mapstruct.starter.processor;
 import com.squareup.javapoet.*;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
-import org.paranora.mapstruct.starter.core.java.generator.AnnotationDefinitionCreator;
-import org.paranora.mapstruct.starter.core.java.generator.CustomAnnotationValueVisitor;
-import org.paranora.mapstruct.starter.core.java.generator.DefaultElementAnnotationDefinitionCreator;
+import org.paranora.mapstruct.starter.core.java.generator.AnnotationJavaCodeCreator;
+import org.paranora.mapstruct.starter.core.java.generator.JavaCodeCreator;
+import org.paranora.mapstruct.starter.core.java.generator.definition.AnnotationDefinitionCreator;
+import org.paranora.mapstruct.starter.core.java.generator.definition.CustomAnnotationValueVisitor;
+import org.paranora.mapstruct.starter.core.java.generator.definition.DefaultElementAnnotationDefinitionCreator;
 import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationDefinition;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -66,8 +68,12 @@ public class MapstructStarterProcessor extends AbsProcessor {
 //                            Class elementType = (Class) genericSuperclass.getActualTypeArguments()[0];
                         ArrayTypeName arrayTypeName = (ArrayTypeName) f.getTypeName();
                         TypeName componentTypeName = arrayTypeName.componentType;
+                        TypeName firstContentTypeName = TypeName.get(listValue.get(0).getClass());
 
-                        print("list component type : %s", componentTypeName.getClass());
+                        print("list componentTypeName : %s , firstContentType : %s , isPrimitive : %s", componentTypeName, firstContentTypeName, componentTypeName.isPrimitive());
+                        if(listValue.get(0) instanceof TypeMirror){
+                            print("list componentType is Clas");
+                        }
                         listValue.forEach(e -> {
                             print("value type %s, value object : %s", e.getClass().toString(), e.toString());
                         });
@@ -83,10 +89,18 @@ public class MapstructStarterProcessor extends AbsProcessor {
                         print("i found Class value : %s ,@ key : %s.", value, key);
                     } else if (value instanceof VariableElement) {
                         print("i found Enum value : %s ,@ key : %s.", value, key);
+                        CodeBlock codeBlock = CodeBlock.builder().add("$T.$L", f.getTypeName(), value).build();
+                        print("Enum codeBlock : %s",codeBlock.toString());
                     } else {
 
                     }
                 });
+                print("process 000000");
+                annotationDefinition.setPackageName("org.mapstruct");
+                annotationDefinition.setName("Mapping");
+                AnnotationJavaCodeCreator javaCodeCreator=new AnnotationJavaCodeCreator();
+                AnnotationSpec annotationSpec=javaCodeCreator.create(annotationDefinition);
+                print(annotationSpec.toString());
             });
             print("process");
             TypeElement elem = processingEnv.getElementUtils().getTypeElement("org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO");

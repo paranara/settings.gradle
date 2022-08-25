@@ -1,24 +1,19 @@
 package org.paranora.mapstruct.starter.core.java.generator.entity;
 
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.TypeName;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.lang.model.element.Modifier;
-import java.util.List;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldDefinition {
-    protected TypeName typeName;
-    protected String name;
+@EqualsAndHashCode(callSuper=false)
+public class FieldDefinition  extends Definition{
     protected Modifier accession;
-    protected Object initializationValue;
-    protected List<AnnotationDefinition> annotations;
-    protected CodeBlock code;
+    protected Object value;
 }

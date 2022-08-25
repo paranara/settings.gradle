@@ -1,7 +1,6 @@
-package org.paranora.mapstruct.starter.core.java.generator;
+package org.paranora.mapstruct.starter.core.java.generator.definition;
 
 import com.squareup.javapoet.TypeName;
-import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationDefinition;
 import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationFieldDefinition;
 
 import java.lang.annotation.Annotation;

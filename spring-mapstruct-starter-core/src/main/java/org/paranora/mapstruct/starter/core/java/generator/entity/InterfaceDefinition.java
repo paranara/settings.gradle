@@ -1,11 +1,7 @@
 package org.paranora.mapstruct.starter.core.java.generator.entity;
 
-import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.lang.model.element.Modifier;
@@ -16,14 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class InterfaceDefinition {
-    protected String packageName;
-    protected String name;
-    protected Modifier accession;
-    protected CodeBlock code;
+@EqualsAndHashCode(callSuper=false)
+public class InterfaceDefinition extends Definition {
 
-    @Builder.Default
-    protected List<AnnotationDefinition> annotations=new ArrayList<>();
+    protected Modifier accession;
 
     @Builder.Default
     protected List<MethodDefinition> methods=new ArrayList<>();

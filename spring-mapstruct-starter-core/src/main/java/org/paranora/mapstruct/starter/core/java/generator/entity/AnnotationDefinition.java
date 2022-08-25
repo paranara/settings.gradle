@@ -1,24 +1,18 @@
 package org.paranora.mapstruct.starter.core.java.generator.entity;
 
-import com.squareup.javapoet.CodeBlock;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnnotationDefinition {
-
-    protected String packageName;
-    protected String simpleName;
-    protected CodeBlock code;
+@EqualsAndHashCode(callSuper=false)
+public class AnnotationDefinition extends Definition {
 
     @Builder.Default
-    protected List<AnnotationFieldDefinition> fields=new ArrayList<>();
+    protected List<AnnotationFieldDefinition> fields = new ArrayList<>();
 }
