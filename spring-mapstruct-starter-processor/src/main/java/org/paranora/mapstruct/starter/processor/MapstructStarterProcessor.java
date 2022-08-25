@@ -96,10 +96,10 @@ public class MapstructStarterProcessor extends AbsProcessor {
                     }
                 });
                 print("process 000000");
-                annotationDefinition.setPackageName("org.mapstruct");
-                annotationDefinition.setName("Mapping");
+                mpmappingAnnotationDefinition.setPackageName("org.mapstruct");
+                mpmappingAnnotationDefinition.setName("Mapping");
                 AnnotationJavaCodeCreator javaCodeCreator=new AnnotationJavaCodeCreator();
-                AnnotationSpec annotationSpec=javaCodeCreator.create(annotationDefinition);
+                AnnotationSpec annotationSpec=javaCodeCreator.create(mpmappingAnnotationDefinition);
                 print(annotationSpec.toString());
             });
             print("process");

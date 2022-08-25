@@ -62,7 +62,7 @@ public class AnnotationJavaCodeCreator implements JavaCodeCreator<AnnotationDefi
         if (list.size() < 1) return null;
         CodeBlock codeBlock = CodeBlock.builder().add("$L",
                         list.stream()
-                                .map(v -> createFieldCode(fieldDefinition))
+                                .map(v -> createFieldCode(AnnotationFieldDefinition.builder().typeName(TypeName.get(v.getClass())).value(v).build()))
                                 .collect(CodeBlock.joining(",", "{", "}")))
                 .build();
         return codeBlock;
