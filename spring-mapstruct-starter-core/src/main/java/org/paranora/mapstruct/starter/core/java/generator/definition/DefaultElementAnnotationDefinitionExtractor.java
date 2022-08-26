@@ -1,22 +1,22 @@
 package org.paranora.mapstruct.starter.core.java.generator.definition;
 
 import com.squareup.javapoet.TypeName;
-import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationFieldDefinition;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationFieldDefinition;
 
 import javax.lang.model.element.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class DefaultElementAnnotationDefinitionCreator extends AbsAnnotationDefinitionCreator<Element, AnnotationMirror> {
+public class DefaultElementAnnotationDefinitionExtractor extends AbsAnnotationDefinitionExtractor<Element, AnnotationMirror> implements ElementAnnotationDefinitionExtractor {
 
     protected AnnotationValueVisitor annotationValueVisitor;
 
-    public DefaultElementAnnotationDefinitionCreator(AnnotationValueVisitor annotationValueVisitor) {
+    public DefaultElementAnnotationDefinitionExtractor(AnnotationValueVisitor annotationValueVisitor) {
         this.annotationValueVisitor = annotationValueVisitor;
     }
 
-    public DefaultElementAnnotationDefinitionCreator() {
+    public DefaultElementAnnotationDefinitionExtractor() {
         init();
     }
 
@@ -41,12 +41,10 @@ public class DefaultElementAnnotationDefinitionCreator extends AbsAnnotationDefi
     }
 
     @Override
-    public AnnotationMirror getAnnotation(Element source, String annotaionClassName) {
-        Optional<? extends AnnotationMirror> opt = source.getAnnotationMirrors()
+    public List<AnnotationMirror> getAnnotations(Element source) {
+        return source.getAnnotationMirrors()
                 .stream()
-                .filter(t -> t.getAnnotationType().toString().equalsIgnoreCase(annotaionClassName))
-                .findFirst();
-        return opt.isPresent() ? opt.get() : null;
+                .collect(Collectors.toList());
     }
 
 }

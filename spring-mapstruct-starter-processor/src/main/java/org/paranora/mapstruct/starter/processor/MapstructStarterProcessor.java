@@ -1,14 +1,14 @@
 package org.paranora.mapstruct.starter.processor;
 
 import com.squareup.javapoet.*;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
-import org.paranora.mapstruct.starter.core.java.generator.AnnotationJavaCodeCreator;
-import org.paranora.mapstruct.starter.core.java.generator.JavaCodeCreator;
-import org.paranora.mapstruct.starter.core.java.generator.definition.AnnotationDefinitionCreator;
-import org.paranora.mapstruct.starter.core.java.generator.definition.CustomAnnotationValueVisitor;
-import org.paranora.mapstruct.starter.core.java.generator.definition.DefaultElementAnnotationDefinitionCreator;
-import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationDefinition;
+import org.paranora.mapstruct.starter.core.java.generator.AnnotationJavaCodeGenerator;
+import org.paranora.mapstruct.starter.core.java.generator.definition.*;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.ClassDefinition;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -27,12 +27,49 @@ import java.util.function.Function;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class MapstructStarterProcessor extends AbsProcessor {
 
-    protected AnnotationDefinitionCreator annotationDefinitionCreator = new DefaultElementAnnotationDefinitionCreator();
+    protected AnnotationDefinitionExtractor<Element> annotationDefinitionExtractor = new DefaultElementAnnotationDefinitionExtractor();
 
     public static final String PMapperAnnotationName = "org.paranora.mapstruct.starter.core.annotations.PMapper";
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
+        print("entry.");
+        processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
+            ElementClassDefinitionExtractor elementClassDefinitionExtractor = new DefaultElementClassDefinitionExtractor();
+            List<ClassDefinition> definitions = elementClassDefinitionExtractor.extract((TypeElement) element);
+            definitions.forEach(d -> {
+                d.getAnnotations().forEach(a -> {
+                    a.getFields().stream().forEach(f -> {
+                        print("package : %s , class : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
+                                , d.getPackageName()
+                                , d.getName()
+                                , f.getName()
+                                , f.getTypeName()
+                                , f.getValue()
+                                , f.getValue().getClass());
+                    });
+                });
+                d.getFields().forEach(f -> {
+                    print("package : %s , class %s field : %s ", d.getPackageName(), d.getName(), f.getName());
+                    f.getAnnotations().forEach(fi -> {
+                        fi.getFields().forEach(fif->{
+                            print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
+                                    , d.getPackageName()
+                                    , d.getName()
+                                    , f.getName()
+                                    , fif.getName()
+                                    , fif.getTypeName()
+                                    , fif.getValue()
+                                    , fif.getValue().getClass());
+                        });
+                    });
+                });
+            });
+        });
+        return false;
+    }
+
+    public boolean processC(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
         processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
             PackageElement pkg = processingEnv.getElementUtils().getPackageOf(element);
@@ -43,16 +80,12 @@ public class MapstructStarterProcessor extends AbsProcessor {
                 print("package name : %s", s.substring(0, s.lastIndexOf('.')));
             }
             print("class %s field : %s ", element.asType().toString(), element.getSimpleName());
-            AnnotationDefinition annotationDefinition = annotationDefinitionCreator.create(element, PMapper.class);
+            AnnotationDefinition annotationDefinition = annotationDefinitionExtractor.extract(element).get(0);
             annotationDefinition.getFields().stream().forEach(f -> {
-                print("annotation key : %s , type : %s , value : %s ,value class : %s"
-                        , f.getName()
-                        , f.getTypeName()
-                        , f.getValue()
-                        , f.getValue().getClass());
+
             });
             processClassFields(element, variableElement -> {
-                AnnotationDefinition mpmappingAnnotationDefinition = annotationDefinitionCreator.create(variableElement, PMapping.class);
+                AnnotationDefinition mpmappingAnnotationDefinition = annotationDefinitionExtractor.extract(variableElement).get(0);
                 mpmappingAnnotationDefinition.getFields().stream().forEach(f -> {
                     Object value = f.getValue();
                     String key = f.getName();
@@ -71,7 +104,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                         TypeName firstContentTypeName = TypeName.get(listValue.get(0).getClass());
 
                         print("list componentTypeName : %s , firstContentType : %s , isPrimitive : %s", componentTypeName, firstContentTypeName, componentTypeName.isPrimitive());
-                        if(listValue.get(0) instanceof TypeMirror){
+                        if (listValue.get(0) instanceof TypeMirror) {
                             print("list componentType is Clas");
                         }
                         listValue.forEach(e -> {
@@ -90,7 +123,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                     } else if (value instanceof VariableElement) {
                         print("i found Enum value : %s ,@ key : %s.", value, key);
                         CodeBlock codeBlock = CodeBlock.builder().add("$T.$L", f.getTypeName(), value).build();
-                        print("Enum codeBlock : %s",codeBlock.toString());
+                        print("Enum codeBlock : %s", codeBlock.toString());
                     } else {
 
                     }
@@ -98,9 +131,15 @@ public class MapstructStarterProcessor extends AbsProcessor {
                 print("process 000000");
                 mpmappingAnnotationDefinition.setPackageName("org.mapstruct");
                 mpmappingAnnotationDefinition.setName("Mapping");
-                AnnotationJavaCodeCreator javaCodeCreator=new AnnotationJavaCodeCreator();
-                AnnotationSpec annotationSpec=javaCodeCreator.create(mpmappingAnnotationDefinition);
+                AnnotationJavaCodeGenerator javaCodeCreator = new AnnotationJavaCodeGenerator();
+                AnnotationSpec annotationSpec = javaCodeCreator.create(mpmappingAnnotationDefinition);
                 print(annotationSpec.toString());
+
+                print("process 111111");
+                AnnotationDefinition r = new DefaultAnnotationDefinitionConverter().convert(mpmappingAnnotationDefinition, Mapping.class);
+                AnnotationSpec r1 = javaCodeCreator.create(r);
+                print(r1.toString());
+
             });
             print("process");
             TypeElement elem = processingEnv.getElementUtils().getTypeElement("org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO");

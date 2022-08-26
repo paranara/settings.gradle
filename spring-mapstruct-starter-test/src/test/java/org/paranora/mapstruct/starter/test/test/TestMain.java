@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mapstruct.NullValueCheckStrategy;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
+import org.paranora.mapstruct.starter.core.java.generator.definition.AnnotationDefinitionExtractor;
 import org.paranora.mapstruct.starter.test.entity.Staff;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;

@@ -1,7 +1,7 @@
 package org.paranora.mapstruct.starter.core.java.generator.definition;
 
 import com.squareup.javapoet.TypeName;
-import org.paranora.mapstruct.starter.core.java.generator.entity.AnnotationFieldDefinition;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationFieldDefinition;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
@@ -10,9 +10,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-public class DefaultReflectMPAnnotationDefinitionCreator extends AbsAnnotationDefinitionCreator<AccessibleObject, Annotation> {
+public class DefaultReflectAnnotationDefinitionExtractor extends AbsAnnotationDefinitionExtractor<AccessibleObject, Annotation> {
 
     @Override
     protected List<AnnotationFieldDefinition> createFields(AccessibleObject source, Annotation annotationObj) {
@@ -34,14 +33,8 @@ public class DefaultReflectMPAnnotationDefinitionCreator extends AbsAnnotationDe
     }
 
     @Override
-    public Annotation getAnnotation(AccessibleObject source, String annotaionClassName) {
-        Optional<Annotation> opt = Arrays.stream(source.getAnnotations()).filter(a -> a.getClass().getName().equalsIgnoreCase(annotaionClassName)).findFirst();
-        return opt.isPresent() ? opt.get() : null;
-    }
-
-    @Override
-    public Annotation getAnnotation(AccessibleObject source, Class annotaionClass) {
-        return source.getAnnotation(annotaionClass);
+    public List<Annotation> getAnnotations(AccessibleObject source) {
+        return Arrays.asList(source.getAnnotations());
     }
 
 }

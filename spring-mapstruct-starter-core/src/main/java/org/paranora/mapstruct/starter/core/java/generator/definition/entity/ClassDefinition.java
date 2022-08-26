@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.core.java.generator.entity;
+package org.paranora.mapstruct.starter.core.java.generator.definition.entity;
 
 import com.squareup.javapoet.TypeName;
 import lombok.*;

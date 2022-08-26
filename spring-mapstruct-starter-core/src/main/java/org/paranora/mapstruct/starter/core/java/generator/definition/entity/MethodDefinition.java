@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.core.java.generator.entity;
+package org.paranora.mapstruct.starter.core.java.generator.definition.entity;
 
 import com.squareup.javapoet.TypeName;
 import lombok.*;
@@ -9,17 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 @EqualsAndHashCode(callSuper=false)
-public class InterfaceDefinition extends Definition {
-
+public class MethodDefinition extends Definition{
     protected Modifier accession;
+    protected TypeName returnType;
 
     @Builder.Default
-    protected List<MethodDefinition> methods=new ArrayList<>();
-
-    @Builder.Default
-    protected List<TypeName> superInterfaces=new ArrayList<>();
+    protected List<MethodParameterDefinition> parameters=new ArrayList<>();
 }
