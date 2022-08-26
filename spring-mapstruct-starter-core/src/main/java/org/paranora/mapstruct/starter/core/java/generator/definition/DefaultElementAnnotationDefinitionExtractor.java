@@ -31,6 +31,7 @@ public class DefaultElementAnnotationDefinitionExtractor extends AbsAnnotationDe
         AnnotationDefinition definition = super.extract(source, annotationObj);
         definition.setName(element.getSimpleName().toString());
         definition.setTypeName(TypeName.get(element.asType()));
+        definition.setPackageName(element.toString().substring(0,element.toString().lastIndexOf(".")));
         return definition;
     }
 

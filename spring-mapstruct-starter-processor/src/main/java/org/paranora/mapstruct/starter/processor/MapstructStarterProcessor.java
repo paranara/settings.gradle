@@ -53,7 +53,8 @@ public class MapstructStarterProcessor extends AbsProcessor {
                     print("package : %s , class %s field : %s ", d.getPackageName(), d.getName(), f.getName());
                     f.getAnnotations().forEach(fi -> {
                         fi.getFields().forEach(fif->{
-                            print("class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
+                            print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
+                                    , fi.getPackageName()
                                     , fi.getName()
                                     , f.getName()
                                     , fif.getName()
