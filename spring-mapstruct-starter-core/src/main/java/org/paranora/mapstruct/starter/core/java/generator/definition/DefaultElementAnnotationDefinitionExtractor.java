@@ -1,6 +1,7 @@
 package org.paranora.mapstruct.starter.core.java.generator.definition;
 
 import com.squareup.javapoet.TypeName;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationFieldDefinition;
 
 import javax.lang.model.element.*;
@@ -22,6 +23,15 @@ public class DefaultElementAnnotationDefinitionExtractor extends AbsAnnotationDe
 
     protected void init() {
         this.annotationValueVisitor = new CustomAnnotationValueVisitor();
+    }
+
+    @Override
+    public AnnotationDefinition extract(Element source, AnnotationMirror annotationObj) {
+        Element element=annotationObj.getAnnotationType().asElement();
+        AnnotationDefinition definition = super.extract(source, annotationObj);
+        definition.setName(element.getSimpleName().toString());
+        definition.setTypeName(TypeName.get(element.asType()));
+        return definition;
     }
 
     @Override
