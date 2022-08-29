@@ -3,13 +3,13 @@ package org.paranora.mapstruct.starter.core.java.generator;
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
-import org.paranora.mapstruct.starter.core.java.generator.definition.entity.Definition;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.MetaDefinition;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
-public abstract class AbsJavaCodeGenerator<D extends Definition, T extends Object> implements JavaCodeGenerator<D,T> {
+public abstract class AbsJavapoetGenerator<D extends MetaDefinition, T extends Object> implements JavaCodeGenerator<D,T> {
 
 
     protected CodeBlock createCode(TypeName typeName,Object value) {
@@ -57,4 +57,5 @@ public abstract class AbsJavaCodeGenerator<D extends Definition, T extends Objec
                 .build();
         return codeBlock;
     }
+
 }

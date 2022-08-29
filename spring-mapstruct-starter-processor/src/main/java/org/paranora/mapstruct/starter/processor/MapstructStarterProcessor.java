@@ -2,10 +2,9 @@ package org.paranora.mapstruct.starter.processor;
 
 import com.squareup.javapoet.*;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
-import org.paranora.mapstruct.starter.core.java.generator.AnnotationJavaCodeGenerator;
+import org.paranora.mapstruct.starter.core.java.generator.DefaultAnnotationGenerator;
 import org.paranora.mapstruct.starter.core.java.generator.definition.*;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.ClassDefinition;
@@ -37,30 +36,30 @@ public class MapstructStarterProcessor extends AbsProcessor {
         processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
             ElementClassDefinitionExtractor elementClassDefinitionExtractor = new DefaultElementClassDefinitionExtractor();
             List<ClassDefinition> definitions = elementClassDefinitionExtractor.extract((TypeElement) element);
-            definitions.forEach(d -> {
-                d.getAnnotations().forEach(a -> {
-                    a.getFields().stream().forEach(f -> {
+            definitions.forEach(clz -> {
+                clz.getAnnotations().forEach(at -> {
+                    at.getFields().stream().forEach(atf -> {
                         print("package : %s , class : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
-                                , d.getPackageName()
-                                , d.getName()
-                                , f.getName()
-                                , f.getTypeName()
-                                , f.getValue()
-                                , f.getValue().getClass());
+                                , clz.getPackageName()
+                                , clz.getName()
+                                , atf.getName()
+                                , atf.getTypeName()
+                                , atf.getValue()
+                                , atf.getValue().getClass());
                     });
                 });
-                d.getFields().forEach(f -> {
-                    print("package : %s , class %s field : %s ", d.getPackageName(), d.getName(), f.getName());
-                    f.getAnnotations().forEach(fi -> {
-                        fi.getFields().forEach(fif->{
+                clz.getFields().forEach(f -> {
+                    print("package : %s , class %s , field : %s ", clz.getPackageName(), clz.getName(), f.getName());
+                    f.getAnnotations().forEach(at -> {
+                        at.getFields().forEach(atf->{
                             print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
-                                    , fi.getPackageName()
-                                    , fi.getName()
+                                    , at.getPackageName()
+                                    , at.getName()
                                     , f.getName()
-                                    , fif.getName()
-                                    , fif.getTypeName()
-                                    , fif.getValue()
-                                    , fif.getValue().getClass());
+                                    , atf.getName()
+                                    , atf.getTypeName()
+                                    , atf.getValue()
+                                    , atf.getValue().getClass());
                         });
                     });
                 });
@@ -131,7 +130,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                 print("process 000000");
                 mpmappingAnnotationDefinition.setPackageName("org.mapstruct");
                 mpmappingAnnotationDefinition.setName("Mapping");
-                AnnotationJavaCodeGenerator javaCodeCreator = new AnnotationJavaCodeGenerator();
+                DefaultAnnotationGenerator javaCodeCreator = new DefaultAnnotationGenerator();
                 AnnotationSpec annotationSpec = javaCodeCreator.create(mpmappingAnnotationDefinition);
                 print(annotationSpec.toString());
 
@@ -393,7 +392,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
     @Override
     protected String prefix() {
-        return "MapstructProcessor.process entry. ";
+        return "PM.Process entry. ";
     }
 
 }

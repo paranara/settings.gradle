@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class AnnotationFieldDefinition extends Definition {
+public class AnnotationFieldDefinition extends MetaDefinition {
 
     protected Object value;
 }

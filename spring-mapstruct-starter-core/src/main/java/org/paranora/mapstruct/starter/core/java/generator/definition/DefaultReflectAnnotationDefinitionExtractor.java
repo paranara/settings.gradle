@@ -14,7 +14,7 @@ import java.util.List;
 public class DefaultReflectAnnotationDefinitionExtractor extends AbsAnnotationDefinitionExtractor<AccessibleObject, Annotation> {
 
     @Override
-    protected List<AnnotationFieldDefinition> createFields(AccessibleObject source, Annotation annotationObj) {
+    protected List<AnnotationFieldDefinition> extractFields(AccessibleObject source, Annotation annotationObj) {
         List<AnnotationFieldDefinition> annotationFieldDefinitions = new ArrayList<>();
         for (Method method : annotationObj.annotationType().getDeclaredMethods()) {
             try {

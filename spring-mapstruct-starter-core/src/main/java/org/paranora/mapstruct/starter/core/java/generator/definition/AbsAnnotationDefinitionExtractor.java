@@ -10,11 +10,11 @@ public  abstract class AbsAnnotationDefinitionExtractor<S extends Object, AOT ex
 
     public AnnotationDefinition extract(S source,AOT annotationObj) {
         AnnotationDefinition definition = new AnnotationDefinition();
-        definition.setFields(createFields(source,annotationObj));
+        definition.setFields(extractFields(source,annotationObj));
         return definition;
     }
 
-    protected abstract List<AnnotationFieldDefinition> createFields(S source,AOT annotationObj);
+    protected abstract List<AnnotationFieldDefinition> extractFields(S source,AOT annotationObj);
 
     public abstract List<AOT> getAnnotations(S source);
 

@@ -13,8 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class MethodDefinition extends Definition{
-    protected Modifier accession;
+public class MethodDefinition extends MetaDefinition {
     protected TypeName returnType;
 
     @Builder.Default

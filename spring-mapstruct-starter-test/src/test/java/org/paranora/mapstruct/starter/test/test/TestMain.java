@@ -7,7 +7,11 @@ import org.junit.runner.RunWith;
 import org.mapstruct.NullValueCheckStrategy;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
+import org.paranora.mapstruct.starter.core.java.generator.DefaultInterfaceGenerator;
+import org.paranora.mapstruct.starter.core.java.generator.InterfaceJavapoetGenerator;
 import org.paranora.mapstruct.starter.core.java.generator.definition.AnnotationDefinitionExtractor;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.*;
+import org.paranora.mapstruct.starter.test.entity.Company;
 import org.paranora.mapstruct.starter.test.entity.Staff;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -19,9 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.lang.model.element.Modifier;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.*;
 import java.util.*;
 
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, QuartzAutoConfiguration.class})
@@ -35,9 +37,56 @@ public class TestMain {
     public void test_main_method_a() throws Exception {
         print("test_main_method_a begin.");
 
-        testB();
+        testC();
 
         print("test_main_method_a  end");
+    }
+
+    public void testC(){
+        InterfaceJavapoetGenerator interfaceJavapoetGenerator=new DefaultInterfaceGenerator();
+        InterfaceDefinition interfaceDefinition=new InterfaceDefinition();
+        interfaceDefinition.setName("InterfaceGenerateTestA");
+        interfaceDefinition.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
+        interfaceDefinition.setSuperInterfaces(Arrays.asList(
+                InterfaceDefinition.builder()
+                        .packageName("org.springframework.core.convert.converter")
+                        .name("Converter")
+                        .genericTypes(Arrays.asList(TypeName.get(Company.class),TypeName.get(Staff.class)))
+                        .build()
+        ));
+
+        interfaceDefinition.setMethods(Arrays.asList(
+                MethodDefinition.builder()
+                        .annotations(Arrays.asList(
+                                AnnotationDefinition.builder()
+                                        .name("PMapping")
+                                        .packageName("org.paranora.mapstruct.starter.core.annotations")
+                                        .fields(Arrays.asList(
+                                                AnnotationFieldDefinition.builder()
+                                                        .name("target")
+                                                        .typeName(TypeName.get(String.class))
+                                                        .value("abc")
+                                                        .build()
+                                        ))
+                                        .build()
+                        ))
+                        .parameters(
+                                Arrays.asList(MethodParameterDefinition.builder()
+                                                .name("source")
+                                                .typeName(TypeName.get(Staff.class))
+                                .build()))
+                        .accessLevels(Arrays.asList(Modifier.PUBLIC,Modifier.ABSTRACT))
+                        .returnType(TypeName.get(Staff.class))
+                        .name("convert")
+                        .build()
+        ));
+
+        TypeSpec interfaceSpec=interfaceJavapoetGenerator.create(interfaceDefinition);
+
+        String str=interfaceSpec.toString();
+
+        print(str);
+        print("The End.");
     }
 
     public void testB() {

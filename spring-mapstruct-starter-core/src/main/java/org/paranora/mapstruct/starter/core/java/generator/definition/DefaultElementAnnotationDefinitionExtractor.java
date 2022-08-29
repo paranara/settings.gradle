@@ -22,21 +22,25 @@ public class DefaultElementAnnotationDefinitionExtractor extends AbsAnnotationDe
     }
 
     protected void init() {
-        this.annotationValueVisitor = new CustomAnnotationValueVisitor();
+        this.annotationValueVisitor = defaultAnnotationValueVisitor();
+    }
+
+    protected AnnotationValueVisitor defaultAnnotationValueVisitor() {
+        return new CustomAnnotationValueVisitor();
     }
 
     @Override
     public AnnotationDefinition extract(Element source, AnnotationMirror annotationObj) {
-        Element element=annotationObj.getAnnotationType().asElement();
+        Element element = annotationObj.getAnnotationType().asElement();
         AnnotationDefinition definition = super.extract(source, annotationObj);
         definition.setName(element.getSimpleName().toString());
         definition.setTypeName(TypeName.get(element.asType()));
-        definition.setPackageName(element.toString().substring(0,element.toString().lastIndexOf(".")));
+        definition.setPackageName(element.toString().substring(0, element.toString().lastIndexOf(".")));
         return definition;
     }
 
     @Override
-    protected List<AnnotationFieldDefinition> createFields(Element source, AnnotationMirror annotationObj) {
+    protected List<AnnotationFieldDefinition> extractFields(Element source, AnnotationMirror annotationObj) {
         List<AnnotationFieldDefinition> annotationFieldDefinitions = new ArrayList<>();
         annotationObj.getElementValues().entrySet().stream().forEach(entry -> {
             TypeName returnType = TypeName.get(entry.getKey().getReturnType());

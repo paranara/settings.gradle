@@ -1,6 +1,5 @@
 package org.paranora.mapstruct.starter.core.java.generator.definition.entity;
 
-import com.squareup.javapoet.TypeName;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -16,5 +15,5 @@ public class ClassDefinition extends InterfaceDefinition {
 
     @Builder.Default
     protected List<FieldDefinition> fields=new ArrayList<>();
-    protected TypeName superClass;
+    protected ClassDefinition superClass;
 }

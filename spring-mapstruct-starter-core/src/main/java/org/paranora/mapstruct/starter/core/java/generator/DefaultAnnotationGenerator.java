@@ -3,7 +3,7 @@ package org.paranora.mapstruct.starter.core.java.generator;
 import com.squareup.javapoet.*;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
 
-public class AnnotationJavaCodeGenerator extends AbsJavaCodeGenerator<AnnotationDefinition, AnnotationSpec> {
+public class DefaultAnnotationGenerator extends AbsJavapoetGenerator<AnnotationDefinition, AnnotationSpec> implements AnnotationJavapoetGenerator {
 
     @Override
     public AnnotationSpec create(AnnotationDefinition definition) {

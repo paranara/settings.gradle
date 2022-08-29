@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class AnnotationDefinition extends Definition {
+public class AnnotationDefinition extends MetaDefinition {
 
     @Builder.Default
     protected List<AnnotationFieldDefinition> fields = new ArrayList<>();

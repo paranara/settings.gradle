@@ -8,6 +8,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper=false)
-public class MethodParameterDefinition extends Definition{
+public class MethodParameterDefinition extends MetaDefinition {
 
 }

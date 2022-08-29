@@ -13,7 +13,7 @@ import javax.lang.model.element.Modifier;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class FieldDefinition  extends Definition{
+public class FieldDefinition  extends MetaDefinition {
     protected Modifier accession;
     protected Object value;
 }
