@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.core.java.generator.definition;
+package org.paranora.mapstruct.starter.core.java.generator.definition.extractor;
 
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.FieldDefinition;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DefaultElementFieldDefinitionExtractor implements ElementFieldDefinitionExtractor{
 
-    protected AnnotationDefinitionExtractor<Element> annotationDefinitionExtractor;
+    protected ElementAnnotationDefinitionExtractor annotationDefinitionExtractor;
 
     public DefaultElementFieldDefinitionExtractor() {
         init();
@@ -22,7 +22,7 @@ public class DefaultElementFieldDefinitionExtractor implements ElementFieldDefin
         this.annotationDefinitionExtractor = defaultAnnotationDefinitionExtractor();
     }
 
-    protected AnnotationDefinitionExtractor defaultAnnotationDefinitionExtractor() {
+    protected ElementAnnotationDefinitionExtractor defaultAnnotationDefinitionExtractor() {
         return new DefaultElementAnnotationDefinitionExtractor();
     }
 

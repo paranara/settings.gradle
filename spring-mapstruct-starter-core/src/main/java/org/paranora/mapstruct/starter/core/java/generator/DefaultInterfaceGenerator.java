@@ -18,6 +18,11 @@ public class DefaultInterfaceGenerator extends AbsJavapoetGenerator<InterfaceDef
         init();
     }
 
+    public DefaultInterfaceGenerator(AnnotationJavapoetGenerator annotationJavapoetGenerator,MethodJavapoetGenerator methodJavapoetGenerator){
+        defaultAnnotationJavapoetGenerator(annotationJavapoetGenerator);
+        defaultMethodJavapoetGenerator(methodJavapoetGenerator);
+    }
+
     protected void init() {
         this.annotationJavapoetGenerator = defaultAnnotationJavapoetGenerator();
         this.methodJavapoetGenerator = defaultMethodJavapoetGenerator();
@@ -44,9 +49,9 @@ public class DefaultInterfaceGenerator extends AbsJavapoetGenerator<InterfaceDef
         TypeSpec interfaceSpec = TypeSpec.interfaceBuilder(definition.getName())
                 .addSuperinterfaces(definition.getSuperInterfaces()
                         .stream()
-                        .map(si -> ParameterizedTypeName.get(ClassName.get(si.getPackageName(), si.getName()), si.getGenericTypes().toArray(new TypeName[si.getGenericTypes().size()])))
+                        .map(si -> ParameterizedTypeName.get(ClassName.get(si.getPackageName(), si.getName()), si.getGenericTypes().toArray(new TypeName[]{})))
                         .collect(Collectors.toList()))
-                .addModifiers(definition.getAccessLevels().toArray(new Modifier[definition.getAccessLevels().size()]))
+                .addModifiers(definition.getAccessLevels().toArray(new Modifier[]{}))
                 .addAnnotations(definition.getAnnotations().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList()))
                 .addMethods(definition.getMethods().stream().map(m -> methodJavapoetGenerator.create(m)).collect(Collectors.toList()))
                 .build();

@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class ClassDefinition extends InterfaceDefinition {
+public class ClassDefinition extends AmpleDefinition {
 
     @Builder.Default
     protected List<FieldDefinition> fields=new ArrayList<>();

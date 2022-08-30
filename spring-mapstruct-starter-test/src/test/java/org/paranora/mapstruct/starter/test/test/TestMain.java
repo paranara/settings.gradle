@@ -4,12 +4,12 @@ package org.paranora.mapstruct.starter.test.test;
 import com.squareup.javapoet.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
 import org.paranora.mapstruct.starter.core.java.generator.DefaultInterfaceGenerator;
 import org.paranora.mapstruct.starter.core.java.generator.InterfaceJavapoetGenerator;
-import org.paranora.mapstruct.starter.core.java.generator.definition.AnnotationDefinitionExtractor;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.*;
 import org.paranora.mapstruct.starter.test.entity.Company;
 import org.paranora.mapstruct.starter.test.entity.Staff;
@@ -42,16 +42,35 @@ public class TestMain {
         print("test_main_method_a  end");
     }
 
-    public void testC(){
-        InterfaceJavapoetGenerator interfaceJavapoetGenerator=new DefaultInterfaceGenerator();
-        InterfaceDefinition interfaceDefinition=new InterfaceDefinition();
+    public void testC() {
+        InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
+        InterfaceDefinition interfaceDefinition = new InterfaceDefinition();
         interfaceDefinition.setName("InterfaceGenerateTestA");
         interfaceDefinition.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
         interfaceDefinition.setSuperInterfaces(Arrays.asList(
                 InterfaceDefinition.builder()
                         .packageName("org.springframework.core.convert.converter")
                         .name("Converter")
-                        .genericTypes(Arrays.asList(TypeName.get(Company.class),TypeName.get(Staff.class)))
+                        .genericTypes(Arrays.asList(TypeName.get(Company.class), TypeName.get(Staff.class)))
+                        .build()
+        ));
+
+        interfaceDefinition.setAnnotations(Arrays.asList(
+                AnnotationDefinition.builder()
+                        .name(PMapper.class.getSimpleName())
+                        .packageName("org.paranora.mapstruct.starter.core.annotations")
+                        .fields(Arrays.asList(
+                                AnnotationFieldDefinition.builder()
+                                        .name("name")
+                                        .typeName(TypeName.get(String.class))
+                                        .value("abc")
+                                        .build()
+                                , AnnotationFieldDefinition.builder()
+                                        .name("target")
+                                        .typeName(TypeName.get(Class.class))
+                                        .value(Staff.class)
+                                        .build()
+                        ))
                         .build()
         ));
 
@@ -59,47 +78,78 @@ public class TestMain {
                 MethodDefinition.builder()
                         .annotations(Arrays.asList(
                                 AnnotationDefinition.builder()
-                                        .name("PMapping")
-                                        .packageName("org.paranora.mapstruct.starter.core.annotations")
+                                        .name(Mapping.class.getSimpleName())
+                                        .packageName(Mapping.class.getPackage().getName())
                                         .fields(Arrays.asList(
                                                 AnnotationFieldDefinition.builder()
                                                         .name("target")
                                                         .typeName(TypeName.get(String.class))
                                                         .value("abc")
                                                         .build()
+                                                , AnnotationFieldDefinition.builder()
+                                                        .name("source")
+                                                        .typeName(TypeName.get(String.class))
+                                                        .value("abc")
+                                                        .build()
+                                                , AnnotationFieldDefinition.builder()
+                                                        .name("nullValueCheckStrategy")
+                                                        .typeName(TypeName.get(NullValueCheckStrategy.class))
+                                                        .value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
+                                                        .build()
+                                        ))
+                                        .build()
+                                , AnnotationDefinition.builder()
+                                        .name(Mapping.class.getSimpleName())
+                                        .packageName(Mapping.class.getPackage().getName())
+                                        .fields(Arrays.asList(
+                                                AnnotationFieldDefinition.builder()
+                                                        .name("target")
+                                                        .typeName(TypeName.get(String.class))
+                                                        .value("abc1")
+                                                        .build()
+                                                , AnnotationFieldDefinition.builder()
+                                                        .name("source")
+                                                        .typeName(TypeName.get(String.class))
+                                                        .value("abc1")
+                                                        .build()
+                                                , AnnotationFieldDefinition.builder()
+                                                        .name("nullValueCheckStrategy")
+                                                        .typeName(TypeName.get(NullValueCheckStrategy.class))
+                                                        .value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
+                                                        .build()
                                         ))
                                         .build()
                         ))
                         .parameters(
                                 Arrays.asList(MethodParameterDefinition.builder()
-                                                .name("source")
-                                                .typeName(TypeName.get(Staff.class))
-                                .build()))
-                        .accessLevels(Arrays.asList(Modifier.PUBLIC,Modifier.ABSTRACT))
+                                        .name("source")
+                                        .typeName(TypeName.get(Staff.class))
+                                        .build()))
+                        .accessLevels(Arrays.asList(Modifier.PUBLIC, Modifier.ABSTRACT))
                         .returnType(TypeName.get(Staff.class))
                         .name("convert")
                         .build()
         ));
 
-        TypeSpec interfaceSpec=interfaceJavapoetGenerator.create(interfaceDefinition);
+        TypeSpec interfaceSpec = interfaceJavapoetGenerator.create(interfaceDefinition);
 
-        String str=interfaceSpec.toString();
+        String str = interfaceSpec.toString();
 
         print(str);
         print("The End.");
     }
 
+
     public void testB() {
         CodeBlock codeBlockA = CodeBlock.of("$T.$L", String.class, "a");
 
-        String[] dependsOn=new String[]{"a","b"};
-        CodeBlock codeBlockB =CodeBlock.builder().add("$L",
+        String[] dependsOn = new String[]{"a", "b"};
+        CodeBlock codeBlockB = CodeBlock.builder().add("$L",
                 Arrays.stream(dependsOn)
-                        .map(type -> CodeBlock.of("$T.$L", String.class,type))
+                        .map(type -> CodeBlock.of("$T.$L", String.class, type))
                         .collect(CodeBlock.joining(",", "{", "}"))).build();
 
-        String str=codeBlockB.toString();
-
+        String str = codeBlockB.toString();
         print(str);
     }
 

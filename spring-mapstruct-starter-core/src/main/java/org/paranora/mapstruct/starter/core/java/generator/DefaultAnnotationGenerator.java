@@ -2,6 +2,7 @@ package org.paranora.mapstruct.starter.core.java.generator;
 
 import com.squareup.javapoet.*;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
+import org.paranora.mapstruct.starter.core.java.generator.definition.entity.ValueDefinition;
 
 public class DefaultAnnotationGenerator extends AbsJavapoetGenerator<AnnotationDefinition, AnnotationSpec> implements AnnotationJavapoetGenerator {
 
@@ -11,7 +12,7 @@ public class DefaultAnnotationGenerator extends AbsJavapoetGenerator<AnnotationD
         AnnotationSpec.Builder builder = AnnotationSpec.builder(ClassName.get(definition.getPackageName(), definition.getName()));
         if (null != definition.getFields() && definition.getFields().size() > 0) {
             definition.getFields().stream().forEach(f -> {
-                builder.addMember(f.getName(), createCode(f.getTypeName(), f.getValue()));
+                builder.addMember(f.getName(), this.codeJavapoetGenerator.create(ValueDefinition.builder().typeName(f.getTypeName()).value(f.getValue()).build()));
             });
         }
         return builder.build();

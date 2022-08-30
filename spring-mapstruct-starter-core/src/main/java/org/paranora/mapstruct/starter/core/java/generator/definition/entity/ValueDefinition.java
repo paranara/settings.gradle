@@ -6,7 +6,10 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper=false)
-public class AnnotationFieldDefinition extends AmpleValueDefinition {
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class ValueDefinition extends MetaDefinition {
+    protected Object value;
 
 }

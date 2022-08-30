@@ -10,7 +10,7 @@ public class DefaultParameterGenerator extends AbsJavapoetGenerator<MethodParame
 
     @Override
     public ParameterSpec create(MethodParameterDefinition definition) {
-        ParameterSpec parameterSpec = ParameterSpec.builder(definition.getTypeName(), definition.getName(), Modifier.FINAL).build();
+        ParameterSpec parameterSpec = ParameterSpec.builder(definition.getTypeName(), definition.getName(), definition.getAccessLevels().toArray(new Modifier[]{})).build();
         return parameterSpec;
     }
 }

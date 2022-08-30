@@ -8,6 +8,10 @@ import org.paranora.mapstruct.starter.core.java.generator.DefaultAnnotationGener
 import org.paranora.mapstruct.starter.core.java.generator.definition.*;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.ClassDefinition;
+import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.AnnotationDefinitionExtractor;
+import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.DefaultElementAnnotationDefinitionExtractor;
+import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.DefaultElementClassDefinitionExtractor;
+import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.ElementClassDefinitionExtractor;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;

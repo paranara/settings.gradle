@@ -13,9 +13,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class MethodDefinition extends AmpleDefinition {
-    protected TypeName returnType;
+public class AmpleDefinition extends MetaDefinition {
 
     @Builder.Default
-    protected List<MethodParameterDefinition> parameters=new ArrayList<>();
+    protected List<Modifier> accessLevels = new ArrayList<>();
+
+    @Builder.Default
+    protected List<TypeName> genericTypes = new ArrayList<>();
+
+    @Builder.Default
+    protected List<AnnotationDefinition> annotations = new ArrayList<>();
+
+    @Builder.Default
+    protected List<Class<?>> annotationClazs = new ArrayList<>();
 }

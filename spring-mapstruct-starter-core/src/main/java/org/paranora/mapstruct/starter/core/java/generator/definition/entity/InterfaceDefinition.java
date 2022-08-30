@@ -3,18 +3,15 @@ package org.paranora.mapstruct.starter.core.java.generator.definition.entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 @EqualsAndHashCode(callSuper=false)
-public class InterfaceDefinition extends MetaDefinition {
-
-
+public class InterfaceDefinition extends AmpleDefinition {
 
     @Builder.Default
     protected List<MethodDefinition> methods=new ArrayList<>();

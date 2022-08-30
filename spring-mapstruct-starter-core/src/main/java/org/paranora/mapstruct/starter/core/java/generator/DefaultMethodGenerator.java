@@ -3,7 +3,6 @@ package org.paranora.mapstruct.starter.core.java.generator;
 import com.squareup.javapoet.MethodSpec;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.MethodDefinition;
 
-import javax.lang.model.element.Modifier;
 import java.util.stream.Collectors;
 
 
@@ -14,6 +13,11 @@ public class DefaultMethodGenerator extends AbsJavapoetGenerator<MethodDefinitio
 
     public DefaultMethodGenerator() {
         this.init();
+    }
+
+    public DefaultMethodGenerator(ParameterJavapoetGenerator parameterJavapoetGenerator, AnnotationJavapoetGenerator annotationJavapoetGenerator) {
+        defaultAnnotationJavapoetGenerator(annotationJavapoetGenerator);
+        defaultParameterJavapoetGenerator(parameterJavapoetGenerator);
     }
 
     public void init() {
@@ -39,12 +43,12 @@ public class DefaultMethodGenerator extends AbsJavapoetGenerator<MethodDefinitio
 
     @Override
     public MethodSpec create(MethodDefinition definition) {
-        MethodSpec.Builder builder= MethodSpec.methodBuilder(definition.getName())
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(definition.getName())
                 .addAnnotations(definition.getAnnotations().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList()))
                 .addParameters(definition.getParameters().stream().map(p -> parameterJavapoetGenerator.create(p)).collect(Collectors.toList()))
                 .addModifiers(definition.getAccessLevels())
                 .returns(definition.getReturnType());
-        definition.getAnnotationClazs().forEach(ac->builder.addAnnotation(ac));
+        definition.getAnnotationClazs().forEach(ac -> builder.addAnnotation(ac));
         return builder.build();
     }
 }
