@@ -1,6 +1,7 @@
-package org.paranora.mapstruct.starter.core.java.generator;
+package org.paranora.mapstruct.starter.core.java.generator.poet;
 
 
+import org.paranora.mapstruct.starter.core.java.generator.JavaCodeGenerator;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.MetaDefinition;
 
 
