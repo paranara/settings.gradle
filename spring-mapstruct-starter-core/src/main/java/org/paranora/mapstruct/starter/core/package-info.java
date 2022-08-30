@@ -1,1 +1,0 @@
-package org.paranora.mapstruct.starter.core;

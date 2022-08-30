@@ -4,7 +4,7 @@ import com.squareup.javapoet.*;
 import org.mapstruct.Mapping;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
-import org.paranora.mapstruct.starter.core.java.generator.poet.DefaultAnnotationGenerator;
+import org.paranora.mapstruct.starter.core.java.poet.DefaultAnnotationGenerator;
 import org.paranora.mapstruct.starter.core.java.generator.definition.*;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
 import org.paranora.mapstruct.starter.core.java.generator.definition.entity.ClassDefinition;

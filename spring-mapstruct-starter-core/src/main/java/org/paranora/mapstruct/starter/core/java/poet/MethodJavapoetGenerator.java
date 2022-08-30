@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.starter.core.java.generator.poet;
+package org.paranora.mapstruct.starter.core.java.poet;
 
 import com.squareup.javapoet.MethodSpec;
 import org.paranora.mapstruct.starter.core.java.generator.JavaCodeGenerator;
