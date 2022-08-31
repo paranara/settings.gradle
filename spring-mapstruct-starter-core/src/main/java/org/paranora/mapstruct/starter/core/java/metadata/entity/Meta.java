@@ -1,0 +1,16 @@
+package org.paranora.mapstruct.starter.core.java.metadata.entity;
+
+import com.squareup.javapoet.TypeName;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class Meta {
+    protected String packageName;
+    protected String name;
+    protected TypeName typeName;
+}

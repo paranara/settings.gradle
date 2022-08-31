@@ -4,14 +4,15 @@ import com.squareup.javapoet.*;
 import org.mapstruct.Mapping;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
-import org.paranora.mapstruct.starter.core.java.poet.DefaultAnnotationGenerator;
-import org.paranora.mapstruct.starter.core.java.generator.definition.*;
-import org.paranora.mapstruct.starter.core.java.generator.definition.entity.AnnotationDefinition;
-import org.paranora.mapstruct.starter.core.java.generator.definition.entity.ClassDefinition;
-import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.AnnotationDefinitionExtractor;
-import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.DefaultElementAnnotationDefinitionExtractor;
-import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.DefaultElementClassDefinitionExtractor;
-import org.paranora.mapstruct.starter.core.java.generator.definition.extractor.ElementClassDefinitionExtractor;
+import org.paranora.mapstruct.starter.core.java.metadata.CustomAnnotationValueVisitor;
+import org.paranora.mapstruct.starter.core.java.metadata.converter.DefaultAnnotationMetaConverter;
+import org.paranora.mapstruct.starter.core.java.generator.poet.DefaultAnnotationGenerator;
+import org.paranora.mapstruct.starter.core.java.metadata.entity.AnnotationMeta;
+import org.paranora.mapstruct.starter.core.java.metadata.entity.ClassMeta;
+import org.paranora.mapstruct.starter.core.java.metadata.extractor.AnnotationMetaExtractor;
+import org.paranora.mapstruct.starter.core.java.metadata.extractor.DefaultElementAnnotationMetaExtractor;
+import org.paranora.mapstruct.starter.core.java.metadata.extractor.DefaultElementClassMetaExtractor;
+import org.paranora.mapstruct.starter.core.java.metadata.extractor.ElementClassMetaExtractor;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -30,7 +31,7 @@ import java.util.function.Function;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class MapstructStarterProcessor extends AbsProcessor {
 
-    protected AnnotationDefinitionExtractor<Element> annotationDefinitionExtractor = new DefaultElementAnnotationDefinitionExtractor();
+    protected AnnotationMetaExtractor<Element> annotationDefinitionExtractor = new DefaultElementAnnotationMetaExtractor();
 
     public static final String PMapperAnnotationName = "org.paranora.mapstruct.starter.core.annotations.PMapper";
 
@@ -38,8 +39,8 @@ public class MapstructStarterProcessor extends AbsProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
         processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
-            ElementClassDefinitionExtractor elementClassDefinitionExtractor = new DefaultElementClassDefinitionExtractor();
-            List<ClassDefinition> definitions = elementClassDefinitionExtractor.extract((TypeElement) element);
+            ElementClassMetaExtractor elementClassDefinitionExtractor = new DefaultElementClassMetaExtractor();
+            List<ClassMeta> definitions = elementClassDefinitionExtractor.extract((TypeElement) element);
             definitions.forEach(clz -> {
                 clz.getAnnotations().forEach(at -> {
                     at.getFields().stream().forEach(atf -> {
@@ -83,12 +84,12 @@ public class MapstructStarterProcessor extends AbsProcessor {
                 print("package name : %s", s.substring(0, s.lastIndexOf('.')));
             }
             print("class %s field : %s ", element.asType().toString(), element.getSimpleName());
-            AnnotationDefinition annotationDefinition = annotationDefinitionExtractor.extract(element).get(0);
+            AnnotationMeta annotationDefinition = annotationDefinitionExtractor.extract(element).get(0);
             annotationDefinition.getFields().stream().forEach(f -> {
 
             });
             processClassFields(element, variableElement -> {
-                AnnotationDefinition mpmappingAnnotationDefinition = annotationDefinitionExtractor.extract(variableElement).get(0);
+                AnnotationMeta mpmappingAnnotationDefinition = annotationDefinitionExtractor.extract(variableElement).get(0);
                 mpmappingAnnotationDefinition.getFields().stream().forEach(f -> {
                     Object value = f.getValue();
                     String key = f.getName();
@@ -139,7 +140,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                 print(annotationSpec.toString());
 
                 print("process 111111");
-                AnnotationDefinition r = new DefaultAnnotationDefinitionConverter().convert(mpmappingAnnotationDefinition, Mapping.class);
+                AnnotationMeta r = new DefaultAnnotationMetaConverter().convert(mpmappingAnnotationDefinition, Mapping.class);
                 AnnotationSpec r1 = javaCodeCreator.create(r);
                 print(r1.toString());
 

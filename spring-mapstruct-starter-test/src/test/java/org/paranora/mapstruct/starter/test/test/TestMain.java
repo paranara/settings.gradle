@@ -8,9 +8,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.paranora.mapstruct.starter.core.annotations.PMapper;
 import org.paranora.mapstruct.starter.core.annotations.PMapping;
-import org.paranora.mapstruct.starter.core.java.poet.DefaultInterfaceGenerator;
-import org.paranora.mapstruct.starter.core.java.poet.InterfaceJavapoetGenerator;
-import org.paranora.mapstruct.starter.core.java.generator.definition.entity.*;
+import org.paranora.mapstruct.starter.core.java.metadata.entity.*;
+import org.paranora.mapstruct.starter.core.java.generator.poet.DefaultInterfaceGenerator;
+import org.paranora.mapstruct.starter.core.java.generator.poet.InterfaceJavapoetGenerator;
 import org.paranora.mapstruct.starter.test.entity.Company;
 import org.paranora.mapstruct.starter.test.entity.Staff;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -44,11 +44,11 @@ public class TestMain {
 
     public void testC() {
         InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
-        InterfaceDefinition interfaceDefinition = new InterfaceDefinition();
+        InterfaceMeta interfaceDefinition = new InterfaceMeta();
         interfaceDefinition.setName("InterfaceGenerateTestA");
         interfaceDefinition.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
         interfaceDefinition.setSuperInterfaces(Arrays.asList(
-                InterfaceDefinition.builder()
+                InterfaceMeta.builder()
                         .packageName("org.springframework.core.convert.converter")
                         .name("Converter")
                         .genericTypes(Arrays.asList(TypeName.get(Company.class), TypeName.get(Staff.class)))
@@ -56,16 +56,16 @@ public class TestMain {
         ));
 
         interfaceDefinition.setAnnotations(Arrays.asList(
-                AnnotationDefinition.builder()
+                AnnotationMeta.builder()
                         .name(PMapper.class.getSimpleName())
                         .packageName("org.paranora.mapstruct.starter.core.annotations")
                         .fields(Arrays.asList(
-                                AnnotationFieldDefinition.builder()
+                                AnnotationFieldMeta.builder()
                                         .name("name")
                                         .typeName(TypeName.get(String.class))
                                         .value("abc")
                                         .build()
-                                , AnnotationFieldDefinition.builder()
+                                , AnnotationFieldMeta.builder()
                                         .name("target")
                                         .typeName(TypeName.get(Class.class))
                                         .value(Staff.class)
@@ -75,44 +75,44 @@ public class TestMain {
         ));
 
         interfaceDefinition.setMethods(Arrays.asList(
-                MethodDefinition.builder()
+                MethodMeta.builder()
                         .annotations(Arrays.asList(
-                                AnnotationDefinition.builder()
+                                AnnotationMeta.builder()
                                         .name(Mapping.class.getSimpleName())
                                         .packageName(Mapping.class.getPackage().getName())
                                         .fields(Arrays.asList(
-                                                AnnotationFieldDefinition.builder()
+                                                AnnotationFieldMeta.builder()
                                                         .name("target")
                                                         .typeName(TypeName.get(String.class))
                                                         .value("abc")
                                                         .build()
-                                                , AnnotationFieldDefinition.builder()
+                                                , AnnotationFieldMeta.builder()
                                                         .name("source")
                                                         .typeName(TypeName.get(String.class))
                                                         .value("abc")
                                                         .build()
-                                                , AnnotationFieldDefinition.builder()
+                                                , AnnotationFieldMeta.builder()
                                                         .name("nullValueCheckStrategy")
                                                         .typeName(TypeName.get(NullValueCheckStrategy.class))
                                                         .value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
                                                         .build()
                                         ))
                                         .build()
-                                , AnnotationDefinition.builder()
+                                , AnnotationMeta.builder()
                                         .name(Mapping.class.getSimpleName())
                                         .packageName(Mapping.class.getPackage().getName())
                                         .fields(Arrays.asList(
-                                                AnnotationFieldDefinition.builder()
+                                                AnnotationFieldMeta.builder()
                                                         .name("target")
                                                         .typeName(TypeName.get(String.class))
                                                         .value("abc1")
                                                         .build()
-                                                , AnnotationFieldDefinition.builder()
+                                                , AnnotationFieldMeta.builder()
                                                         .name("source")
                                                         .typeName(TypeName.get(String.class))
                                                         .value("abc1")
                                                         .build()
-                                                , AnnotationFieldDefinition.builder()
+                                                , AnnotationFieldMeta.builder()
                                                         .name("nullValueCheckStrategy")
                                                         .typeName(TypeName.get(NullValueCheckStrategy.class))
                                                         .value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
@@ -121,7 +121,7 @@ public class TestMain {
                                         .build()
                         ))
                         .parameters(
-                                Arrays.asList(MethodParameterDefinition.builder()
+                                Arrays.asList(MethodParameterMeta.builder()
                                         .name("source")
                                         .typeName(TypeName.get(Staff.class))
                                         .build()))
