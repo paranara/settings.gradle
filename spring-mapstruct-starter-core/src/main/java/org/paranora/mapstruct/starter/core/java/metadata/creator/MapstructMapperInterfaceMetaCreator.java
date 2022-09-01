@@ -12,21 +12,21 @@ public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator
 
     protected ElementClassMetaExtractor elementClassDefinitionExtractor;
 
-    public MapstructMapperInterfaceMetaCreator(){
+    public MapstructMapperInterfaceMetaCreator() {
         init();
     }
 
-    protected void init(){
+    protected void init() {
         this.defaultMapstructMapperInterfaceCreator(new DefaultElementClassMetaExtractor());
     }
 
-    protected void defaultMapstructMapperInterfaceCreator(ElementClassMetaExtractor elementClassDefinitionExtractor){
-        this.elementClassDefinitionExtractor=elementClassDefinitionExtractor;
+    protected void defaultMapstructMapperInterfaceCreator(ElementClassMetaExtractor elementClassDefinitionExtractor) {
+        this.elementClassDefinitionExtractor = elementClassDefinitionExtractor;
     }
 
     @Override
     public InterfaceMeta extract(TypeElement source) {
-        List<ClassMeta> sourceClass=elementClassDefinitionExtractor.extract(source);
+        List<ClassMeta> sourceClass = elementClassDefinitionExtractor.extract(source);
         return null;
     }
 }
