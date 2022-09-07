@@ -16,5 +16,5 @@ public class MethodMeta extends BaseMeta {
     protected TypeName returnType;
 
     @Builder.Default
-    protected List<MethodParameterMeta> parameters=new ArrayList<>();
+    protected List<ParameterMeta> parameters=new ArrayList<>();
 }

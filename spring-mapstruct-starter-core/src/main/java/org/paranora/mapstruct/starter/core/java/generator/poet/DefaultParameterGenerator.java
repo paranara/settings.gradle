@@ -1,15 +1,15 @@
 package org.paranora.mapstruct.starter.core.java.generator.poet;
 
 import com.squareup.javapoet.ParameterSpec;
-import org.paranora.mapstruct.starter.core.java.metadata.entity.MethodParameterMeta;
+import org.paranora.mapstruct.starter.core.java.metadata.entity.ParameterMeta;
 
 import javax.lang.model.element.Modifier;
 
 
-public class DefaultParameterGenerator extends AbsJavapoetGenerator<MethodParameterMeta, ParameterSpec> implements ParameterJavapoetGenerator {
+public class DefaultParameterGenerator extends AbsJavapoetGenerator<ParameterMeta, ParameterSpec> implements ParameterJavapoetGenerator {
 
     @Override
-    public ParameterSpec create(MethodParameterMeta definition) {
+    public ParameterSpec create(ParameterMeta definition) {
         ParameterSpec parameterSpec = ParameterSpec.builder(definition.getTypeName(), definition.getName(), definition.getAccessLevels().toArray(new Modifier[]{})).build();
         return parameterSpec;
     }

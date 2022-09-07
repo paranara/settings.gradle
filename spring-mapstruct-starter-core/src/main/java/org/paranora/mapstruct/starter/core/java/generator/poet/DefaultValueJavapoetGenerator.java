@@ -8,7 +8,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
-public class DefaultCodeJavapoetGenerator implements CodeJavapoetGenerator {
+public class DefaultValueJavapoetGenerator implements ValueJavapoetGenerator {
 
     protected CodeBlock createPrimitiveCode(ValueMeta definition) {
         return CodeBlock.builder().add("$L", definition.getValue()).build();

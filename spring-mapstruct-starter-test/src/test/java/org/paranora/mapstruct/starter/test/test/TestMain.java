@@ -121,7 +121,7 @@ public class TestMain {
                                         .build()
                         ))
                         .parameters(
-                                Arrays.asList(MethodParameterMeta.builder()
+                                Arrays.asList(ParameterMeta.builder()
                                         .name("source")
                                         .typeName(TypeName.get(Staff.class))
                                         .build()))

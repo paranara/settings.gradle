@@ -7,22 +7,22 @@ import org.paranora.mapstruct.starter.core.java.metadata.entity.Meta;
 
 public abstract class AbsJavapoetGenerator<D extends Meta, T extends Object> implements JavaCodeGenerator<D, T> {
 
-    protected CodeJavapoetGenerator codeJavapoetGenerator;
+    protected ValueJavapoetGenerator valueJavapoetGenerator;
 
     public AbsJavapoetGenerator() {
         init();
     }
 
     protected void init(){
-        this.codeJavapoetGenerator=defaultCodeJavapoetGenerator();
+        this.valueJavapoetGenerator =defaultCodeJavapoetGenerator();
     }
 
-    protected CodeJavapoetGenerator defaultCodeJavapoetGenerator() {
-        return new DefaultCodeJavapoetGenerator();
+    protected ValueJavapoetGenerator defaultCodeJavapoetGenerator() {
+        return new DefaultValueJavapoetGenerator();
     }
 
-    protected void defaultCodeJavapoetGenerator(CodeJavapoetGenerator codeJavapoetGenerator){
-        this.codeJavapoetGenerator=codeJavapoetGenerator;
+    protected void defaultCodeJavapoetGenerator(ValueJavapoetGenerator valueJavapoetGenerator){
+        this.valueJavapoetGenerator = valueJavapoetGenerator;
     }
 
 }

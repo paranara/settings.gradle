@@ -1,10 +1,9 @@
 package org.paranora.mapstruct.starter.core.java.generator.poet;
 
 import com.squareup.javapoet.AnnotationSpec;
-import org.paranora.mapstruct.starter.core.java.generator.JavaCodeGenerator;
-import org.paranora.mapstruct.starter.core.java.metadata.entity.AnnotationMeta;
+import org.paranora.mapstruct.starter.core.java.generator.AnnotationJavaCodeGenerator;
 
-public interface AnnotationJavapoetGenerator extends JavaCodeGenerator<AnnotationMeta, AnnotationSpec> {
+public interface AnnotationJavapoetGenerator extends AnnotationJavaCodeGenerator<AnnotationSpec> {
 
 
 }
