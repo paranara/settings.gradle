@@ -25,7 +25,7 @@ public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator
     }
 
     @Override
-    public InterfaceMeta extract(TypeElement source) {
+    public InterfaceMeta create(TypeElement source) {
         List<ClassMeta> sourceClass = elementClassDefinitionExtractor.extract(source);
         return null;
     }
