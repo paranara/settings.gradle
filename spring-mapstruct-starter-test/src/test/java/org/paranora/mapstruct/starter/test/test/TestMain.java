@@ -6,11 +6,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
-import org.paranora.mapstruct.starter.core.annotations.PMapper;
-import org.paranora.mapstruct.starter.core.annotations.PMapping;
-import org.paranora.mapstruct.starter.core.java.metadata.entity.*;
-import org.paranora.mapstruct.starter.core.java.generator.poet.DefaultInterfaceGenerator;
-import org.paranora.mapstruct.starter.core.java.generator.poet.InterfaceJavapoetGenerator;
+import org.paranora.mapstruct.annotations.PMapper;
+import org.paranora.mapstruct.annotations.PMapping;
+import org.paranora.mapstruct.java.metadata.entity.*;
+import org.paranora.mapstruct.java.generator.poet.DefaultInterfaceGenerator;
+import org.paranora.mapstruct.java.generator.poet.InterfaceJavapoetGenerator;
 import org.paranora.mapstruct.starter.test.entity.Company;
 import org.paranora.mapstruct.starter.test.entity.Staff;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -44,18 +44,17 @@ public class TestMain {
 
     public void testC() {
         InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
-        InterfaceMeta interfaceDefinition = new InterfaceMeta();
-        interfaceDefinition.setName("InterfaceGenerateTestA");
-        interfaceDefinition.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
-        interfaceDefinition.setSuperInterfaces(Arrays.asList(
+        InterfaceMeta meta = new InterfaceMeta();
+        meta.setName("InterfaceGenerateTestA");
+        meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
+        meta.setSuperInterfaces(Arrays.asList(
                 InterfaceMeta.builder()
                         .packageName("org.springframework.core.convert.converter")
                         .name("Converter")
                         .genericTypes(Arrays.asList(TypeName.get(Company.class), TypeName.get(Staff.class)))
                         .build()
         ));
-
-        interfaceDefinition.setAnnotations(Arrays.asList(
+        meta.setAnnotations(Arrays.asList(
                 AnnotationMeta.builder()
                         .name(PMapper.class.getSimpleName())
                         .packageName("org.paranora.mapstruct.starter.core.annotations")
@@ -74,7 +73,7 @@ public class TestMain {
                         .build()
         ));
 
-        interfaceDefinition.setMethods(Arrays.asList(
+        meta.setMethods(Arrays.asList(
                 MethodMeta.builder()
                         .annotations(Arrays.asList(
                                 AnnotationMeta.builder()
@@ -131,7 +130,7 @@ public class TestMain {
                         .build()
         ));
 
-        TypeSpec interfaceSpec = interfaceJavapoetGenerator.create(interfaceDefinition);
+        TypeSpec interfaceSpec = interfaceJavapoetGenerator.create(meta);
 
         String str = interfaceSpec.toString();
 

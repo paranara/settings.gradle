@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
-import org.paranora.mapstruct.starter.core.annotations.PMapper;
-import org.paranora.mapstruct.starter.core.annotations.PMapping;
+import org.paranora.mapstruct.annotations.PMapper;
+import org.paranora.mapstruct.annotations.PMapping;
 import org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO;
 
 import java.util.Date;

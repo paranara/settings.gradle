@@ -1,0 +1,8 @@
+apply from: rootProject.file("build-publish-mavencentral.gradle")
+
+dependencies {
+    implementation project(':spring-mapstruct')
+
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
+    implementation group: 'com.squareup', name: 'javapoet', version: javapoetVersion
+}

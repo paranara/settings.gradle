@@ -1,6 +1,6 @@
 rootProject.name = "spring-mapstruct-starter"
-include 'spring-mapstruct-starter-processor'
-include 'spring-mapstruct-starter-core'
+include 'spring-mapstruct-processor'
+include 'spring-mapstruct'
 include 'spring-mapstruct-starter'
 include 'spring-mapstruct-starter-test'
 
