@@ -10,6 +10,8 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.util.*;
 
 
@@ -40,7 +42,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                 clz.getFields().forEach(f -> {
                     print("package : %s , class %s , field : %s ", clz.getPackageName(), clz.getName(), f.getName());
                     f.getAnnotations().forEach(at -> {
-                        at.getFields().forEach(atf->{
+                        at.getFields().forEach(atf -> {
                             print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
                                     , at.getPackageName()
                                     , at.getName()
