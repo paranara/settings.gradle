@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class ClassMeta extends BaseMeta {
+public class ClassMeta extends InterfaceMeta {
 
     @Builder.Default
     protected List<FieldMeta> fields=new ArrayList<>();

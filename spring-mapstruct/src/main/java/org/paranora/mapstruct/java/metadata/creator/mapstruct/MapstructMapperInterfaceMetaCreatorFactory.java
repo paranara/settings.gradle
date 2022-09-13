@@ -19,12 +19,12 @@ public class MapstructMapperInterfaceMetaCreatorFactory implements InterfaceMeta
     }
 
     @Override
-    public InterfaceMetaCreator<ClassMeta> InterfaceCreator() {
+    public InterfaceMetaCreator<ClassMeta,ClassMeta> InterfaceCreator() {
         return new MapstructMapperInterfaceMetaCreator();
     }
 
     @Override
-    public List<AnnotationMetaCreator<ClassMeta>> annotationCreators() {
+    public List<AnnotationMetaCreator<ClassMeta,ClassMeta>> annotationCreators() {
         return null;
     }
 }

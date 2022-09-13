@@ -16,30 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator<ClassMeta> {
-
-    @Override
-    public InterfaceMeta create(ClassMeta source, Class<?> clasz) {
-        if (null == source) return null;
-        AnnotationFieldMeta annotationFieldMeta = readAnnotationField(source.getAnnotations()
-                , (a) -> a.getTypeName().equals(TypeName.get(PMapper.class))
-                , "target");
-
-        TypeName sourceClassType = getSourceClassType(source);
-        TypeName targetClassType = getTargetClassType(source, annotationFieldMeta);
-        InterfaceMeta meta = new InterfaceMeta();
-        meta.setName(createInterfaceName(source, annotationFieldMeta));
-        meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
-        meta.setSuperInterfaces(Arrays.asList(
-                InterfaceMeta.builder()
-                        .packageName(Converter.class.getPackage().getName())
-                        .name(Converter.class.getSimpleName())
-                        .genericTypes(Arrays.asList(sourceClassType, targetClassType))
-                        .build()
-        ));
-
-        return meta;
-    }
+public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator<ClassMeta,ClassMeta> {
 
     protected TypeName getSourceClassType(ClassMeta source) {
         return source.getTypeName();
@@ -82,4 +59,26 @@ public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator
         return String.format("%sTo%sMapper", sourceName, targetName);
     }
 
+    @Override
+    public InterfaceMeta create(ClassMeta source, ClassMeta meta, Class<?> clasz) {
+        if (null == source) return null;
+        AnnotationFieldMeta annotationFieldMeta = readAnnotationField(source.getAnnotations()
+                , (a) -> a.getTypeName().equals(TypeName.get(PMapper.class))
+                , "target");
+
+        TypeName sourceClassType = getSourceClassType(source);
+        TypeName targetClassType = getTargetClassType(source, annotationFieldMeta);
+        InterfaceMeta meta = new InterfaceMeta();
+        meta.setName(createInterfaceName(source, annotationFieldMeta));
+        meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
+        meta.setSuperInterfaces(Arrays.asList(
+                InterfaceMeta.builder()
+                        .packageName(Converter.class.getPackage().getName())
+                        .name(Converter.class.getSimpleName())
+                        .genericTypes(Arrays.asList(sourceClassType, targetClassType))
+                        .build()
+        ));
+
+        return meta;
+    }
 }
