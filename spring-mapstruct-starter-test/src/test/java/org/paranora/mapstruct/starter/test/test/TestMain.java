@@ -37,12 +37,18 @@ public class TestMain {
     public void test_main_method_a() throws Exception {
         print("test_main_method_a begin.");
 
+        Class<?> c=Staff.class;
+
+        if(c.getClass().equals(Class.class)){
+            print("test_main_method_a  end");
+        }
+
         testC();
 
         print("test_main_method_a  end");
     }
 
-    public void testC() {
+    public void testC() throws ClassNotFoundException {
         InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
         InterfaceMeta meta = new InterfaceMeta();
         meta.setName("InterfaceGenerateTestA");
@@ -57,7 +63,7 @@ public class TestMain {
         meta.setAnnotations(Arrays.asList(
                 AnnotationMeta.builder()
                         .name(PMapper.class.getSimpleName())
-                        .packageName("org.paranora.mapstruct.starter.core.annotations")
+                        .packageName(PMapper.class.getPackage().getName())
                         .fields(Arrays.asList(
                                 AnnotationFieldMeta.builder()
                                         .name("name")
@@ -67,7 +73,7 @@ public class TestMain {
                                 , AnnotationFieldMeta.builder()
                                         .name("target")
                                         .typeName(TypeName.get(Class.class))
-                                        .value(Staff.class)
+                                        .value("org.paranora.mapstruct.starter.test.entity.Staff.class")
                                         .build()
                         ))
                         .build()
@@ -127,6 +133,7 @@ public class TestMain {
                         .accessLevels(Arrays.asList(Modifier.PUBLIC, Modifier.ABSTRACT))
                         .returnType(TypeName.get(Staff.class))
                         .name("convert")
+//                        .annotationClazs(Arrays.asList(Override.class))
                         .build()
         ));
 
@@ -138,7 +145,24 @@ public class TestMain {
         print("The End.");
     }
 
-
+    @org.paranora.mapstruct.annotations.PMapper(
+            name = "abc",
+            target = org.paranora.mapstruct.starter.test.entity.Staff.class
+    )
+    public interface InterfaceGenerateTestA extends org.springframework.core.convert.converter.Converter<org.paranora.mapstruct.starter.test.entity.Company, org.paranora.mapstruct.starter.test.entity.Staff> {
+        @org.mapstruct.Mapping(
+                target = "abc",
+                source = "abc",
+                nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
+        )
+        @org.mapstruct.Mapping(
+                target = "abc1",
+                source = "abc1",
+                nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
+        )
+        org.paranora.mapstruct.starter.test.entity.Staff convert(
+                org.paranora.mapstruct.starter.test.entity.Staff source);
+    }
     public void testB() {
         CodeBlock codeBlockA = CodeBlock.of("$T.$L", String.class, "a");
 

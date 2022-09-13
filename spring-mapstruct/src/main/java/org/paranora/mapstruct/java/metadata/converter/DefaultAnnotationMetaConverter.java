@@ -5,12 +5,13 @@ import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-public class DefaultAnnotationMetaConverter extends AbsMetaConverter<AnnotationMeta, AnnotationMeta> implements AnnotationMetaConverter {
+public class DefaultAnnotationMetaConverter extends AbsMetaConverter<AnnotationMeta, AnnotationMeta> implements AnnotationMetaConverter<AnnotationMeta> {
 
     @Override
-    public AnnotationMeta convert(AnnotationMeta source, Class targetClass) {
+    public List<AnnotationMeta> convert(AnnotationMeta source, Class targetClass) {
         AnnotationMeta result = new AnnotationMeta();
         result.setPackageName(targetClass.getPackage().getName());
         result.setName(targetClass.getSimpleName());
@@ -25,6 +26,6 @@ public class DefaultAnnotationMetaConverter extends AbsMetaConverter<AnnotationM
                         .build());
             }
         });
-        return result;
+        return Arrays.asList(result);
     }
 }
