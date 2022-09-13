@@ -1,38 +1,23 @@
 package org.paranora.mapstruct.java.metadata.creator.mapstruct;
 
 import com.squareup.javapoet.TypeName;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValueMappingStrategy;
-import org.paranora.mapstruct.java.metadata.creator.AnnotationMetaCreator;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
-import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
+import org.mapstruct.DecoratedWith;
+import org.paranora.mapstruct.java.metadata.entity.*;
 
 import java.util.Arrays;
 
-public class MapstructMapperInterfaceDecoratedWithAnnotationMetaCreator implements AnnotationMetaCreator<ClassMeta> {
+public class MapstructMapperInterfaceDecoratedWithAnnotationMetaCreator extends AbsMetadataInterfaceAnnotationMetaCreator {
 
     @Override
-    public AnnotationMeta create(ClassMeta source, Class<?> clasz) {
+    public AnnotationMeta create(ClassMeta source, Meta meta, Class<?> clasz) {
         return AnnotationMeta.builder()
-                .name(Mapper.class.getSimpleName())
-                .packageName(Mapper.class.getPackage().getName())
+                .name(DecoratedWith.class.getSimpleName())
+                .packageName(DecoratedWith.class.getPackage().getName())
                 .fields(Arrays.asList(
                         AnnotationFieldMeta.builder()
-                                .name("componentModel")
+                                .name("value")
                                 .typeName(TypeName.get(String.class))
-                                .value("spring")
-                                .build()
-                        , AnnotationFieldMeta.builder()
-                                .name("nullValueCheckStrategy")
-                                .typeName(TypeName.get(NullValueCheckStrategy.class))
-                                .value(NullValueCheckStrategy.ALWAYS)
-                                .build()
-                        , AnnotationFieldMeta.builder()
-                                .name("nullValueMappingStrategy")
-                                .typeName(TypeName.get(NullValueMappingStrategy.class))
-                                .value(NullValueMappingStrategy.RETURN_DEFAULT)
+                                .value(String.format("%s.%s.class", meta.getPackageName(), meta.getName()))
                                 .build()
                 ))
                 .build();

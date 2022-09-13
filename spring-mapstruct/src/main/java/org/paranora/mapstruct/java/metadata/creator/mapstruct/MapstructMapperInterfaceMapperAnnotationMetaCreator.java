@@ -4,17 +4,14 @@ import com.squareup.javapoet.TypeName;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValueMappingStrategy;
-import org.paranora.mapstruct.java.metadata.creator.AnnotationMetaCreator;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
-import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
+import org.paranora.mapstruct.java.metadata.entity.*;
 
 import java.util.Arrays;
 
-public class MapstructMapperInterfaceMapperAnnotationMetaCreator implements AnnotationMetaCreator<ClassMeta> {
+public class MapstructMapperInterfaceMapperAnnotationMetaCreator extends AbsMetadataInterfaceAnnotationMetaCreator {
 
     @Override
-    public AnnotationMeta create(ClassMeta source, Class<?> clasz) {
+    public AnnotationMeta create(ClassMeta source, Meta meta, Class<?> clasz) {
         return AnnotationMeta.builder()
                 .name(Mapper.class.getSimpleName())
                 .packageName(Mapper.class.getPackage().getName())
