@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.metadata.creator.mapstruct;
+package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.annotations.PMapper;
@@ -48,7 +48,7 @@ public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator
         }
         String first = targetName.substring(0, 1);
         String rest = targetName.substring(1);
-        targetName = String.format("%s%s", first, rest);
+        targetName = String.format("%s%s", first.toUpperCase(), rest.toLowerCase());
         if (!ObjectUtils.isEmpty(targetName)) {
             return createInterfaceName(sourceName, targetName);
         }

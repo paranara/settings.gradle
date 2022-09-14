@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.metadata.creator.mapstruct;
+package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 
 
@@ -10,11 +10,11 @@ import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 
 import java.util.List;
 
-public class MapstructMapperInterfaceMetaCreatorFactory implements InterfaceMetaCreatorFactory<ClassMeta> {
+public class MapstructMapperInterfaceMetaCreatorFactory implements InterfaceMetaCreatorFactory<ClassMeta,ClassMeta> {
 
 
     @Override
-    public List<MethodMetaCreatorFactory<ClassMeta>> methodCreatorFactorys() {
+    public List<MethodMetaCreatorFactory<ClassMeta,ClassMeta>> methodCreatorFactorys() {
         return null;
     }
 

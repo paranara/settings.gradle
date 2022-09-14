@@ -4,12 +4,13 @@ package org.paranora.mapstruct.java.metadata.creator.factory;
 
 import org.paranora.mapstruct.java.metadata.creator.AnnotationMetaCreator;
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
+import org.paranora.mapstruct.java.metadata.entity.Meta;
 
 import java.util.List;
 
-public interface InterfaceMetaCreatorFactory<S extends Object> extends MetaCreatorFactory<S> {
-    List<MethodMetaCreatorFactory<S>>  methodCreatorFactorys();
+public interface InterfaceMetaCreatorFactory<S extends Object,TP extends Meta> extends MetaCreatorFactory<S,TP> {
+    List<MethodMetaCreatorFactory<S,TP>>  methodCreatorFactorys();
 
-    InterfaceMetaCreator<S> InterfaceCreator();
+    InterfaceMetaCreator<S,TP> InterfaceCreator();
 
 }

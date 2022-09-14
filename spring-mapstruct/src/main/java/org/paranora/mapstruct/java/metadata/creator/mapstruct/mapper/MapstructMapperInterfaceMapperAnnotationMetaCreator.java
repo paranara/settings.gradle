@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.metadata.creator.mapstruct;
+package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 import com.squareup.javapoet.TypeName;
 import org.mapstruct.Mapper;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class MapstructMapperInterfaceMapperAnnotationMetaCreator extends AbsMetadataInterfaceAnnotationMetaCreator {
 
     @Override
-    public AnnotationMeta create(ClassMeta source, Meta meta, Class<?> clasz) {
+    public AnnotationMeta create(ClassMeta source, ClassMeta sourceMeta, Class<?> clasz) {
         return AnnotationMeta.builder()
                 .name(Mapper.class.getSimpleName())
                 .packageName(Mapper.class.getPackage().getName())

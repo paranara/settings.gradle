@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.metadata.creator.mapstruct;
+package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 import com.squareup.javapoet.TypeName;
 import org.mapstruct.DecoratedWith;
@@ -16,8 +16,8 @@ public class MapstructMapperInterfaceDecoratedWithAnnotationMetaCreator extends 
                 .fields(Arrays.asList(
                         AnnotationFieldMeta.builder()
                                 .name("value")
-                                .typeName(TypeName.get(String.class))
-                                .value(String.format("%s.%s.class", sourceMeta.getPackageName(), sourceMeta.getName()))
+                                .typeName(TypeName.get(Class.class))
+                                .value(String.format("%s.%sDecorator.class", sourceMeta.getPackageName(), sourceMeta.getName()))
                                 .build()
                 ))
                 .build();
