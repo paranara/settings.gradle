@@ -1,11 +1,10 @@
 package org.paranora.mapstruct.processor;
 
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.*;
+import org.mapstruct.Mapper;
 import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
+import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import org.paranora.mapstruct.java.metadata.extractor.DefaultElementClassMetaExtractor;
 import org.paranora.mapstruct.java.metadata.extractor.ElementClassMetaExtractor;
 
@@ -17,6 +16,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @SupportedAnnotationTypes(MapstructStarterProcessor.PMapperAnnotationName)

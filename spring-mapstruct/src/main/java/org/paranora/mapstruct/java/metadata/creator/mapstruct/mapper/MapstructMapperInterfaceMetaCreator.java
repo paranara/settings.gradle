@@ -2,7 +2,6 @@ package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.annotations.PMapper;
-import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator<ClassMeta,ClassMeta> {
+public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMetaCreator {
 
     protected TypeName getSourceClassType(ClassMeta source) {
         return source.getTypeName();
@@ -60,7 +59,7 @@ public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator
     }
 
     @Override
-    public InterfaceMeta create(ClassMeta source, ClassMeta sourceMeta, Class<?> clasz) {
+    public InterfaceMeta create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         if (null == source) return null;
         AnnotationFieldMeta annotationFieldMeta = readAnnotationField(source.getAnnotations()
                 , (a) -> a.getTypeName().equals(TypeName.get(PMapper.class))

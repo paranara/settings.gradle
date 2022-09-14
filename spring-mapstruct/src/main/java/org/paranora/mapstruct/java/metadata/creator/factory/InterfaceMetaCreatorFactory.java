@@ -2,7 +2,6 @@ package org.paranora.mapstruct.java.metadata.creator.factory;
 
 
 
-import org.paranora.mapstruct.java.metadata.creator.AnnotationMetaCreator;
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
 import org.paranora.mapstruct.java.metadata.entity.Meta;
 

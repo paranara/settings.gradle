@@ -1,6 +1,5 @@
 package org.paranora.mapstruct.java.metadata.converter;
 
-import org.mapstruct.Mapper;
 import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
@@ -14,7 +13,7 @@ public class DefaultMapstructMapperAnnotationMetaConverter extends AbsMapstructA
     public List<AnnotationMeta> convert(ClassMeta source, Class targetClass) {
         AnnotationMeta annotationMeta = findAnnotationMeta(source, PMapper.class);
         if (null != annotationMeta) {
-            return annotationMetaConverter().convert(annotationMeta, Mapper.class);
+            return annotationMetaConverter().convert(annotationMeta, targetClass);
         }
         return null;
     }

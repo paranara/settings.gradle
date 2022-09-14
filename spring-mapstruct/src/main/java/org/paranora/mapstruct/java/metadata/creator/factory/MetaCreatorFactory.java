@@ -8,5 +8,6 @@ import org.paranora.mapstruct.java.metadata.entity.Meta;
 import java.util.List;
 
 public interface MetaCreatorFactory<S extends Object,TP extends Meta> {
-    List<AnnotationMetaCreator<S,TP>> annotationCreators();
+    AnnotationMetaCreator<S,TP> annotationCreator();
+
 }
