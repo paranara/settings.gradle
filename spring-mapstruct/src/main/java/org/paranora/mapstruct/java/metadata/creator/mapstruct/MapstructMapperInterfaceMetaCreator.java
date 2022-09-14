@@ -60,7 +60,7 @@ public class MapstructMapperInterfaceMetaCreator implements InterfaceMetaCreator
     }
 
     @Override
-    public InterfaceMeta create(ClassMeta source, ClassMeta meta, Class<?> clasz) {
+    public InterfaceMeta create(ClassMeta source, ClassMeta sourceMeta, Class<?> clasz) {
         if (null == source) return null;
         AnnotationFieldMeta annotationFieldMeta = readAnnotationField(source.getAnnotations()
                 , (a) -> a.getTypeName().equals(TypeName.get(PMapper.class))

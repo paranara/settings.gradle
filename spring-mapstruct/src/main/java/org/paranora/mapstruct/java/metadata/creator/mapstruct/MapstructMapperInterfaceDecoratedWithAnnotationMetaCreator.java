@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class MapstructMapperInterfaceDecoratedWithAnnotationMetaCreator extends AbsMetadataInterfaceAnnotationMetaCreator {
 
     @Override
-    public AnnotationMeta create(ClassMeta source, Meta meta, Class<?> clasz) {
+    public AnnotationMeta create(ClassMeta source, ClassMeta sourceMeta, Class<?> clasz) {
         return AnnotationMeta.builder()
                 .name(DecoratedWith.class.getSimpleName())
                 .packageName(DecoratedWith.class.getPackage().getName())
@@ -17,7 +17,7 @@ public class MapstructMapperInterfaceDecoratedWithAnnotationMetaCreator extends 
                         AnnotationFieldMeta.builder()
                                 .name("value")
                                 .typeName(TypeName.get(String.class))
-                                .value(String.format("%s.%s.class", meta.getPackageName(), meta.getName()))
+                                .value(String.format("%s.%s.class", sourceMeta.getPackageName(), sourceMeta.getName()))
                                 .build()
                 ))
                 .build();
