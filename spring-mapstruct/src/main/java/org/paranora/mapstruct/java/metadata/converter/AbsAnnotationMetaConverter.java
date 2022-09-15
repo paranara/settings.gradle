@@ -1,31 +1,40 @@
 package org.paranora.mapstruct.java.metadata.converter;
 
+import com.squareup.javapoet.TypeName;
 import lombok.Synchronized;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
+import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class DefaultAnnotationMetaConverter extends AbsMetaConverter<AnnotationMeta, AnnotationMeta> implements AnnotationMetaConverter<AnnotationMeta> {
+public abstract class AbsAnnotationMetaConverter extends AbsMetaConverter<ClassMeta, AnnotationMeta> implements AnnotationMetaConverter<ClassMeta> {
 
     protected Map<String, List<Method>> methodMap = new HashMap<>();
 
-    @Override
-    public List<AnnotationMeta> convert(AnnotationMeta source, Class targetClass) {
-        AnnotationMeta result = new AnnotationMeta();
-        result.setPackageName(targetClass.getPackage().getName());
-        result.setName(targetClass.getSimpleName());
+    protected AnnotationMeta convert(AnnotationMeta source, Class targetClass) {
+        AnnotationMeta meta = AnnotationMeta.builder().build();
+        meta.setPackageName(targetClass.getPackage().getName());
+        meta.setName(targetClass.getSimpleName());
         getClassMethods(targetClass)
                 .stream()
                 .forEach(m -> {
                     Optional<AnnotationFieldMeta> opt = source.getFields()
                             .stream()
-                            .filter(a -> a.getName().equalsIgnoreCase(m.getName()))
+                            .filter(a -> {
+                                boolean check = a.getName().equalsIgnoreCase(m.getName());
+                                if (check) {
+                                    if (!a.getTypeName().equals(TypeName.get(m.getReturnType()))) {
+                                        check = false;
+                                    }
+                                }
+                                return check;
+                            })
                             .findFirst();
 
                     if (opt.isPresent()) {
-                        result.getFields().add(AnnotationFieldMeta.builder()
+                        meta.getFields().add(AnnotationFieldMeta.builder()
                                 .name(opt.get().getName())
                                 .typeName(opt.get().getTypeName())
                                 .value(opt.get().getValue())
@@ -33,7 +42,10 @@ public class DefaultAnnotationMetaConverter extends AbsMetaConverter<AnnotationM
                                 .build());
                     }
                 });
-        return Arrays.asList(result);
+        if (meta.getFields().size() < 1) {
+            return null;
+        }
+        return meta;
     }
 
     @Synchronized
@@ -44,4 +56,6 @@ public class DefaultAnnotationMetaConverter extends AbsMetaConverter<AnnotationM
         }
         return methodMap.get(name);
     }
+
+
 }

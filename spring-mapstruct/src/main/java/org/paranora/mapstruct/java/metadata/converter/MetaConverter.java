@@ -5,6 +5,5 @@ import org.paranora.mapstruct.java.metadata.entity.Meta;
 import java.util.List;
 
 public interface MetaConverter<S extends Object,T extends Meta> {
-    List<T> convert(S source,String targetClassName);
-    List<T> convert(S source, Class targetClass);
+    List<T> convert(S source);
 }

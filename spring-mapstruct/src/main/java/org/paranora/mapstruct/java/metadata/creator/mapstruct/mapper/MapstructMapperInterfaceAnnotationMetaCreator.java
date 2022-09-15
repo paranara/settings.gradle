@@ -5,8 +5,8 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValueMappingStrategy;
-import org.paranora.mapstruct.java.metadata.converter.DefaultMapstructMapperAnnotationMetaConverter;
-import org.paranora.mapstruct.java.metadata.converter.MapstructMapperAnnotationMetaConverter;
+import org.paranora.mapstruct.java.metadata.converter.DefaultMapstructMapperInterfaceAnnotationMetaConverter;
+import org.paranora.mapstruct.java.metadata.converter.MapstructMapperInterfaceAnnotationMetaConverter;
 import org.paranora.mapstruct.java.metadata.entity.*;
 
 import java.util.ArrayList;
@@ -15,29 +15,27 @@ import java.util.List;
 
 public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructInterfaceAnnotationMetaCreator {
 
-    protected MapstructMapperAnnotationMetaConverter annotationMetaConverter;
+    protected MapstructMapperInterfaceAnnotationMetaConverter converter;
 
     protected MapstructMapperInterfaceAnnotationMetaCreator() {
 
     }
 
     protected void init() {
-        defaultMapstructMapperAnnotationMetaConverter(defaultMapstructMapperAnnotationMetaConverter());
+        defaultMapstructMapperInterfaceAnnotationMetaConverter(defaultMapstructMapperInterfaceAnnotationMetaConverter());
     }
 
-    protected MapstructMapperAnnotationMetaConverter defaultMapstructMapperAnnotationMetaConverter() {
-        return new DefaultMapstructMapperAnnotationMetaConverter();
+    protected MapstructMapperInterfaceAnnotationMetaConverter defaultMapstructMapperInterfaceAnnotationMetaConverter() {
+        return new DefaultMapstructMapperInterfaceAnnotationMetaConverter();
     }
 
-    public void defaultMapstructMapperAnnotationMetaConverter(MapstructMapperAnnotationMetaConverter converter) {
-        this.annotationMetaConverter = converter;
+    public void defaultMapstructMapperInterfaceAnnotationMetaConverter(MapstructMapperInterfaceAnnotationMetaConverter converters) {
+        this.converter = converter;
     }
 
     @Override
     public List<AnnotationMeta> create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
-        List<AnnotationMeta> sourceMapperAnnotations=this.annotationMetaConverter.convert(source,Mapper.class);
-
-        List<AnnotationMeta> resultsourceMapperAnnotations=new ArrayList<>();
+        List<AnnotationMeta> convertAnnotations = this.converter.convert(source);
 
         AnnotationMeta decorated = AnnotationMeta.builder()
                 .name(DecoratedWith.class.getSimpleName())
@@ -72,6 +70,8 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
                                 .build()
                 ))
                 .build();
+
+
 
         return Arrays.asList(mapper, decorated);
     }
