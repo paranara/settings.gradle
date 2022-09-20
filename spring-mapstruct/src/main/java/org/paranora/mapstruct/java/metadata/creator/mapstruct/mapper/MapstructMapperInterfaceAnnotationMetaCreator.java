@@ -8,6 +8,8 @@ import org.mapstruct.NullValueMappingStrategy;
 import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.java.metadata.converter.AnnotationMetaConverter;
 import org.paranora.mapstruct.java.metadata.converter.DefaultAnnotationMetaConverter;
+import org.paranora.mapstruct.java.metadata.creator.merger.AnnotationMetaMerger;
+import org.paranora.mapstruct.java.metadata.creator.merger.DefaultAnnotationMetaMerger;
 import org.paranora.mapstruct.java.metadata.entity.*;
 
 import java.util.Arrays;
@@ -16,26 +18,36 @@ import java.util.List;
 public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructInterfaceAnnotationMetaCreator {
 
     protected AnnotationMetaConverter annotationMetaConverter;
+    protected AnnotationMetaMerger annotationMetaMerger;
 
     protected MapstructMapperInterfaceAnnotationMetaCreator() {
 
     }
 
     protected void init() {
-        defaultMapstructMapperInterfaceAnnotationMetaConverter(defaultMapstructMapperInterfaceAnnotationMetaConverter());
+        defaultAnnotationMetaConverter(defaultAnnotationMetaConverter());
+        defaultAnnotationMetaMerger(defaultAnnotationMetaMerger());
     }
 
-    protected AnnotationMetaConverter defaultMapstructMapperInterfaceAnnotationMetaConverter() {
+    protected AnnotationMetaConverter defaultAnnotationMetaConverter() {
         return new DefaultAnnotationMetaConverter();
     }
 
-    public void defaultMapstructMapperInterfaceAnnotationMetaConverter(AnnotationMetaConverter annotationMetaConverter) {
+    protected AnnotationMetaMerger defaultAnnotationMetaMerger() {
+        return new DefaultAnnotationMetaMerger();
+    }
+
+    public void defaultAnnotationMetaConverter(AnnotationMetaConverter annotationMetaConverter) {
         this.annotationMetaConverter = annotationMetaConverter;
+    }
+
+    protected void defaultAnnotationMetaMerger(AnnotationMetaMerger annotationMetaMerger) {
+        this.annotationMetaMerger = annotationMetaMerger;
     }
 
     @Override
     public List<AnnotationMeta> create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
-        AnnotationMeta convertMapperAnnotations = this.annotationMetaConverter.convert(source.getAnnotations()
+        AnnotationMeta convertMapper = this.annotationMetaConverter.convert(source.getAnnotations()
                         .stream()
                         .filter(a -> a.getName().equalsIgnoreCase(PMapper.class.getSimpleName()))
                         .findFirst().get()
@@ -75,9 +87,9 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
                 ))
                 .build();
 
+        AnnotationMeta resultMapper =annotationMetaMerger.merge(mapper,convertMapper);
 
-
-        return Arrays.asList(mapper, decorated);
+        return Arrays.asList(resultMapper, decorated);
     }
 
 

@@ -14,6 +14,7 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
 
     @Override
     public AnnotationMeta convert(AnnotationMeta source, Class targetClass) {
+        if (null == source) return null;
         AnnotationMeta meta = AnnotationMeta.builder().build();
         meta.setPackageName(targetClass.getPackage().getName());
         meta.setName(targetClass.getSimpleName());

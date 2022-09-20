@@ -2,8 +2,14 @@ package org.paranora.mapstruct.processor;
 
 import com.squareup.javapoet.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.paranora.mapstruct.annotations.PMapper;
+import org.paranora.mapstruct.annotations.PMapping;
+import org.paranora.mapstruct.java.metadata.converter.DefaultAnnotationMetaConverter;
+import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
+import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import org.paranora.mapstruct.java.metadata.extractor.DefaultElementClassMetaExtractor;
 import org.paranora.mapstruct.java.metadata.extractor.ElementClassMetaExtractor;
@@ -29,20 +35,21 @@ public class MapstructStarterProcessor extends AbsProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         print("entry.");
 
-        if(!orderIsCreated){
+        if (!orderIsCreated) {
             try {
                 generateOrderItemClass(filer);
                 generateOrderClass(filer);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             } finally {
-                orderIsCreated=true;
+                orderIsCreated = true;
             }
         }
 
         processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
             ElementClassMetaExtractor elementClassDefinitionExtractor = new DefaultElementClassMetaExtractor();
             List<ClassMeta> definitions = elementClassDefinitionExtractor.extract((TypeElement) element);
+
             definitions.forEach(clz -> {
                 clz.getAnnotations().forEach(at -> {
                     at.getFields().stream().forEach(atf -> {
@@ -55,6 +62,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                                 , atf.getValue().getClass());
                     });
                 });
+
                 clz.getFields().forEach(f -> {
                     print("package : %s , class %s , field : %s ", clz.getPackageName(), clz.getName(), f.getName());
                     f.getAnnotations().forEach(at -> {
@@ -76,24 +84,24 @@ public class MapstructStarterProcessor extends AbsProcessor {
     }
 
 
-    protected Boolean orderIsCreated=false;
+    protected Boolean orderIsCreated = false;
 
     public void generateOrderClass(Filer filer) throws ClassNotFoundException {
         String packageName = "org.paranora.spring.test.component.entity";
         String className = "Order";
 
-        FieldSpec itemName=FieldSpec.builder(String.class, "itemName")
+        FieldSpec itemName = FieldSpec.builder(String.class, "itemName")
                 .addModifiers(Modifier.PROTECTED)
                 .initializer("$S", "Paranora")
                 .build();
 
-        FieldSpec claz=FieldSpec.builder(TypeName.get(Class.class), "itemClass")
+        FieldSpec claz = FieldSpec.builder(TypeName.get(Class.class), "itemClass")
                 .addModifiers(Modifier.PROTECTED)
                 .initializer("$L", "org.paranora.spring.test.component.entity.OrderItem.class")
                 .build();
 
         TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                .addModifiers( javax.lang.model.element.Modifier.PUBLIC)
+                .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
                 .addField(itemName)
                 .addField(claz)
                 .build();
@@ -107,17 +115,17 @@ public class MapstructStarterProcessor extends AbsProcessor {
         }
     }
 
-    public void generateOrderItemClass(Filer filer){
+    public void generateOrderItemClass(Filer filer) {
         String packageName = "org.paranora.spring.test.component.entity";
         String className = "OrderItem";
 
-        FieldSpec itemName=FieldSpec.builder(String.class, "name")
+        FieldSpec itemName = FieldSpec.builder(String.class, "name")
                 .addModifiers(Modifier.PROTECTED)
                 .initializer("$S", "Paranora")
                 .build();
 
         TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                .addModifiers( javax.lang.model.element.Modifier.PUBLIC)
+                .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
                 .addField(itemName)
                 .build();
 

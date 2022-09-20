@@ -13,26 +13,34 @@ public class DefaultElementFieldMetaExtractor implements ElementFieldMetaExtract
 
     protected ElementAnnotationMetaExtractor annotationDefinitionExtractor;
 
+    public DefaultElementFieldMetaExtractor(ElementAnnotationMetaExtractor annotationDefinitionExtractor) {
+        defaultAnnotationDefinitionExtractor(annotationDefinitionExtractor);
+    }
+
     public DefaultElementFieldMetaExtractor() {
         init();
     }
 
     public void init() {
-        this.annotationDefinitionExtractor = defaultAnnotationDefinitionExtractor();
+        defaultAnnotationDefinitionExtractor(defaultAnnotationDefinitionExtractor());
     }
 
     protected ElementAnnotationMetaExtractor defaultAnnotationDefinitionExtractor() {
         return new DefaultElementAnnotationMetaExtractor();
     }
 
+    protected void defaultAnnotationDefinitionExtractor(ElementAnnotationMetaExtractor annotationDefinitionExtractor) {
+        this.annotationDefinitionExtractor = annotationDefinitionExtractor;
+    }
+
     @Override
     public List<FieldMeta> extract(TypeElement source) {
-        List<FieldMeta> definitions=new ArrayList<>();
+        List<FieldMeta> definitions = new ArrayList<>();
         source.getEnclosedElements().stream().filter(e -> ElementKind.FIELD == e.getKind()).forEach(e -> {
             definitions.add(FieldMeta.builder()
-                            .name(e.getSimpleName().toString())
-                            .typeName(TypeName.get(e.asType()))
-                            .annotations(annotationDefinitionExtractor.extract((VariableElement)e))
+                    .name(e.getSimpleName().toString())
+                    .typeName(TypeName.get(e.asType()))
+                    .annotations(annotationDefinitionExtractor.extract((VariableElement) e))
                     .build());
         });
         return definitions;

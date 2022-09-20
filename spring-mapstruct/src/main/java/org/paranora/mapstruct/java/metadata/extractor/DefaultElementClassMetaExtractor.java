@@ -39,7 +39,7 @@ public class DefaultElementClassMetaExtractor implements ElementClassMetaExtract
     }
 
     protected ElementFieldMetaExtractor defaultFieldDefinitionExtractor() {
-        return new DefaultElementFieldMetaExtractor();
+        return new DefaultElementFieldMetaExtractor(this.annotationDefinitionExtractor);
     }
 
     protected String readPackageName(TypeElement source) {

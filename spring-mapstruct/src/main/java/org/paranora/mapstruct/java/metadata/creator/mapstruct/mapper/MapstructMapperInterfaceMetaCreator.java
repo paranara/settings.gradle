@@ -35,6 +35,12 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
                 .get();
     }
 
+    protected AnnotationFieldMeta readAnnotationField(List<AnnotationMeta> annotations, Class annotationClass, String fieldName) {
+        return readAnnotationField(annotations
+                , (a) -> a.getTypeName().equals(TypeName.get(annotationClass))
+                , fieldName);
+    }
+
     protected String createInterfaceName(ClassMeta source, AnnotationFieldMeta annotationFieldMeta) {
         String sourceName = source.getName().toLowerCase();
         String targetName = null;
@@ -58,17 +64,19 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         return String.format("%sTo%sMapper", sourceName, targetName);
     }
 
+    protected String createPackageName(ClassMeta source){
+        return String.format("org.paranora.mapstruct.mapper");
+    }
+
     @Override
     public InterfaceMeta create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         if (null == source) return null;
-        AnnotationFieldMeta annotationFieldMeta = readAnnotationField(source.getAnnotations()
-                , (a) -> a.getTypeName().equals(TypeName.get(PMapper.class))
-                , "target");
-
+        AnnotationFieldMeta annotationFieldMeta = readAnnotationField(source.getAnnotations(), PMapper.class, "target");
         TypeName sourceClassType = getSourceClassType(source);
         TypeName targetClassType = getTargetClassType(source, annotationFieldMeta);
         InterfaceMeta meta = new InterfaceMeta();
         meta.setName(createInterfaceName(source, annotationFieldMeta));
+        meta.setPackageName(createPackageName(source));
         meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
         meta.setSuperInterfaces(Arrays.asList(
                 InterfaceMeta.builder()

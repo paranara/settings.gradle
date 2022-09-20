@@ -37,16 +37,24 @@ public class TestMain {
     public void test_main_method_a() throws Exception {
         print("test_main_method_a begin.");
 
-        Class<?> c=Staff.class;
+//        Class<?> c=Staff.class;
+//        if(c.getClass().equals(Class.class)){
+//            print("test_main_method_a  end");
+//        }
 
-        if(c.getClass().equals(Class.class)){
-            print("test_main_method_a  end");
-        }
+//        testC();
 
-        testC();
 
         print("test_main_method_a  end");
     }
+
+    public void testD() {
+
+        String str="paranora";
+        
+        print("end");
+    }
+
 
     public void testC() throws ClassNotFoundException {
         InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
@@ -163,6 +171,7 @@ public class TestMain {
         org.paranora.mapstruct.starter.test.entity.Staff convert(
                 org.paranora.mapstruct.starter.test.entity.Staff source);
     }
+
     public void testB() {
         CodeBlock codeBlockA = CodeBlock.of("$T.$L", String.class, "a");
 
