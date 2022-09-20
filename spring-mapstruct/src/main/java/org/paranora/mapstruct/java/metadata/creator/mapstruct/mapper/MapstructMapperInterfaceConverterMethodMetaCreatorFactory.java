@@ -21,7 +21,7 @@ public class MapstructMapperInterfaceConverterMethodMetaCreatorFactory implement
 
     @Override
     public ParameterMetaCreator<ClassMeta, InterfaceMeta> parameterCreator() {
-        return new MapstructMapperInterfaceConverterMethodSourceParameterMetaCreator();
+        return new MapstructMapperInterfaceConverterMethodParameterMetaCreator();
     }
 
 }

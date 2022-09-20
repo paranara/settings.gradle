@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MapstructMapperInterfaceConverterMethodSourceParameterMetaCreator extends AbsMapstructInterfaceMethodParameterMetaCreator {
+public class MapstructMapperInterfaceConverterMethodParameterMetaCreator extends AbsMapstructInterfaceMethodParameterMetaCreator {
 
 
     @Override

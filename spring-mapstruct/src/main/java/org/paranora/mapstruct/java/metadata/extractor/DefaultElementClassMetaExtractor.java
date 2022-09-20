@@ -1,6 +1,7 @@
 package org.paranora.mapstruct.java.metadata.extractor;
 
 import com.squareup.javapoet.TypeName;
+import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 
 import javax.lang.model.element.TypeElement;
@@ -8,6 +9,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class DefaultElementClassMetaExtractor implements ElementClassMetaExtractor {
@@ -59,7 +61,11 @@ public class DefaultElementClassMetaExtractor implements ElementClassMetaExtract
                 .packageName(readPackageName(source))
                 .name(source.getSimpleName().toString())
                 .typeName(TypeName.get(source.asType()))
-                .annotations(annotationDefinitionExtractor.extract(source))
+                .annotations(annotationDefinitionExtractor.extract(source).stream().collect(
+                        Collectors.toMap(AnnotationMeta::getName
+                                , am -> am
+                                , (key1, key2) -> key2
+                        )))
                 .fields(fieldDefinitionExtractor.extract(source))
                 .build();
         definitions.add(definition);

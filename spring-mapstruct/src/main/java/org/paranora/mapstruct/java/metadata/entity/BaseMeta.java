@@ -6,7 +6,9 @@ import lombok.experimental.SuperBuilder;
 
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @SuperBuilder
@@ -22,7 +24,7 @@ public class BaseMeta extends Meta {
     protected List<TypeName> genericTypes = new ArrayList<>();
 
     @Builder.Default
-    protected List<AnnotationMeta> annotations = new ArrayList<>();
+    protected Map<String,AnnotationMeta> annotations = new HashMap<>();
 
     @Builder.Default
     protected List<Class<?>> annotationClazs = new ArrayList<>();

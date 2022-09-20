@@ -25,11 +25,6 @@ public @interface PMapping {
     @AliasFor(
             annotation = Mapping.class
     )
-    String source() default "";
-
-    @AliasFor(
-            annotation = Mapping.class
-    )
     String dateFormat() default "";
 
     @AliasFor(

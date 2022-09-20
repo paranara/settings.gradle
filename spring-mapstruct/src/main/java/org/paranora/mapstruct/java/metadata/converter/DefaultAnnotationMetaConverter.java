@@ -22,6 +22,7 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
                 .stream()
                 .forEach(m -> {
                     Optional<AnnotationFieldMeta> opt = source.getFields()
+                            .values()
                             .stream()
                             .filter(a -> {
                                 boolean check = a.getName().equalsIgnoreCase(m.getName())
@@ -31,12 +32,15 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
                             .findFirst();
 
                     if (opt.isPresent()) {
-                        meta.getFields().add(AnnotationFieldMeta.builder()
-                                .name(opt.get().getName())
-                                .typeName(opt.get().getTypeName())
-                                .value(opt.get().getValue())
-                                .annotations(new ArrayList<>(opt.get().getAnnotations()))
-                                .build());
+                        meta.getFields().put(opt.get().getName()
+                                , AnnotationFieldMeta.builder()
+                                        .name(opt.get().getName())
+                                        .typeName(opt.get().getTypeName())
+                                        .value(opt.get().getValue())
+                                        .annotations(new HashMap<String, AnnotationMeta>() {{
+                                            putAll(opt.get().getAnnotations());
+                                        }})
+                                        .build());
                     }
                 });
         if (meta.getFields().size() < 1) {

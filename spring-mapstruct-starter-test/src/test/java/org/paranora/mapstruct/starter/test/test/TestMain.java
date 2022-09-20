@@ -50,8 +50,8 @@ public class TestMain {
 
     public void testD() {
 
-        String str="paranora";
-        
+        String str = "paranora";
+
         print("end");
     }
 
@@ -61,125 +61,55 @@ public class TestMain {
         InterfaceMeta meta = new InterfaceMeta();
         meta.setName("InterfaceGenerateTestA");
         meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
-        meta.setSuperInterfaces(Arrays.asList(
-                InterfaceMeta.builder()
-                        .packageName("org.springframework.core.convert.converter")
-                        .name("Converter")
-                        .genericTypes(Arrays.asList(TypeName.get(Company.class), TypeName.get(Staff.class)))
-                        .build()
-        ));
-        meta.setAnnotations(Arrays.asList(
-                AnnotationMeta.builder()
-                        .name(PMapper.class.getSimpleName())
-                        .packageName(PMapper.class.getPackage().getName())
-                        .fields(Arrays.asList(
-                                AnnotationFieldMeta.builder()
-                                        .name("name")
-                                        .typeName(TypeName.get(String.class))
-                                        .value("abc")
-                                        .build()
-                                , AnnotationFieldMeta.builder()
-                                        .name("target")
-                                        .typeName(TypeName.get(Class.class))
-                                        .value("org.paranora.mapstruct.starter.test.entity.Staff.class")
-                                        .build()
-                        ))
-                        .build()
-        ));
+        meta.setSuperInterfaces(Arrays.asList(InterfaceMeta.builder().packageName("org.springframework.core.convert.converter").name("Converter").genericTypes(Arrays.asList(TypeName.get(Company.class), TypeName.get(Staff.class))).build()));
+        meta.setAnnotations(new HashMap<String, AnnotationMeta>() {
+            {
+                put(PMapper.class.getSimpleName(), AnnotationMeta.builder().name(PMapper.class.getSimpleName()).packageName(PMapper.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
+                    {
+                        put("name", AnnotationFieldMeta.builder().name("name").typeName(TypeName.get(String.class)).value("abc").build());
+                        put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(Class.class)).value("org.paranora.mapstruct.starter.test.entity.Staff.class").build());
+                    }
+                }).build());
+            }
+        });
 
-        meta.setMethods(Arrays.asList(
-                MethodMeta.builder()
-                        .annotations(Arrays.asList(
-                                AnnotationMeta.builder()
-                                        .name(Mapping.class.getSimpleName())
-                                        .packageName(Mapping.class.getPackage().getName())
-                                        .fields(Arrays.asList(
-                                                AnnotationFieldMeta.builder()
-                                                        .name("target")
-                                                        .typeName(TypeName.get(String.class))
-                                                        .value("abc")
-                                                        .build()
-                                                , AnnotationFieldMeta.builder()
-                                                        .name("source")
-                                                        .typeName(TypeName.get(String.class))
-                                                        .value("abc")
-                                                        .build()
-                                                , AnnotationFieldMeta.builder()
-                                                        .name("nullValueCheckStrategy")
-                                                        .typeName(TypeName.get(NullValueCheckStrategy.class))
-                                                        .value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
-                                                        .build()
-                                        ))
-                                        .build()
-                                , AnnotationMeta.builder()
-                                        .name(Mapping.class.getSimpleName())
-                                        .packageName(Mapping.class.getPackage().getName())
-                                        .fields(Arrays.asList(
-                                                AnnotationFieldMeta.builder()
-                                                        .name("target")
-                                                        .typeName(TypeName.get(String.class))
-                                                        .value("abc1")
-                                                        .build()
-                                                , AnnotationFieldMeta.builder()
-                                                        .name("source")
-                                                        .typeName(TypeName.get(String.class))
-                                                        .value("abc1")
-                                                        .build()
-                                                , AnnotationFieldMeta.builder()
-                                                        .name("nullValueCheckStrategy")
-                                                        .typeName(TypeName.get(NullValueCheckStrategy.class))
-                                                        .value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
-                                                        .build()
-                                        ))
-                                        .build()
-                        ))
-                        .parameters(
-                                Arrays.asList(ParameterMeta.builder()
-                                        .name("source")
-                                        .typeName(TypeName.get(Staff.class))
-                                        .build()))
-                        .accessLevels(Arrays.asList(Modifier.PUBLIC, Modifier.ABSTRACT))
-                        .returnType(TypeName.get(Staff.class))
-                        .name("convert")
+        meta.setMethods(Arrays.asList(MethodMeta.builder().annotations(new HashMap<String, AnnotationMeta>() {
+                    {
+                        put(Mapping.class.getSimpleName(), AnnotationMeta.builder().name(Mapping.class.getSimpleName()).packageName(Mapping.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
+                            {
+                                put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(String.class)).value("abc").build());
+                                put("source", AnnotationFieldMeta.builder().name("source").typeName(TypeName.get(String.class)).value("abc").build());
+                                put("nullValueCheckStrategy", AnnotationFieldMeta.builder().name("nullValueCheckStrategy").typeName(TypeName.get(NullValueCheckStrategy.class)).value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION).build());
+                            }
+                        }).build());
+                    }
+                })
+                .parameters(Arrays.asList(ParameterMeta.builder().name("source").typeName(TypeName.get(Staff.class)).build()))
+                .accessLevels(Arrays.asList(Modifier.PUBLIC, Modifier.ABSTRACT)).returnType(TypeName.get(Staff.class)).name("convert")
 //                        .annotationClazs(Arrays.asList(Override.class))
-                        .build()
-        ));
+                .build()));
 
         TypeSpec interfaceSpec = interfaceJavapoetGenerator.create(meta);
 
         String str = interfaceSpec.toString();
 
         print(str);
+
         print("The End.");
     }
 
-    @org.paranora.mapstruct.annotations.PMapper(
-            name = "abc",
-            target = org.paranora.mapstruct.starter.test.entity.Staff.class
-    )
+    @org.paranora.mapstruct.annotations.PMapper(name = "abc", target = org.paranora.mapstruct.starter.test.entity.Staff.class)
     public interface InterfaceGenerateTestA extends org.springframework.core.convert.converter.Converter<org.paranora.mapstruct.starter.test.entity.Company, org.paranora.mapstruct.starter.test.entity.Staff> {
-        @org.mapstruct.Mapping(
-                target = "abc",
-                source = "abc",
-                nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
-        )
-        @org.mapstruct.Mapping(
-                target = "abc1",
-                source = "abc1",
-                nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
-        )
-        org.paranora.mapstruct.starter.test.entity.Staff convert(
-                org.paranora.mapstruct.starter.test.entity.Staff source);
+        @org.mapstruct.Mapping(target = "abc", source = "abc", nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
+        @org.mapstruct.Mapping(target = "abc1", source = "abc1", nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
+        org.paranora.mapstruct.starter.test.entity.Staff convert(org.paranora.mapstruct.starter.test.entity.Staff source);
     }
 
     public void testB() {
         CodeBlock codeBlockA = CodeBlock.of("$T.$L", String.class, "a");
 
         String[] dependsOn = new String[]{"a", "b"};
-        CodeBlock codeBlockB = CodeBlock.builder().add("$L",
-                Arrays.stream(dependsOn)
-                        .map(type -> CodeBlock.of("$T.$L", String.class, type))
-                        .collect(CodeBlock.joining(",", "{", "}"))).build();
+        CodeBlock codeBlockB = CodeBlock.builder().add("$L", Arrays.stream(dependsOn).map(type -> CodeBlock.of("$T.$L", String.class, type)).collect(CodeBlock.joining(",", "{", "}"))).build();
 
         String str = codeBlockB.toString();
         print(str);
@@ -217,13 +147,7 @@ public class TestMain {
                 e.printStackTrace();
             }
 
-            print(String.format(messageFormat
-                    , PMapping.class.getSimpleName()
-                    , methodReturnTypeLevel
-                    , typeName
-                    , m.getName()
-                    , typeName.getClass()
-                    , v));
+            print(String.format(messageFormat, PMapping.class.getSimpleName(), methodReturnTypeLevel, typeName, m.getName(), typeName.getClass(), v));
         });
 
         String className = PMapper.class.getName();
@@ -238,26 +162,12 @@ public class TestMain {
         TypeName typeNameB = ParameterizedTypeName.get(a.getClass());
 
         //Map<String, Class<? extends Staff>>
-        ParameterizedTypeName inputMapTypeOfRoot = ParameterizedTypeName.get(
-                ClassName.get(Map.class),
-                ClassName.get(String.class),
-                ParameterizedTypeName.get(
-                        ClassName.get(Class.class),
-                        WildcardTypeName.subtypeOf(ClassName.get(Staff.class))
-                )
-        );
+        ParameterizedTypeName inputMapTypeOfRoot = ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ParameterizedTypeName.get(ClassName.get(Class.class), WildcardTypeName.subtypeOf(ClassName.get(Staff.class))));
 
         // Map<String, Staff>
-        ParameterizedTypeName inputMapTypeOfGroup = ParameterizedTypeName.get(
-                ClassName.get(Map.class),
-                ClassName.get(String.class),
-                ClassName.get(Staff.class)
-        );
+        ParameterizedTypeName inputMapTypeOfGroup = ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ClassName.get(Staff.class));
 
-        FieldSpec itemName = FieldSpec.builder(inputMapTypeOfGroup, "itemName")
-                .addModifiers(Modifier.PROTECTED)
-                .initializer("$L", "new HashMap<String,Staff>()")
-                .build();
+        FieldSpec itemName = FieldSpec.builder(inputMapTypeOfGroup, "itemName").addModifiers(Modifier.PROTECTED).initializer("$L", "new HashMap<String,Staff>()").build();
 
         CodeBlock.builder().add("$S", "str").build();
 
@@ -265,16 +175,9 @@ public class TestMain {
 
         TypeName nullValueCheckStrategyTypeName = TypeName.get(NullValueCheckStrategy.class);
 
-        CodeBlock codeBlockA = CodeBlock.builder()
-                .add("$T.$L", NullValueCheckStrategy.class, "ON_IMPLICIT_CONVERSION")
-                .build();
+        CodeBlock codeBlockA = CodeBlock.builder().add("$T.$L", NullValueCheckStrategy.class, "ON_IMPLICIT_CONVERSION").build();
 
-        MethodSpec setItemNameMethod = MethodSpec.methodBuilder("setTest")
-                .addModifiers(Modifier.PUBLIC)
-                .returns(void.class)
-                .addParameter(String.class, "itemName")
-                .addStatement("this.$L=$L", itemName.name, itemName.name)
-                .build();
+        MethodSpec setItemNameMethod = MethodSpec.methodBuilder("setTest").addModifiers(Modifier.PUBLIC).returns(void.class).addParameter(String.class, "itemName").addStatement("this.$L=$L", itemName.name, itemName.name).build();
 
         AnnotationSpec annotationSpecA = AnnotationSpec.builder(ClassName.get(Override.class)).build();
     }
