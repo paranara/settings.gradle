@@ -42,42 +42,37 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
     @Override
     public List<AnnotationMeta> create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         List<AnnotationMeta> metas = source.getFields()
+                .values()
                 .stream()
                 .map(f -> {
+                    AnnotationMeta meta = null;
                     Optional<AnnotationMeta> pmapping = f.getAnnotations().values().stream().filter(v -> v.getName().equalsIgnoreCase(PMapping.class.getSimpleName())).findFirst();
                     if (pmapping.isPresent()) {
-                        AnnotationMeta meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
-                        meta.getFields().put("source",AnnotationFieldMeta.builder()
-                                .name("source")
-                                .packageName(String.class.getPackage().getName())
-                                .typeName(TypeName.get(String.class))
-                                .value(f.getName())
-                                .build());
-                        return meta;
+                        meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
                     } else {
-                        AnnotationMeta annotationMeta = AnnotationMeta.builder()
+                        meta = AnnotationMeta.builder()
                                 .name(Mapping.class.getSimpleName())
                                 .packageName(Mapping.class.getPackage().getName())
-                                .fields(new HashMap<String, AnnotationFieldMeta>() {
-                                    {
-                                        put("target", AnnotationFieldMeta.builder()
-                                                .name("target")
-                                                .packageName(String.class.getPackage().getName())
-                                                .typeName(TypeName.get(String.class))
-                                                .value(f.getName())
-                                                .build());
-
-                                        put("source", AnnotationFieldMeta.builder()
-                                                .name("source")
-                                                .packageName(String.class.getPackage().getName())
-                                                .typeName(TypeName.get(String.class))
-                                                .value(f.getName())
-                                                .build());
-                                    }
-                                })
+                                .fields(Arrays.asList(AnnotationFieldMeta.builder()
+                                                        .name("target")
+                                                        .packageName(String.class.getPackage().getName())
+                                                        .typeName(TypeName.get(String.class))
+                                                        .value(f.getName())
+                                                        .build()
+                                                )
+                                                .stream()
+                                                .collect(Collectors.toMap(AnnotationFieldMeta::getName, afm -> afm, (key1, key2) -> key2))
+                                )
                                 .build();
-                        return annotationMeta;
                     }
+                    AnnotationFieldMeta fieldMeta = AnnotationFieldMeta.builder()
+                            .name("source")
+                            .packageName(String.class.getPackage().getName())
+                            .typeName(TypeName.get(String.class))
+                            .value(f.getName())
+                            .build();
+                    meta.getFields().put(fieldMeta.getName(), fieldMeta);
+                    return meta;
                 })
                 .collect(Collectors.toList());
 

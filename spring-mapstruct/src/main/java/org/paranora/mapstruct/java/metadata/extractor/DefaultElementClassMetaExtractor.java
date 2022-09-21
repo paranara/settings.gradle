@@ -3,6 +3,7 @@ package org.paranora.mapstruct.java.metadata.extractor;
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
+import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
@@ -66,7 +67,11 @@ public class DefaultElementClassMetaExtractor implements ElementClassMetaExtract
                                 , am -> am
                                 , (key1, key2) -> key2
                         )))
-                .fields(fieldDefinitionExtractor.extract(source))
+                .fields(fieldDefinitionExtractor.extract(source).stream().collect(
+                        Collectors.toMap(FieldMeta::getName
+                                , fm -> fm
+                                , (key1, key2) -> key2
+                        )))
                 .build();
         definitions.add(definition);
         return definitions;

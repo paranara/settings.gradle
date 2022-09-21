@@ -52,7 +52,7 @@ public class DefaultInterfaceGenerator extends AbsJavapoetGenerator<InterfaceMet
                         .map(si -> ParameterizedTypeName.get(ClassName.get(si.getPackageName(), si.getName()), si.getGenericTypes().toArray(new TypeName[]{})))
                         .collect(Collectors.toList()))
                 .addModifiers(definition.getAccessLevels().toArray(new Modifier[]{}))
-                .addAnnotations(definition.getAnnotations().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList()))
+                .addAnnotations(definition.getAnnotations().values().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList()))
                 .addMethods(definition.getMethods().stream().map(m -> methodJavapoetGenerator.create(m)).collect(Collectors.toList()))
                 .build();
         return interfaceSpec;

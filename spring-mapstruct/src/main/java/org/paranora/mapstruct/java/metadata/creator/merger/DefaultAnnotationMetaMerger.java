@@ -16,26 +16,30 @@ public class DefaultAnnotationMetaMerger implements AnnotationMetaMerger {
         meta.setName(target.getName());
 
         source.getFields()
+                .values()
                 .forEach(f -> {
                     Optional<AnnotationFieldMeta> opt = target.getFields()
+                            .values()
                             .stream()
                             .filter(tf -> tf.getName().equalsIgnoreCase(f.getName()) && tf.getTypeName().equals(f.getTypeName()))
                             .findFirst();
 
                     if (opt.isPresent()) {
-                        meta.getFields().add(AnnotationFieldMeta.builder()
-                                .name(opt.get().getName())
-                                .typeName(opt.get().getTypeName())
-                                .value(opt.get().getValue())
-                                .annotations(new ArrayList<>(opt.get().getAnnotations()))
-                                .build());
+                        meta.getFields().put(opt.get().getName()
+                                , AnnotationFieldMeta.builder()
+                                        .name(opt.get().getName())
+                                        .typeName(opt.get().getTypeName())
+                                        .value(opt.get().getValue())
+                                        .annotations(opt.get().getAnnotations())
+                                        .build());
                     } else {
-                        meta.getFields().add(AnnotationFieldMeta.builder()
-                                .name(f.getName())
-                                .typeName(f.getTypeName())
-                                .value(f.getValue())
-                                .annotations(new ArrayList<>(f.getAnnotations()))
-                                .build());
+                        meta.getFields().put(f.getName()
+                                , AnnotationFieldMeta.builder()
+                                        .name(f.getName())
+                                        .typeName(f.getTypeName())
+                                        .value(f.getValue())
+                                        .annotations(f.getAnnotations())
+                                        .build());
                     }
                 });
 

@@ -25,6 +25,7 @@ import javax.lang.model.element.Modifier;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, QuartzAutoConfiguration.class})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,14 +44,45 @@ public class TestMain {
 //        }
 
 //        testC();
-
+        testD();
 
         print("test_main_method_a  end");
     }
 
-    public void testD() {
+    public void testE() {
 
+        print("end");
+    }
+
+    public void testD() {
         String str = "paranora";
+
+        Map<Integer, String> mymap = new HashMap<Integer, String>() {
+            {
+                put(1, "one");
+                put(2, "two");
+            }
+        };
+
+        mymap.put(1, "paranora");
+
+        mymap.entrySet().stream().forEach(v -> {
+            print(v.getValue());
+        });
+
+
+        Map<String, FieldMeta> map = Arrays.asList(
+                        FieldMeta.builder()
+                                .name("aaa")
+                                .value("paranora")
+                                .accessLevels(Arrays.asList(Modifier.PUBLIC))
+                                .build()
+                )
+                .stream()
+                .collect(Collectors.toMap(FieldMeta::getName
+                        , fm -> fm
+                        , (key1, key2) -> key2
+                ));
 
         print("end");
     }

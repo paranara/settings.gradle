@@ -7,14 +7,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class AnnotationMeta extends BaseMeta {
 
     @Builder.Default
-    protected Map<String,AnnotationFieldMeta> fields = new HashMap();
+    protected Map<String, AnnotationFieldMeta> fields = new HashMap();
+
 }

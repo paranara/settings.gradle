@@ -13,6 +13,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMetaCreator {
@@ -25,17 +26,18 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         return annotationFieldMeta.getTypeName();
     }
 
-    protected AnnotationFieldMeta readAnnotationField(List<AnnotationMeta> annotations, Function<AnnotationMeta, Boolean> filter, String fieldName) {
-        return annotations.stream()
+    protected AnnotationFieldMeta readAnnotationField(Map<String,AnnotationMeta> annotations, Function<AnnotationMeta, Boolean> filter, String fieldName) {
+        return annotations.values().stream()
                 .filter(a -> filter.apply(a))
                 .findFirst().get()
                 .getFields()
+                .values()
                 .stream().filter(f -> f.getName().equalsIgnoreCase(fieldName))
                 .findFirst()
                 .get();
     }
 
-    protected AnnotationFieldMeta readAnnotationField(List<AnnotationMeta> annotations, Class annotationClass, String fieldName) {
+    protected AnnotationFieldMeta readAnnotationField(Map<String,AnnotationMeta> annotations, Class annotationClass, String fieldName) {
         return readAnnotationField(annotations
                 , (a) -> a.getTypeName().equals(TypeName.get(annotationClass))
                 , fieldName);

@@ -7,29 +7,28 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DefaultReflectAnnotationMetaExtractor extends AbsAnnotationMetaExtractor<AccessibleObject, Annotation> {
 
     @Override
-    protected List<AnnotationFieldMeta> extractFields(AccessibleObject source, Annotation annotationObj) {
-        List<AnnotationFieldMeta> annotationFieldDefinitions = new ArrayList<>();
+    protected Map<String, AnnotationFieldMeta> extractFields(AccessibleObject source, Annotation annotationObj) {
+        Map<String, AnnotationFieldMeta> metaMap = new HashMap<>();
         for (Method method : annotationObj.annotationType().getDeclaredMethods()) {
             try {
-                annotationFieldDefinitions.add(AnnotationFieldMeta.builder()
-                        .name(method.getName())
-                        .typeName(TypeName.get(method.getReturnType()))
-                        .value(method.invoke(annotationObj, new Object[]{}))
-                        .build());
+                metaMap.put(method.getName()
+                        , AnnotationFieldMeta.builder()
+                                .name(method.getName())
+                                .typeName(TypeName.get(method.getReturnType()))
+                                .value(method.invoke(annotationObj, new Object[]{}))
+                                .build());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             } catch (InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         }
-        return annotationFieldDefinitions;
+        return metaMap;
     }
 
     @Override

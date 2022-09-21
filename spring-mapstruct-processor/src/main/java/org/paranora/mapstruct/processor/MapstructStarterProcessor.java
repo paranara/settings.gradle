@@ -51,8 +51,8 @@ public class MapstructStarterProcessor extends AbsProcessor {
             List<ClassMeta> definitions = elementClassDefinitionExtractor.extract((TypeElement) element);
 
             definitions.forEach(clz -> {
-                clz.getAnnotations().forEach(at -> {
-                    at.getFields().stream().forEach(atf -> {
+                clz.getAnnotations().forEach((atk, at) -> {
+                    at.getFields().forEach((atfk, atf) -> {
                         print("package : %s , class : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
                                 , clz.getPackageName()
                                 , clz.getName()
@@ -63,10 +63,10 @@ public class MapstructStarterProcessor extends AbsProcessor {
                     });
                 });
 
-                clz.getFields().forEach(f -> {
+                clz.getFields().forEach((fk, f) -> {
                     print("package : %s , class %s , field : %s ", clz.getPackageName(), clz.getName(), f.getName());
-                    f.getAnnotations().forEach(at -> {
-                        at.getFields().forEach(atf -> {
+                    f.getAnnotations().forEach((atk, at) -> {
+                        at.getFields().forEach((atfk, atf) -> {
                             print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
                                     , at.getPackageName()
                                     , at.getName()

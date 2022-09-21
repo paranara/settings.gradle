@@ -5,6 +5,7 @@ import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbsAnnotationMetaExtractor<S extends Object, AOT extends Object> implements AnnotationMetaExtractor<S> {
 
@@ -14,7 +15,7 @@ public abstract class AbsAnnotationMetaExtractor<S extends Object, AOT extends O
         return definition;
     }
 
-    protected abstract List<AnnotationFieldMeta> extractFields(S source, AOT annotationObj);
+    protected abstract Map<String,AnnotationFieldMeta> extractFields(S source, AOT annotationObj);
 
     public abstract List<AOT> getAnnotations(S source);
 

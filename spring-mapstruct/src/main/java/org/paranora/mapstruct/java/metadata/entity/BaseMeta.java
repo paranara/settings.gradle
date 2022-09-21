@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @SuperBuilder
@@ -28,4 +29,5 @@ public class BaseMeta extends Meta {
 
     @Builder.Default
     protected List<Class<?>> annotationClazs = new ArrayList<>();
+
 }

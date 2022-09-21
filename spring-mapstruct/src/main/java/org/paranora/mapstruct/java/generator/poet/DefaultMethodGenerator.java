@@ -44,7 +44,7 @@ public class DefaultMethodGenerator extends AbsJavapoetGenerator<MethodMeta, Met
     @Override
     public MethodSpec create(MethodMeta definition) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(definition.getName())
-                .addAnnotations(definition.getAnnotations().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList()))
+                .addAnnotations(definition.getAnnotations().values().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList()))
                 .addParameters(definition.getParameters().stream().map(p -> parameterJavapoetGenerator.create(p)).collect(Collectors.toList()))
                 .addModifiers(definition.getAccessLevels())
                 .returns(definition.getReturnType());

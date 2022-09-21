@@ -13,7 +13,9 @@ import org.paranora.mapstruct.java.metadata.creator.merger.DefaultAnnotationMeta
 import org.paranora.mapstruct.java.metadata.entity.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructInterfaceAnnotationMetaCreator {
 
@@ -48,6 +50,7 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
     @Override
     public List<AnnotationMeta> create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         AnnotationMeta convertMapper = this.annotationMetaConverter.convert(source.getAnnotations()
+                        .values()
                         .stream()
                         .filter(a -> a.getName().equalsIgnoreCase(PMapper.class.getSimpleName()))
                         .findFirst().get()
@@ -56,38 +59,40 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
         AnnotationMeta decorated = AnnotationMeta.builder()
                 .name(DecoratedWith.class.getSimpleName())
                 .packageName(DecoratedWith.class.getPackage().getName())
-                .fields(Arrays.asList(
-                        AnnotationFieldMeta.builder()
+                .fields(Arrays.asList(AnnotationFieldMeta.builder()
                                 .name("value")
                                 .typeName(TypeName.get(Class.class))
                                 .value(String.format("%s.%sDecorator.class", parent.getPackageName(), parent.getName()))
-                                .build()
-                ))
+                                .build())
+                        .stream()
+                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, afm -> afm, (key1, key2) -> key2)))
                 .build();
 
         AnnotationMeta mapper = AnnotationMeta.builder()
                 .name(Mapper.class.getSimpleName())
                 .packageName(Mapper.class.getPackage().getName())
                 .fields(Arrays.asList(
-                        AnnotationFieldMeta.builder()
-                                .name("componentModel")
-                                .typeName(TypeName.get(String.class))
-                                .value("spring")
-                                .build()
-                        , AnnotationFieldMeta.builder()
-                                .name("nullValueCheckStrategy")
-                                .typeName(TypeName.get(NullValueCheckStrategy.class))
-                                .value(NullValueCheckStrategy.ALWAYS)
-                                .build()
-                        , AnnotationFieldMeta.builder()
-                                .name("nullValueMappingStrategy")
-                                .typeName(TypeName.get(NullValueMappingStrategy.class))
-                                .value(NullValueMappingStrategy.RETURN_DEFAULT)
-                                .build()
-                ))
+                                AnnotationFieldMeta.builder()
+                                        .name("componentModel")
+                                        .typeName(TypeName.get(String.class))
+                                        .value("spring")
+                                        .build()
+                                , AnnotationFieldMeta.builder()
+                                        .name("nullValueCheckStrategy")
+                                        .typeName(TypeName.get(NullValueCheckStrategy.class))
+                                        .value(NullValueCheckStrategy.ALWAYS)
+                                        .build()
+                                , AnnotationFieldMeta.builder()
+                                        .name("nullValueMappingStrategy")
+                                        .typeName(TypeName.get(NullValueMappingStrategy.class))
+                                        .value(NullValueMappingStrategy.RETURN_DEFAULT)
+                                        .build()
+                        )
+                        .stream()
+                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, afm -> afm, (key1, key2) -> key2)))
                 .build();
 
-        AnnotationMeta resultMapper =annotationMetaMerger.merge(mapper,convertMapper);
+        AnnotationMeta resultMapper = annotationMetaMerger.merge(mapper, convertMapper);
 
         return Arrays.asList(resultMapper, decorated);
     }
