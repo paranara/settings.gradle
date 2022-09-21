@@ -1,6 +1,8 @@
 package org.paranora.mapstruct.java.metadata.converter;
 
 import com.squareup.javapoet.ArrayTypeName;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import lombok.Synchronized;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
@@ -22,20 +24,26 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
         getClassMethods(targetClass)
                 .stream()
                 .forEach(m -> {
-
-
                     Optional<AnnotationFieldMeta> opt = source.getFields()
                             .values()
                             .stream()
                             .filter(a -> {
                                 boolean check = a.getName().equalsIgnoreCase(m.getName());
-                                if (check && m.getReturnType().isArray() && a.getTypeName() instanceof ArrayTypeName) {
-                                    TypeName t0=TypeName.get(m.getReturnType().getComponentType());
-                                    TypeName t1 = ((ArrayTypeName) a.getTypeName()).componentType;
-                                } else {
-                                    check &= a.getTypeName().equals(TypeName.get(m.getReturnType()));
+                                TypeName t0 = TypeName.get(m.getReturnType());
+                                TypeName t1 = a.getTypeName();
+                                if (check && t0 instanceof ArrayTypeName && t1 instanceof ArrayTypeName) {
+                                    t0 = ((ArrayTypeName) t0).componentType;
+                                    t1 = ((ArrayTypeName) t1).componentType;
+                                    if (!t0.equals(t1) && (t1 instanceof ParameterizedTypeName || t0 instanceof ParameterizedTypeName)) {
+                                        if (t0 instanceof ParameterizedTypeName) {
+                                            t0 = ((ParameterizedTypeName) t0).rawType;
+                                        }
+                                        if (t1 instanceof ParameterizedTypeName) {
+                                            t1 = ((ParameterizedTypeName) t1).rawType;
+                                        }
+                                    }
                                 }
-                                return check;
+                                return check & (t0.equals(t1));
                             })
                             .findFirst();
 

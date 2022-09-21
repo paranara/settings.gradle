@@ -12,10 +12,10 @@ import java.util.Map;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper=false)
 public class ClassMeta extends InterfaceMeta {
 
     @Builder.Default
-    protected Map<String, FieldMeta> fields = new HashMap<>();
+    protected Map<String,FieldMeta> fields=new HashMap<>();
     protected ClassMeta superClass;
 }
