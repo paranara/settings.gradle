@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 @Import({})
 public class TestMain {
 
+
     @Test
     public void test_main_method_a() throws Exception {
         print("test_main_method_a begin.");

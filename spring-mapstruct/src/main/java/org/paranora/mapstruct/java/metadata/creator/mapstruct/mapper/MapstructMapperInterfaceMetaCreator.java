@@ -13,7 +13,6 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMetaCreator {
@@ -22,8 +21,16 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         return source.getTypeName();
     }
 
-    protected TypeName getTargetClassType(ClassMeta source, AnnotationFieldMeta annotationFieldMeta) {
-        return annotationFieldMeta.getTypeName();
+    protected TypeName getTargetClassType(ClassMeta source) {
+        AnnotationFieldMeta fieldMeta = readAnnotationField(source.getAnnotations(), PMapper.class, "target");
+        TypeName tn=null;
+        if (fieldMeta.getValue() instanceof TypeMirror) {
+            tn = TypeName.get((TypeMirror) fieldMeta.getValue());
+        }
+        if (fieldMeta.getValue() instanceof Class) {
+            tn = TypeName.get((Class) fieldMeta.getValue());
+        }
+        return tn;
     }
 
     protected AnnotationFieldMeta readAnnotationField(List<AnnotationMeta> annotations, Function<AnnotationMeta, Boolean> filter, String fieldName) {
@@ -44,16 +51,11 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
                 , fieldName);
     }
 
-    protected String createInterfaceName(ClassMeta source, AnnotationFieldMeta annotationFieldMeta) {
+    protected String createInterfaceName(ClassMeta source,InterfaceMeta meta) {
+        Object targetType=meta.getSuperInterfaces().get(0).getGenericTypes().get(1);
         String sourceName = source.getName();
-        String targetName = null;
-        if (annotationFieldMeta.getValue() instanceof TypeMirror) {
-            targetName = annotationFieldMeta.getValue().toString();
-            targetName = targetName.substring(targetName.lastIndexOf(".") + 1);
-        }
-        if (annotationFieldMeta.getValue() instanceof Class) {
-            targetName = ((Class) annotationFieldMeta.getValue()).getSimpleName();
-        }
+        String targetName = targetType.toString();
+        targetName = targetName.substring(targetName.lastIndexOf(".") + 1);
         String first = targetName.substring(0, 1);
         String rest = targetName.substring(1);
         targetName = String.format("%s%s", first.toUpperCase(), rest);
@@ -74,21 +76,24 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
     @Override
     public InterfaceMeta create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         if (null == source) return null;
-        AnnotationFieldMeta annotationFieldMeta = readAnnotationField(source.getAnnotations(), PMapper.class, "target");
-        TypeName sourceClassType = getSourceClassType(source);
-        TypeName targetClassType = getTargetClassType(source, annotationFieldMeta);
         InterfaceMeta meta = new InterfaceMeta();
-        meta.setName(createInterfaceName(source, annotationFieldMeta));
         meta.setPackageName(createPackageName(source));
         meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
-        meta.setSuperInterfaces(Arrays.asList(
+        meta.setSuperInterfaces(createSuperInterfaces(source));
+        meta.setName(createInterfaceName(source,meta));
+
+        return meta;
+    }
+
+    protected List<InterfaceMeta> createSuperInterfaces(ClassMeta source) {
+        TypeName sourceClassType = getSourceClassType(source);
+        TypeName targetClassType = getTargetClassType(source);
+        return Arrays.asList(
                 InterfaceMeta.builder()
                         .packageName(Converter.class.getPackage().getName())
                         .name(Converter.class.getSimpleName())
                         .genericTypes(Arrays.asList(sourceClassType, targetClassType))
                         .build()
-        ));
-
-        return meta;
+        );
     }
 }

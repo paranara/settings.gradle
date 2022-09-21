@@ -17,7 +17,6 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Mapper
 public class Staff {
 
     @PMapping(target = "staffName"
