@@ -62,11 +62,7 @@ public class DefaultElementClassMetaExtractor implements ElementClassMetaExtract
                 .packageName(readPackageName(source))
                 .name(source.getSimpleName().toString())
                 .typeName(TypeName.get(source.asType()))
-                .annotations(annotationDefinitionExtractor.extract(source).stream().collect(
-                        Collectors.toMap(AnnotationMeta::getName
-                                , am -> am
-                                , (key1, key2) -> key2
-                        )))
+                .annotations(annotationDefinitionExtractor.extract(source))
                 .fields(fieldDefinitionExtractor.extract(source).stream().collect(
                         Collectors.toMap(FieldMeta::getName
                                 , fm -> fm

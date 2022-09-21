@@ -25,7 +25,7 @@ public class BaseMeta extends Meta {
     protected List<TypeName> genericTypes = new ArrayList<>();
 
     @Builder.Default
-    protected Map<String,AnnotationMeta> annotations = new HashMap<>();
+    protected List<AnnotationMeta> annotations = new ArrayList<>();
 
     @Builder.Default
     protected List<Class<?>> annotationClazs = new ArrayList<>();

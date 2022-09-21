@@ -42,11 +42,7 @@ public class DefaultElementFieldMetaExtractor implements ElementFieldMetaExtract
             definitions.add(FieldMeta.builder()
                     .name(e.getSimpleName().toString())
                     .typeName(TypeName.get(e.asType()))
-                    .annotations(annotationDefinitionExtractor.extract((VariableElement) e).stream().collect(
-                            Collectors.toMap(AnnotationMeta::getName
-                                    , am -> am
-                                    , (key1, key2) -> key2
-                            )))
+                    .annotations(annotationDefinitionExtractor.extract((VariableElement) e))
                     .build());
         });
         return definitions;

@@ -20,8 +20,6 @@ public @interface PMapping {
     )
     String target() default "";
 
-    Class<?> targetClass() default void.class;
-
     @AliasFor(
             annotation = Mapping.class
     )

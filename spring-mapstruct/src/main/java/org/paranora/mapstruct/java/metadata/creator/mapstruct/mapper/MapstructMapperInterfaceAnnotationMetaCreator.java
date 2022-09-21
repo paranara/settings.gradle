@@ -8,13 +8,14 @@ import org.mapstruct.NullValueMappingStrategy;
 import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.java.metadata.converter.AnnotationMetaConverter;
 import org.paranora.mapstruct.java.metadata.converter.DefaultAnnotationMetaConverter;
-import org.paranora.mapstruct.java.metadata.creator.merger.AnnotationMetaMerger;
-import org.paranora.mapstruct.java.metadata.creator.merger.DefaultAnnotationMetaMerger;
+import org.paranora.mapstruct.java.metadata.merger.AnnotationMetaMerger;
+import org.paranora.mapstruct.java.metadata.merger.DefaultAnnotationMetaMerger;
 import org.paranora.mapstruct.java.metadata.entity.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructInterfaceAnnotationMetaCreator {
@@ -50,7 +51,6 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
     @Override
     public List<AnnotationMeta> create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         AnnotationMeta convertMapper = this.annotationMetaConverter.convert(source.getAnnotations()
-                        .values()
                         .stream()
                         .filter(a -> a.getName().equalsIgnoreCase(PMapper.class.getSimpleName()))
                         .findFirst().get()
@@ -65,7 +65,7 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
                                 .value(String.format("%s.%sDecorator.class", parent.getPackageName(), parent.getName()))
                                 .build())
                         .stream()
-                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, afm -> afm, (key1, key2) -> key2)))
+                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, o -> o, (key1, key2) -> key2)))
                 .build();
 
         AnnotationMeta mapper = AnnotationMeta.builder()
@@ -89,13 +89,12 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
                                         .build()
                         )
                         .stream()
-                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, afm -> afm, (key1, key2) -> key2)))
+                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, o -> o, (key1, key2) -> key2)))
                 .build();
 
         AnnotationMeta resultMapper = annotationMetaMerger.merge(mapper, convertMapper);
 
-        return Arrays.asList(resultMapper, decorated);
+        return Arrays.asList(resultMapper,decorated);
     }
-
 
 }

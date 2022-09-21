@@ -1,5 +1,6 @@
 package org.paranora.mapstruct.java.metadata.converter;
 
+import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.TypeName;
 import lombok.Synchronized;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
@@ -21,12 +22,19 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
         getClassMethods(targetClass)
                 .stream()
                 .forEach(m -> {
+
+
                     Optional<AnnotationFieldMeta> opt = source.getFields()
                             .values()
                             .stream()
                             .filter(a -> {
-                                boolean check = a.getName().equalsIgnoreCase(m.getName())
-                                        && a.getTypeName().equals(TypeName.get(m.getReturnType()));
+                                boolean check = a.getName().equalsIgnoreCase(m.getName());
+                                if (check && m.getReturnType().isArray() && a.getTypeName() instanceof ArrayTypeName) {
+                                    TypeName t0=TypeName.get(m.getReturnType().getComponentType());
+                                    TypeName t1 = ((ArrayTypeName) a.getTypeName()).componentType;
+                                } else {
+                                    check &= a.getTypeName().equals(TypeName.get(m.getReturnType()));
+                                }
                                 return check;
                             })
                             .findFirst();
@@ -37,9 +45,7 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
                                         .name(opt.get().getName())
                                         .typeName(opt.get().getTypeName())
                                         .value(opt.get().getValue())
-                                        .annotations(new HashMap<String, AnnotationMeta>() {{
-                                            putAll(opt.get().getAnnotations());
-                                        }})
+                                        .annotations(opt.get().getAnnotations())
                                         .build());
                     }
                 });

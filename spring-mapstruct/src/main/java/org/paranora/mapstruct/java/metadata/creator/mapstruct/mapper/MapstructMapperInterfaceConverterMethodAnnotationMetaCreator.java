@@ -5,16 +5,14 @@ import org.mapstruct.Mapping;
 import org.paranora.mapstruct.annotations.PMapping;
 import org.paranora.mapstruct.java.metadata.converter.AnnotationMetaConverter;
 import org.paranora.mapstruct.java.metadata.converter.DefaultAnnotationMetaConverter;
-import org.paranora.mapstruct.java.metadata.creator.merger.AnnotationMetaMerger;
-import org.paranora.mapstruct.java.metadata.creator.merger.DefaultAnnotationMetaMerger;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,7 +44,7 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                 .stream()
                 .map(f -> {
                     AnnotationMeta meta = null;
-                    Optional<AnnotationMeta> pmapping = f.getAnnotations().values().stream().filter(v -> v.getName().equalsIgnoreCase(PMapping.class.getSimpleName())).findFirst();
+                    Optional<AnnotationMeta> pmapping = f.getAnnotations().stream().filter(v -> v.getName().equalsIgnoreCase(PMapping.class.getSimpleName())).findFirst();
                     if (pmapping.isPresent()) {
                         meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
                     } else {

@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.metadata.creator.merger;
+package org.paranora.mapstruct.java.metadata.merger;
 
 import org.paranora.mapstruct.java.metadata.entity.Meta;
 

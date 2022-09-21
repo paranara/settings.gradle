@@ -44,12 +44,24 @@ public class TestMain {
 //        }
 
 //        testC();
-        testD();
+        testE();
 
         print("test_main_method_a  end");
     }
 
     public void testE() {
+
+        Map<String, String> mymap = new IdentityHashMap<String, String>() {
+            {
+                put("1", "one");
+                put("1", "two");
+            }
+        };
+
+        mymap.entrySet().stream().forEach(v -> {
+            print(v.getValue());
+        });
+
 
         print("end");
     }
@@ -94,28 +106,22 @@ public class TestMain {
         meta.setName("InterfaceGenerateTestA");
         meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
         meta.setSuperInterfaces(Arrays.asList(InterfaceMeta.builder().packageName("org.springframework.core.convert.converter").name("Converter").genericTypes(Arrays.asList(TypeName.get(Company.class), TypeName.get(Staff.class))).build()));
-        meta.setAnnotations(new HashMap<String, AnnotationMeta>() {
-            {
-                put(PMapper.class.getSimpleName(), AnnotationMeta.builder().name(PMapper.class.getSimpleName()).packageName(PMapper.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
+        meta.setAnnotations(Arrays.asList(AnnotationMeta.builder().name(PMapper.class.getSimpleName()).packageName(PMapper.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
                     {
                         put("name", AnnotationFieldMeta.builder().name("name").typeName(TypeName.get(String.class)).value("abc").build());
                         put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(Class.class)).value("org.paranora.mapstruct.starter.test.entity.Staff.class").build());
                     }
-                }).build());
-            }
-        });
+                }).build())
+            );
 
-        meta.setMethods(Arrays.asList(MethodMeta.builder().annotations(new HashMap<String, AnnotationMeta>() {
-                    {
-                        put(Mapping.class.getSimpleName(), AnnotationMeta.builder().name(Mapping.class.getSimpleName()).packageName(Mapping.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
+        meta.setMethods(Arrays.asList(MethodMeta.builder().annotations(Arrays.asList(AnnotationMeta.builder().name(Mapping.class.getSimpleName()).packageName(Mapping.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
                             {
                                 put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(String.class)).value("abc").build());
                                 put("source", AnnotationFieldMeta.builder().name("source").typeName(TypeName.get(String.class)).value("abc").build());
                                 put("nullValueCheckStrategy", AnnotationFieldMeta.builder().name("nullValueCheckStrategy").typeName(TypeName.get(NullValueCheckStrategy.class)).value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION).build());
                             }
-                        }).build());
-                    }
-                })
+                        }).build())
+                )
                 .parameters(Arrays.asList(ParameterMeta.builder().name("source").typeName(TypeName.get(Staff.class)).build()))
                 .accessLevels(Arrays.asList(Modifier.PUBLIC, Modifier.ABSTRACT)).returnType(TypeName.get(Staff.class)).name("convert")
 //                        .annotationClazs(Arrays.asList(Override.class))
@@ -130,12 +136,6 @@ public class TestMain {
         print("The End.");
     }
 
-    @org.paranora.mapstruct.annotations.PMapper(name = "abc", target = org.paranora.mapstruct.starter.test.entity.Staff.class)
-    public interface InterfaceGenerateTestA extends org.springframework.core.convert.converter.Converter<org.paranora.mapstruct.starter.test.entity.Company, org.paranora.mapstruct.starter.test.entity.Staff> {
-        @org.mapstruct.Mapping(target = "abc", source = "abc", nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
-        @org.mapstruct.Mapping(target = "abc1", source = "abc1", nullValueCheckStrategy = org.mapstruct.NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
-        org.paranora.mapstruct.starter.test.entity.Staff convert(org.paranora.mapstruct.starter.test.entity.Staff source);
-    }
 
     public void testB() {
         CodeBlock codeBlockA = CodeBlock.of("$T.$L", String.class, "a");

@@ -1,9 +1,8 @@
-package org.paranora.mapstruct.java.metadata.creator.merger;
+package org.paranora.mapstruct.java.metadata.merger;
 
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class DefaultAnnotationMetaMerger implements AnnotationMetaMerger {

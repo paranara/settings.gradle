@@ -26,8 +26,9 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         return annotationFieldMeta.getTypeName();
     }
 
-    protected AnnotationFieldMeta readAnnotationField(Map<String,AnnotationMeta> annotations, Function<AnnotationMeta, Boolean> filter, String fieldName) {
-        return annotations.values().stream()
+    protected AnnotationFieldMeta readAnnotationField(List<AnnotationMeta> annotations, Function<AnnotationMeta, Boolean> filter, String fieldName) {
+        return annotations
+                .stream()
                 .filter(a -> filter.apply(a))
                 .findFirst().get()
                 .getFields()
@@ -37,14 +38,14 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
                 .get();
     }
 
-    protected AnnotationFieldMeta readAnnotationField(Map<String,AnnotationMeta> annotations, Class annotationClass, String fieldName) {
+    protected AnnotationFieldMeta readAnnotationField(List<AnnotationMeta> annotations, Class annotationClass, String fieldName) {
         return readAnnotationField(annotations
                 , (a) -> a.getTypeName().equals(TypeName.get(annotationClass))
                 , fieldName);
     }
 
     protected String createInterfaceName(ClassMeta source, AnnotationFieldMeta annotationFieldMeta) {
-        String sourceName = source.getName().toLowerCase();
+        String sourceName = source.getName();
         String targetName = null;
         if (annotationFieldMeta.getValue() instanceof TypeMirror) {
             targetName = annotationFieldMeta.getValue().toString();
@@ -55,7 +56,7 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         }
         String first = targetName.substring(0, 1);
         String rest = targetName.substring(1);
-        targetName = String.format("%s%s", first.toUpperCase(), rest.toLowerCase());
+        targetName = String.format("%s%s", first.toUpperCase(), rest);
         if (!ObjectUtils.isEmpty(targetName)) {
             return createInterfaceName(sourceName, targetName);
         }
@@ -66,8 +67,8 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         return String.format("%sTo%sMapper", sourceName, targetName);
     }
 
-    protected String createPackageName(ClassMeta source){
-        return String.format("org.paranora.mapstruct.mapper");
+    protected String createPackageName(ClassMeta source) {
+        return String.format("org.paranora.mapstruct.starter.generated");
     }
 
     @Override

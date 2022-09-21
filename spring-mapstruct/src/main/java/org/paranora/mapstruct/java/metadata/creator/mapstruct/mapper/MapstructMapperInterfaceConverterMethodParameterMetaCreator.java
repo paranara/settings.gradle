@@ -10,7 +10,6 @@ import java.util.List;
 
 public class MapstructMapperInterfaceConverterMethodParameterMetaCreator extends AbsMapstructInterfaceMethodParameterMetaCreator {
 
-
     @Override
     public List<ParameterMeta> create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         ParameterMeta sourceParameter = ParameterMeta.builder()

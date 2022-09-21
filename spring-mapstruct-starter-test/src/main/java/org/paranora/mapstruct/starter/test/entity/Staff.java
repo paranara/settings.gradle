@@ -21,7 +21,6 @@ import java.util.Date;
 public class Staff {
 
     @PMapping(target = "staffName"
-            , targetClass = StaffRequestDTO.class
             , nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
             , dependsOn = {"a", "b"}
             , qualifiedBy = {PMapping.class, PMapper.class})
