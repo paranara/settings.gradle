@@ -13,6 +13,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMetaCreator {
@@ -23,7 +24,7 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
 
     protected TypeName getTargetClassType(ClassMeta source) {
         AnnotationFieldMeta fieldMeta = readAnnotationField(source.getAnnotations(), PMapper.class, "target");
-        TypeName tn=null;
+        TypeName tn = null;
         if (fieldMeta.getValue() instanceof TypeMirror) {
             tn = TypeName.get((TypeMirror) fieldMeta.getValue());
         }
@@ -51,8 +52,8 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
                 , fieldName);
     }
 
-    protected String createInterfaceName(ClassMeta source,InterfaceMeta meta) {
-        Object targetType=meta.getSuperInterfaces().get(0).getGenericTypes().get(1);
+    protected String createInterfaceName(ClassMeta source, InterfaceMeta meta) {
+        Object targetType = meta.getSuperInterfaces().get(0).getGenericTypes().get(1);
         String sourceName = source.getName();
         String targetName = targetType.toString();
         targetName = targetName.substring(targetName.lastIndexOf(".") + 1);
@@ -70,7 +71,15 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
     }
 
     protected String createPackageName(ClassMeta source) {
-        return String.format("org.paranora.mapstruct.starter.generated");
+        Optional<AnnotationMeta> opt = source.getAnnotations().stream().filter(a -> a.getName().equalsIgnoreCase(PMapper.class.getSimpleName())).findFirst();
+        String packageName = "org.paranora.mapstruct.starter.generated";
+        if (opt.isPresent()) {
+            Optional<AnnotationFieldMeta> fieldMetaOpt = opt.get().getFields().values().stream().filter(f -> f.getName().equalsIgnoreCase("packageName")).findFirst();
+            if (fieldMetaOpt.isPresent()) {
+                packageName = fieldMetaOpt.get().getValue().toString();
+            }
+        }
+        return packageName;
     }
 
     @Override
@@ -80,7 +89,7 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         meta.setPackageName(createPackageName(source));
         meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
         meta.setSuperInterfaces(createSuperInterfaces(source));
-        meta.setName(createInterfaceName(source,meta));
+        meta.setName(createInterfaceName(source, meta));
 
         return meta;
     }

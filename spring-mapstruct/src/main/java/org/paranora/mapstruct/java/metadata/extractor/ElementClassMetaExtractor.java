@@ -4,5 +4,5 @@ import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 
 import javax.lang.model.element.TypeElement;
 
-public interface ElementClassMetaExtractor extends ElementMetaExtractor<TypeElement, ClassMeta> {
+public interface ElementClassMetaExtractor extends ElementTypeMetaExtractor<ClassMeta> {
 }

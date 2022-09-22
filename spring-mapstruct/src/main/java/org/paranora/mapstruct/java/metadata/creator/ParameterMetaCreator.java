@@ -5,5 +5,5 @@ import org.paranora.mapstruct.java.metadata.entity.ParameterMeta;
 
 import java.util.List;
 
-public interface ParameterMetaCreator<S extends Object, TP extends Meta> extends MetaCreator<S, List<ParameterMeta>, TP> {
+public interface ParameterMetaCreator<S extends Object, TP extends Meta> extends MetaMultipleCreator<S, ParameterMeta, TP> {
 }

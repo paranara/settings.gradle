@@ -10,7 +10,7 @@ public @interface PMapper {
 
     String name() default "source";
 
-    String packageName() default "mapstruct-plus";
+    String packageName() default "org.paranora.mapstruct.starter.generated";
 
     Class<?>[] uses() default {};
 }

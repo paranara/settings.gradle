@@ -10,11 +10,6 @@ import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 public class MapstructMapperInterfaceConverterMethodMetaCreatorFactory implements MethodMetaCreatorFactory<ClassMeta, InterfaceMeta> {
 
     @Override
-    public AnnotationMetaCreator<ClassMeta, InterfaceMeta> annotationCreator() {
-        return new MapstructMapperInterfaceConverterMethodAnnotationMetaCreator();
-    }
-
-    @Override
     public MethodMetaCreator<ClassMeta, InterfaceMeta> methodCreator() {
         return new MapstructMapperInterfaceConverterMethodMetaCreator();
     }
@@ -24,4 +19,8 @@ public class MapstructMapperInterfaceConverterMethodMetaCreatorFactory implement
         return new MapstructMapperInterfaceConverterMethodParameterMetaCreator();
     }
 
+    @Override
+    public AnnotationMetaCreator<ClassMeta, InterfaceMeta> annotationCreator() {
+        return new MapstructMapperInterfaceConverterMethodAnnotationMetaCreator();
+    }
 }

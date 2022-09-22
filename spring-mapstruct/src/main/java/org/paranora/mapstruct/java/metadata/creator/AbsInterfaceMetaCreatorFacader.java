@@ -25,13 +25,14 @@ public abstract class AbsInterfaceMetaCreatorFacader<S extends Object, TP extend
     public InterfaceMeta create(S source, TP parent, Class<?> clasz) {
         InterfaceMeta meta = factory.InterfaceCreator().create(source, null, clasz);
         TP interfaceMeta = (TP) meta;
-        meta.setAnnotations(factory.annotationCreator().create(source, interfaceMeta, clasz));
+        meta.setAnnotations(factory.annotationCreator().creates(source, interfaceMeta, clasz));
+
         meta.setMethods(factory.methodCreatorFactorys()
                 .stream()
                 .map(mf -> {
                     MethodMeta methodMeta = mf.methodCreator().create(source, interfaceMeta, clasz);
-                    methodMeta.setParameters(mf.parameterCreator().create(source, interfaceMeta, clasz));
-                    methodMeta.setAnnotations(mf.annotationCreator().create(source, interfaceMeta, clasz));
+                    methodMeta.setParameters(mf.parameterCreator().creates(source, interfaceMeta, clasz));
+                    methodMeta.setAnnotations(mf.annotationCreator().creates(source, interfaceMeta, clasz));
                     return methodMeta;
                 })
                 .collect(Collectors.toList())

@@ -37,7 +37,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
     protected InterfaceMetaCreator<ClassMeta, InterfaceMeta> interfaceMetaCreator = new MapstructMapperInterfaceMetaCreatorFacader();
 
-    protected InterfaceJavapoetGenerator interfaceJavapoetGenerator=new DefaultInterfaceGenerator();
+    protected InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
@@ -56,18 +56,17 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
         processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
             ElementClassMetaExtractor elementClassDefinitionExtractor = new DefaultElementClassMetaExtractor();
-            List<ClassMeta> definitions = elementClassDefinitionExtractor.extract((TypeElement) element);
+            ClassMeta clz = elementClassDefinitionExtractor.extract((TypeElement) element);
 
-            definitions.forEach(clz -> {
+            InterfaceMeta interfaceMeta = interfaceMetaCreator.create(clz, null, null);
+            TypeSpec typeSpec = interfaceJavapoetGenerator.create(interfaceMeta);
 
-                InterfaceMeta interfaceMeta = interfaceMetaCreator.create(clz, null, null);
-                TypeSpec typeSpec=interfaceJavapoetGenerator.create(interfaceMeta);
+            print("InterfaceMeta -> TypeSpec : begin");
 
-                print("InterfaceMeta -> TypeSpec : begin");
+            print(typeSpec.toString());
 
-                print(typeSpec.toString());
+            print("InterfaceMeta -> TypeSpec : end");
 
-                print("InterfaceMeta -> TypeSpec : end");
 //                interfaceMeta.getAnnotations().forEach((at) -> {
 //                    print("package : %s , class : %s , annotation  : %s  , class : %s"
 //                            , clz.getPackageName()
@@ -116,7 +115,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
 //                clz.getFields().forEach((fk, f) -> {
 //                    print("package : %s , class %s , field : %s ", clz.getPackageName(), clz.getName(), f.getName());
-//                    f.getAnnotations().forEach((atk, at) -> {
+//                    f.getAnnotations().forEach((at) -> {
 //                        at.getFields().forEach((atfk, atf) -> {
 //                            print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
 //                                    , at.getPackageName()
@@ -129,69 +128,68 @@ public class MapstructStarterProcessor extends AbsProcessor {
 //                        });
 //                    });
 //                });
-                        });
-            });
-            return false;
-        }
-
-
-        protected Boolean orderIsCreated = false;
-
-        public void generateOrderClass (Filer filer) throws ClassNotFoundException {
-            String packageName = "org.paranora.spring.test.component.entity";
-            String className = "Order";
-
-            FieldSpec itemName = FieldSpec.builder(String.class, "itemName")
-                    .addModifiers(Modifier.PROTECTED)
-                    .initializer("$S", "Paranora")
-                    .build();
-
-            FieldSpec claz = FieldSpec.builder(TypeName.get(Class.class), "itemClass")
-                    .addModifiers(Modifier.PROTECTED)
-                    .initializer("$L", "org.paranora.spring.test.component.entity.OrderItem.class")
-                    .build();
-
-            TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                    .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
-                    .addField(itemName)
-                    .addField(claz)
-                    .build();
-
-            JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
-                    .build();
-            try {
-                javaFile.writeTo(filer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public void generateOrderItemClass (Filer filer){
-            String packageName = "org.paranora.spring.test.component.entity";
-            String className = "OrderItem";
-
-            FieldSpec itemName = FieldSpec.builder(String.class, "name")
-                    .addModifiers(Modifier.PROTECTED)
-                    .initializer("$S", "Paranora")
-                    .build();
-
-            TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                    .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
-                    .addField(itemName)
-                    .build();
-
-            JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
-                    .build();
-            try {
-                javaFile.writeTo(filer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        @Override
-        protected String prefix () {
-            return "PM.Process entry. ";
-        }
-
+        });
+        return false;
     }
+
+
+    protected Boolean orderIsCreated = false;
+
+    public void generateOrderClass(Filer filer) throws ClassNotFoundException {
+        String packageName = "org.paranora.spring.test.component.entity";
+        String className = "Order";
+
+        FieldSpec itemName = FieldSpec.builder(String.class, "itemName")
+                .addModifiers(Modifier.PROTECTED)
+                .initializer("$S", "Paranora")
+                .build();
+
+        FieldSpec claz = FieldSpec.builder(TypeName.get(Class.class), "itemClass")
+                .addModifiers(Modifier.PROTECTED)
+                .initializer("$L", "org.paranora.spring.test.component.entity.OrderItem.class")
+                .build();
+
+        TypeSpec typeSpec = TypeSpec.classBuilder(className)
+                .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
+                .addField(itemName)
+                .addField(claz)
+                .build();
+
+        JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
+                .build();
+        try {
+            javaFile.writeTo(filer);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void generateOrderItemClass(Filer filer) {
+        String packageName = "org.paranora.spring.test.component.entity";
+        String className = "OrderItem";
+
+        FieldSpec itemName = FieldSpec.builder(String.class, "name")
+                .addModifiers(Modifier.PROTECTED)
+                .initializer("$S", "Paranora")
+                .build();
+
+        TypeSpec typeSpec = TypeSpec.classBuilder(className)
+                .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
+                .addField(itemName)
+                .build();
+
+        JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
+                .build();
+        try {
+            javaFile.writeTo(filer);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected String prefix() {
+        return "PM.Process entry. ";
+    }
+
+}

@@ -6,7 +6,6 @@ import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
 
 import javax.lang.model.element.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,9 @@ public class DefaultElementAnnotationMetaExtractor extends AbsAnnotationMetaExtr
         init();
     }
 
+    @Override
     protected void init() {
+        super.init();
         this.annotationValueVisitor = defaultAnnotationValueVisitor();
     }
 

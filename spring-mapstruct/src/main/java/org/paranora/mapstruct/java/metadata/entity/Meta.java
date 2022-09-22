@@ -13,4 +13,5 @@ public class Meta {
     protected String packageName;
     protected String name;
     protected TypeName typeName;
+    protected Meta parent;
 }

@@ -1,76 +1,41 @@
 package org.paranora.mapstruct.java.metadata.extractor;
 
 import com.squareup.javapoet.TypeName;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
 
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-public class DefaultElementClassMetaExtractor implements ElementClassMetaExtractor {
-
-    protected ElementAnnotationMetaExtractor annotationDefinitionExtractor;
-    protected ElementFieldMetaExtractor fieldDefinitionExtractor;
-
-
-    protected Elements elementUtils;
-    protected Types typesUtils;
-
-    public DefaultElementClassMetaExtractor(Types typesUtils, Elements elementUtils) {
-        this();
-        this.typesUtils = typesUtils;
-        this.elementUtils = elementUtils;
-    }
-
-    public DefaultElementClassMetaExtractor() {
-        init();
-    }
-
-    public void init() {
-        this.annotationDefinitionExtractor = defaultAnnotationDefinitionExtractor();
-        this.fieldDefinitionExtractor = defaultFieldDefinitionExtractor();
-    }
-
-    protected ElementAnnotationMetaExtractor defaultAnnotationDefinitionExtractor() {
-        return new DefaultElementAnnotationMetaExtractor();
-    }
-
-    protected ElementFieldMetaExtractor defaultFieldDefinitionExtractor() {
-        return new DefaultElementFieldMetaExtractor(this.annotationDefinitionExtractor);
-    }
-
-    protected String readPackageName(TypeElement source) {
-        if (source instanceof TypeElement) {
-            TypeElement typeElement = (TypeElement) source;
-            String name = typeElement.getQualifiedName().toString();
-            return name.substring(0, name.lastIndexOf('.'));
-        }
-        return null;
-    }
+public class DefaultElementClassMetaExtractor extends AbsElementTypeMetaExtractor {
 
     @Override
-    public List<ClassMeta> extract(TypeElement source) {
+    protected ClassMeta extractHandler(TypeElement source) {
         if (null == source) return null;
-        List<ClassMeta> definitions = new ArrayList<>();
-        ClassMeta definition = ClassMeta.builder()
+        ClassMeta meta = ClassMeta.builder()
                 .packageName(readPackageName(source))
                 .name(source.getSimpleName().toString())
                 .typeName(TypeName.get(source.asType()))
-                .annotations(annotationDefinitionExtractor.extract(source))
-                .fields(fieldDefinitionExtractor.extract(source).stream().collect(
-                        Collectors.toMap(FieldMeta::getName
-                                , fm -> fm
-                                , (key1, key2) -> key2
-                        )))
                 .build();
-        definitions.add(definition);
-        return definitions;
+        return meta;
     }
 
+    @Override
+    protected List<MetaExtractor> createSubExtractors() {
+        List<MetaExtractor> metaExtractors = super.createSubExtractors();
+        metaExtractors.add(new DefaultElementFieldMetaExtractor());
+        return metaExtractors;
+    }
+
+    @Override
+    protected void extractSubsHandler(TypeElement source,MetaExtractor metaExtractor, ClassMeta parent) {
+        if (metaExtractor instanceof ElementAnnotationMetaExtractor) {
+            parent.setAnnotations(((ElementAnnotationMetaExtractor)metaExtractor).extracts(source));
+        } else if (metaExtractor instanceof ElementFieldMetaExtractor) {
+            parent.setFields(((ElementFieldMetaExtractor)metaExtractor).extracts(source).stream().collect(Collectors.toMap(FieldMeta::getName, o -> o, (key1, key2) -> key2)));
+        } else{
+
+        }
+    }
 }

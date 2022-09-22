@@ -38,7 +38,7 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
 
 
     @Override
-    public List<AnnotationMeta> create(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
+    public List<AnnotationMeta> creates(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
         List<AnnotationMeta> metas = source.getFields()
                 .values()
                 .stream()
