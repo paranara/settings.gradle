@@ -1,7 +1,6 @@
 package org.paranora.mapstruct.java.metadata.converter;
 
 import com.squareup.javapoet.ArrayTypeName;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import lombok.Synchronized;
@@ -57,9 +56,6 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
                                         .build());
                     }
                 });
-        if (meta.getFields().size() < 1) {
-            return null;
-        }
         return meta;
     }
 

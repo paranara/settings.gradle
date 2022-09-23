@@ -11,9 +11,10 @@ import java.util.List;
 public class DefaultElementFieldMetaExtractor extends AbsElementFieldMetaExtractor {
 
     @Override
-    protected void extractSubExtractorHandler(TypeElement source, MetaExtractor metaExtractor, FieldMeta parent) {
+    protected void extractSubHandler(TypeElement source, MetaExtractor metaExtractor, FieldMeta meta) {
         if (metaExtractor instanceof ElementAnnotationMetaExtractor) {
-            parent.setAnnotations(((ElementAnnotationMetaExtractor)metaExtractor).extracts(source));
+            ElementAnnotationMetaExtractor extractor = (ElementAnnotationMetaExtractor) metaExtractor;
+            meta.setAnnotations(extractor.extracts(source.getEnclosedElements().stream().filter(e -> ElementKind.FIELD == e.getKind() && e.getSimpleName().contentEquals(meta.getName())).findFirst().get()));
         }
     }
 

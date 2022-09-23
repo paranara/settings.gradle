@@ -5,7 +5,6 @@ import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
 
 import javax.lang.model.element.TypeElement;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class DefaultElementClassMetaExtractor extends AbsElementTypeMetaExtractor {
@@ -22,17 +21,17 @@ public class DefaultElementClassMetaExtractor extends AbsElementTypeMetaExtracto
     }
 
     @Override
-    protected List<MetaExtractor> initSubExtractors() {
-        super.initSubExtractors().add(new DefaultElementFieldMetaExtractor());
-        return subExtractors();
+    protected void createSubExtractors() {
+        super.createSubExtractors();
+        this.subExtractors.add(new DefaultElementFieldMetaExtractor());
     }
 
     @Override
-    protected void extractSubExtractorHandler(TypeElement source,MetaExtractor metaExtractor, ClassMeta parent) {
+    protected void extractSubHandler(TypeElement source,MetaExtractor metaExtractor, ClassMeta meta) {
         if (metaExtractor instanceof ElementAnnotationMetaExtractor) {
-            parent.setAnnotations(((ElementAnnotationMetaExtractor)metaExtractor).extracts(source));
+            meta.setAnnotations(((ElementAnnotationMetaExtractor)metaExtractor).extracts(source));
         } else if (metaExtractor instanceof ElementFieldMetaExtractor) {
-            parent.setFields(((ElementFieldMetaExtractor)metaExtractor).extracts(source).stream().collect(Collectors.toMap(FieldMeta::getName, o -> o, (key1, key2) -> key2)));
+            meta.setFields(((ElementFieldMetaExtractor)metaExtractor).extracts(source).stream().collect(Collectors.toMap(FieldMeta::getName, o -> o, (key1, key2) -> key2)));
         } else{
 
         }

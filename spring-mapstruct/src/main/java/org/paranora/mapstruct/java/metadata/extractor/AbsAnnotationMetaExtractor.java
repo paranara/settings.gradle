@@ -21,9 +21,8 @@ public abstract class AbsAnnotationMetaExtractor<S extends Object, AOT extends O
     public abstract List<AOT> getAnnotations(S source);
 
     @Override
-    protected List<MetaExtractor> initSubExtractors() {
+    protected void createSubExtractors() {
         this.subExtractors = new ArrayList<>();
-        return this.subExtractors;
     }
 
     @Override

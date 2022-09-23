@@ -23,17 +23,17 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
                         .findFirst().get()
                 , Mapper.class);
 
-        AnnotationMeta decorated = AnnotationMeta.builder()
-                .name(DecoratedWith.class.getSimpleName())
-                .packageName(DecoratedWith.class.getPackage().getName())
-                .fields(Arrays.asList(AnnotationFieldMeta.builder()
-                                .name("value")
-                                .typeName(TypeName.get(Class.class))
-                                .value(String.format("%s.%sDecorator.class", parent.getPackageName(), parent.getName()))
-                                .build())
-                        .stream()
-                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, o -> o, (key1, key2) -> key2)))
-                .build();
+//        AnnotationMeta decorated = AnnotationMeta.builder()
+//                .name(DecoratedWith.class.getSimpleName())
+//                .packageName(DecoratedWith.class.getPackage().getName())
+//                .fields(Arrays.asList(AnnotationFieldMeta.builder()
+//                                .name("value")
+//                                .typeName(TypeName.get(Class.class))
+//                                .value(String.format("%s.%sDecorator.class", parent.getPackageName(), parent.getName()))
+//                                .build())
+//                        .stream()
+//                        .collect(Collectors.toMap(AnnotationFieldMeta::getName, o -> o, (key1, key2) -> key2)))
+//                .build();
 
         AnnotationMeta mapper = AnnotationMeta.builder()
                 .name(Mapper.class.getSimpleName())
@@ -61,7 +61,7 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
 
         AnnotationMeta resultMapper = annotationMetaMerger.merge(mapper, convertMapper);
 
-        return Arrays.asList(resultMapper,decorated);
+        return Arrays.asList(resultMapper);
     }
 
 }

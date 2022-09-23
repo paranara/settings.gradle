@@ -148,6 +148,7 @@ subprojects {
 
         annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
         annotationProcessor group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: lombokMapstructBindingVersion
+        annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor',version: mapstructVersion
 
         compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
     }

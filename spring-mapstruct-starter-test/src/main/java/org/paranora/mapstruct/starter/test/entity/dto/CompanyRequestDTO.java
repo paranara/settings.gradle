@@ -11,5 +11,5 @@ public class CompanyRequestDTO {
 
     private String companyName;
     private String companyFax;
-    private String companyAddress;
+    private String address;
 }

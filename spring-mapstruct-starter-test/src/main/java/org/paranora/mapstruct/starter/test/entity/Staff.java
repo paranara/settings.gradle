@@ -19,14 +19,16 @@ import java.util.Date;
 @NoArgsConstructor
 public class Staff {
 
-    @PMapping(target = "staffName"
-            , nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION
-            , dependsOn = {"a", "b"}
-            , qualifiedBy = {PMapping.class, PMapper.class})
+    @PMapping(target = "staffName", nullValueCheckStrategy = NullValueCheckStrategy.ON_IMPLICIT_CONVERSION)
     private String name;
+
+    @PMapping
     private Integer age;
+
     private Integer sex;
+
     private Company company;
+
     private Date birth;
 
 }

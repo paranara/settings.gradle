@@ -1,19 +1,12 @@
 package org.paranora.mapstruct.processor;
 
 import com.squareup.javapoet.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.paranora.mapstruct.annotations.PMapper;
-import org.paranora.mapstruct.annotations.PMapping;
 import org.paranora.mapstruct.java.generator.poet.DefaultInterfaceGenerator;
 import org.paranora.mapstruct.java.generator.poet.InterfaceJavapoetGenerator;
-import org.paranora.mapstruct.java.metadata.converter.DefaultAnnotationMetaConverter;
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
-import org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper.MapstructMapperInterfaceMetaCreatorFacader;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
+import org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper.facader.MapstructMapperInterfaceMetaCreatorFacader;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
-import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import org.paranora.mapstruct.java.metadata.extractor.DefaultElementClassMetaExtractor;
 import org.paranora.mapstruct.java.metadata.extractor.ElementClassMetaExtractor;
@@ -26,7 +19,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @SupportedAnnotationTypes(MapstructStarterProcessor.PMapperAnnotationName)
@@ -60,10 +52,16 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
             InterfaceMeta interfaceMeta = interfaceMetaCreator.create(clz, null, null);
             TypeSpec typeSpec = interfaceJavapoetGenerator.create(interfaceMeta);
-
             print("InterfaceMeta -> TypeSpec : begin");
-
             print(typeSpec.toString());
+
+            try {
+                JavaFile.builder(interfaceMeta.getPackageName(), typeSpec)
+                        .build()
+                        .writeTo(filer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             print("InterfaceMeta -> TypeSpec : end");
 
@@ -85,7 +83,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
 //                    print("\r\n\r\n");
 //                });
 //
-//                print("=============================================.");
+            print("=============================================.");
 //                interfaceMeta.getMethods()
 //                        .stream()
 //                        .forEach(m -> {

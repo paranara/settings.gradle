@@ -14,37 +14,30 @@ public abstract class AbsMetaExtractor<S extends Object, D extends Meta> impleme
     }
 
     protected void init() {
-        initSubExtractors();
+        createSubExtractors();
     }
-
-    protected List<MetaExtractor> initSubExtractors() {
-        subExtractors().add(new DefaultElementAnnotationMetaExtractor());
-        return this.subExtractors;
-    }
-
-    protected List<MetaExtractor> subExtractors() {
+    protected void createSubExtractors() {
         if (null == this.subExtractors) {
             this.subExtractors = new ArrayList<>();
         }
-        return this.subExtractors;
+        this.subExtractors.add(new DefaultElementAnnotationMetaExtractor());
     }
 
-    protected void extractSubExtractor(S source, D parent) {
-        if (null == this.subExtractors || this.subExtractors.size() < 1 || null == parent) return;
+    protected void extractSub(S source, D meta) {
+        if (null == this.subExtractors || this.subExtractors.size() < 1 || null == meta) return;
         this.subExtractors.forEach(m -> {
-            extractSubExtractorHandler(source, m, parent);
+            extractSubHandler(source, m, meta);
         });
     }
 
-    protected void extractSubExtractorHandler(S source, MetaExtractor metaExtractor, D parent) {
-    }
+    protected void extractSubHandler(S source, MetaExtractor metaExtractor, D parent) {}
 
     protected abstract <TT> TT extractHandler(S source);
 
     @Override
     public D extract(S source) {
         D meta = extractHandler(source);
-        extractSubExtractor(source, meta);
+        extractSub(source, meta);
         return meta;
     }
 }

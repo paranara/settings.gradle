@@ -14,4 +14,5 @@ public class Meta {
     protected String name;
     protected TypeName typeName;
     protected Meta parent;
+
 }

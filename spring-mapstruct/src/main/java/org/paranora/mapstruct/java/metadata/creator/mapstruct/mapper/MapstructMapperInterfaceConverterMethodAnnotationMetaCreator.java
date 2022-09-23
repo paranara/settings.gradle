@@ -10,9 +10,9 @@ import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 
-import java.util.Arrays;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,33 +47,29 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                     Optional<AnnotationMeta> pmapping = f.getAnnotations().stream().filter(v -> v.getName().equalsIgnoreCase(PMapping.class.getSimpleName())).findFirst();
                     if (pmapping.isPresent()) {
                         meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
-                    } else {
-                        meta = AnnotationMeta.builder()
-                                .name(Mapping.class.getSimpleName())
-                                .packageName(Mapping.class.getPackage().getName())
-                                .fields(Arrays.asList(AnnotationFieldMeta.builder()
-                                                        .name("target")
-                                                        .packageName(String.class.getPackage().getName())
-                                                        .typeName(TypeName.get(String.class))
-                                                        .value(f.getName())
-                                                        .build()
-                                                )
-                                                .stream()
-                                                .collect(Collectors.toMap(AnnotationFieldMeta::getName, afm -> afm, (key1, key2) -> key2))
-                                )
+                        if (!meta.getFields().containsKey("target")) {
+                            AnnotationFieldMeta targetField = AnnotationFieldMeta.builder()
+                                    .name("target")
+                                    .packageName(String.class.getPackage().getName())
+                                    .typeName(TypeName.get(String.class))
+                                    .value(f.getName())
+                                    .build();
+                            meta.getFields().put(targetField.getName(), targetField);
+                        }
+
+                        AnnotationFieldMeta sourceField = AnnotationFieldMeta.builder()
+                                .name("source")
+                                .packageName(String.class.getPackage().getName())
+                                .typeName(TypeName.get(String.class))
+                                .value(f.getName())
                                 .build();
+                        meta.getFields().put(sourceField.getName(), sourceField);
                     }
-                    AnnotationFieldMeta fieldMeta = AnnotationFieldMeta.builder()
-                            .name("source")
-                            .packageName(String.class.getPackage().getName())
-                            .typeName(TypeName.get(String.class))
-                            .value(f.getName())
-                            .build();
-                    meta.getFields().put(fieldMeta.getName(), fieldMeta);
+
                     return meta;
                 })
+                .filter(m -> null != m && m.getFields().size() > 0)
                 .collect(Collectors.toList());
-
         return metas;
     }
 }
