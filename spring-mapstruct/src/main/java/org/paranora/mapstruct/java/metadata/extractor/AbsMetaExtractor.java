@@ -30,7 +30,7 @@ public abstract class AbsMetaExtractor<S extends Object, D extends Meta> impleme
         });
     }
 
-    protected void extractSubHandler(S source, MetaExtractor metaExtractor, D parent) {}
+    protected void extractSubHandler(S source, MetaExtractor metaExtractor, D meta) {}
 
     protected abstract <TT> TT extractHandler(S source);
 
