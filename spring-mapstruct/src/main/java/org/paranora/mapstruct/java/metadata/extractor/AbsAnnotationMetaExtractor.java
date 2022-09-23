@@ -2,7 +2,6 @@ package org.paranora.mapstruct.java.metadata.extractor;
 
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
-import org.paranora.mapstruct.java.metadata.entity.Meta;
 
 import java.util.ArrayList;
 import java.util.List;
