@@ -11,24 +11,24 @@ import java.util.List;
 public class DefaultElementFieldMetaExtractor extends AbsElementFieldMetaExtractor {
 
     @Override
-    protected void extractSubsHandler(TypeElement source, MetaExtractor metaExtractor, FieldMeta parent) {
+    protected void extractSubExtractorHandler(TypeElement source, MetaExtractor metaExtractor, FieldMeta parent) {
         if (metaExtractor instanceof ElementAnnotationMetaExtractor) {
             parent.setAnnotations(((ElementAnnotationMetaExtractor)metaExtractor).extracts(source));
         }
     }
 
     @Override
-    protected List<FieldMeta> extractsHandler(TypeElement source) {
-        List<FieldMeta> definitions = new ArrayList<>();
+    protected <TT> TT extractHandler(TypeElement source) {
+        List<FieldMeta> metas = new ArrayList<>();
         source.getEnclosedElements()
                 .stream()
                 .filter(e -> ElementKind.FIELD == e.getKind())
                 .forEach(e -> {
-                    definitions.add(FieldMeta.builder()
+                    metas.add(FieldMeta.builder()
                             .name(e.getSimpleName().toString())
                             .typeName(TypeName.get(e.asType()))
                             .build());
                 });
-        return definitions;
+        return (TT) metas;
     }
 }

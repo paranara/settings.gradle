@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbsAnnotationMetaExtractor<S extends Object, AOT extends Object> extends AbsMetaMultipleExtractor<S,AnnotationMeta> implements AnnotationMetaExtractor<S> {
+public abstract class AbsAnnotationMetaExtractor<S extends Object, AOT extends Object> extends AbsMetaMultipleExtractor<S, AnnotationMeta> implements AnnotationMetaExtractor<S> {
 
     public AnnotationMeta extract(S source, AOT annotationObj) {
         AnnotationMeta definition = new AnnotationMeta();
@@ -16,23 +16,24 @@ public abstract class AbsAnnotationMetaExtractor<S extends Object, AOT extends O
         return definition;
     }
 
-    protected abstract Map<String,AnnotationFieldMeta> extractFields(S source, AOT annotationObj);
+    protected abstract Map<String, AnnotationFieldMeta> extractFields(S source, AOT annotationObj);
 
     public abstract List<AOT> getAnnotations(S source);
 
     @Override
-    protected List<MetaExtractor> createSubExtractors() {
-        return new ArrayList<>();
+    protected List<MetaExtractor> initSubExtractors() {
+        this.subExtractors = new ArrayList<>();
+        return this.subExtractors;
     }
 
     @Override
-    protected List<AnnotationMeta> extractsHandler(S source) {
-        List<AnnotationMeta> definitions = new ArrayList<>();
+    protected <TT> TT extractHandler(S source) {
+        List<AnnotationMeta> metas = new ArrayList<>();
         List<AOT> annotations = getAnnotations(source);
         annotations.forEach(a -> {
-            definitions.add(extract(source, a));
+            metas.add(extract(source, a));
         });
-        return definitions;
+        return (TT) metas;
     }
 
 }

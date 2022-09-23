@@ -22,14 +22,13 @@ public class DefaultElementClassMetaExtractor extends AbsElementTypeMetaExtracto
     }
 
     @Override
-    protected List<MetaExtractor> createSubExtractors() {
-        List<MetaExtractor> metaExtractors = super.createSubExtractors();
-        metaExtractors.add(new DefaultElementFieldMetaExtractor());
-        return metaExtractors;
+    protected List<MetaExtractor> initSubExtractors() {
+        super.initSubExtractors().add(new DefaultElementFieldMetaExtractor());
+        return subExtractors();
     }
 
     @Override
-    protected void extractSubsHandler(TypeElement source,MetaExtractor metaExtractor, ClassMeta parent) {
+    protected void extractSubExtractorHandler(TypeElement source,MetaExtractor metaExtractor, ClassMeta parent) {
         if (metaExtractor instanceof ElementAnnotationMetaExtractor) {
             parent.setAnnotations(((ElementAnnotationMetaExtractor)metaExtractor).extracts(source));
         } else if (metaExtractor instanceof ElementFieldMetaExtractor) {
