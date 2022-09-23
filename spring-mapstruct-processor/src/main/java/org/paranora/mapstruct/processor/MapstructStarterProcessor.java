@@ -11,7 +11,6 @@ import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import org.paranora.mapstruct.java.metadata.extractor.DefaultElementClassMetaExtractor;
 import org.paranora.mapstruct.java.metadata.extractor.ElementClassMetaExtractor;
 
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -19,7 +18,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import java.io.IOException;
 import java.util.*;
-
 
 @SupportedAnnotationTypes(MapstructStarterProcessor.PMapperAnnotationName)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -33,19 +31,6 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
-        print("entry.");
-
-        if (!orderIsCreated) {
-            try {
-                generateOrderItemClass(filer);
-                generateOrderClass(filer);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            } finally {
-                orderIsCreated = true;
-            }
-        }
-
         processPresentAnnotation(annotations, roundEnvironment, PMapper.class, element -> {
             ElementClassMetaExtractor elementClassDefinitionExtractor = new DefaultElementClassMetaExtractor();
             ClassMeta clz = elementClassDefinitionExtractor.extract((TypeElement) element);
@@ -128,61 +113,6 @@ public class MapstructStarterProcessor extends AbsProcessor {
 //                });
         });
         return false;
-    }
-
-
-    protected Boolean orderIsCreated = false;
-
-    public void generateOrderClass(Filer filer) throws ClassNotFoundException {
-        String packageName = "org.paranora.spring.test.component.entity";
-        String className = "Order";
-
-        FieldSpec itemName = FieldSpec.builder(String.class, "itemName")
-                .addModifiers(Modifier.PROTECTED)
-                .initializer("$S", "Paranora")
-                .build();
-
-        FieldSpec claz = FieldSpec.builder(TypeName.get(Class.class), "itemClass")
-                .addModifiers(Modifier.PROTECTED)
-                .initializer("$L", "org.paranora.spring.test.component.entity.OrderItem.class")
-                .build();
-
-        TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
-                .addField(itemName)
-                .addField(claz)
-                .build();
-
-        JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
-                .build();
-        try {
-            javaFile.writeTo(filer);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void generateOrderItemClass(Filer filer) {
-        String packageName = "org.paranora.spring.test.component.entity";
-        String className = "OrderItem";
-
-        FieldSpec itemName = FieldSpec.builder(String.class, "name")
-                .addModifiers(Modifier.PROTECTED)
-                .initializer("$S", "Paranora")
-                .build();
-
-        TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                .addModifiers(javax.lang.model.element.Modifier.PUBLIC)
-                .addField(itemName)
-                .build();
-
-        JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
-                .build();
-        try {
-            javaFile.writeTo(filer);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
