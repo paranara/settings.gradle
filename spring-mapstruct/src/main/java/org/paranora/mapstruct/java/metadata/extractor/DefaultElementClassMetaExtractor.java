@@ -2,10 +2,10 @@ package org.paranora.mapstruct.java.metadata.extractor;
 
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
-import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
 
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import java.util.stream.Collectors;
+import javax.lang.model.element.VariableElement;
 
 public class DefaultElementClassMetaExtractor extends AbsElementTypeMetaExtractor {
 
@@ -27,12 +27,17 @@ public class DefaultElementClassMetaExtractor extends AbsElementTypeMetaExtracto
     }
 
     @Override
-    protected void extractSubHandler(TypeElement source,MetaExtractor metaExtractor, ClassMeta meta) {
+    protected void extractSubHandler(TypeElement source, MetaExtractor metaExtractor, ClassMeta meta) {
         if (metaExtractor instanceof ElementAnnotationMetaExtractor) {
-            meta.setAnnotations(((ElementAnnotationMetaExtractor)metaExtractor).extracts(source));
+            meta.setAnnotations(((ElementAnnotationMetaExtractor) metaExtractor).extracts(source));
         } else if (metaExtractor instanceof ElementFieldMetaExtractor) {
-            meta.setFields(((ElementFieldMetaExtractor)metaExtractor).extracts(source).stream().collect(Collectors.toMap(FieldMeta::getName, o -> o, (key1, key2) -> key2)));
-        } else{
+            source.getEnclosedElements()
+                    .stream()
+                    .filter(e -> ElementKind.FIELD == e.getKind())
+                    .forEach(e -> {
+                        meta.getFields().put(e.getSimpleName().toString(),((ElementFieldMetaExtractor) metaExtractor).extract((VariableElement) e));
+                    });
+        } else {
 
         }
     }
