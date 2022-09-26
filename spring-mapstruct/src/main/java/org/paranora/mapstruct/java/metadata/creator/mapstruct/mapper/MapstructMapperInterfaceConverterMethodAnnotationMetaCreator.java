@@ -47,18 +47,18 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                     Optional<AnnotationMeta> pmapping = f.getAnnotations().stream().filter(v -> v.getName().equalsIgnoreCase(PMapping.class.getSimpleName())).findFirst();
                     if (pmapping.isPresent()) {
                         meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
-                        if (!meta.getFields().containsKey("target")) {
+                        if (!meta.getFields().containsKey(PMapping.TARGET)) {
                             AnnotationFieldMeta targetField = AnnotationFieldMeta.builder()
-                                    .name("target")
+                                    .name(PMapping.TARGET)
                                     .packageName(String.class.getPackage().getName())
                                     .typeName(TypeName.get(String.class))
                                     .value(f.getName())
                                     .build();
                             meta.getFields().put(targetField.getName(), targetField);
                         }
-                        if (!meta.getFields().containsKey("expression")) {
+                        if (!meta.getFields().containsKey(PMapping.EXPRESSION)) {
                             AnnotationFieldMeta sourceField = AnnotationFieldMeta.builder()
-                                    .name("source")
+                                    .name(PMapping.SOURCE)
                                     .packageName(String.class.getPackage().getName())
                                     .typeName(TypeName.get(String.class))
                                     .value(f.getName())

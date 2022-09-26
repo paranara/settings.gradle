@@ -72,7 +72,7 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
 
     protected String createPackageName(ClassMeta source) {
         Optional<AnnotationMeta> opt = source.getAnnotations().stream().filter(a -> a.getName().equalsIgnoreCase(PMapper.class.getSimpleName())).findFirst();
-        String packageName = "org.paranora.mapstruct.starter.generated";
+        String packageName = PMapper.DefaultPackageName;
         if (opt.isPresent()) {
             Optional<AnnotationFieldMeta> fieldMetaOpt = opt.get().getFields().values().stream().filter(f -> f.getName().equalsIgnoreCase("packageName")).findFirst();
             if (fieldMetaOpt.isPresent()) {

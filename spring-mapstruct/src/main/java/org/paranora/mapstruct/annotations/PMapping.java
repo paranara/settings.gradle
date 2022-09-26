@@ -15,6 +15,12 @@ import java.lang.annotation.*;
 @Mapping(target = "")
 public @interface PMapping {
 
+    public static final String TARGET="target";
+
+    public static final String SOURCE="source";
+
+    public static final String EXPRESSION="expression";
+
     @AliasFor(
             annotation = Mapping.class
     )
