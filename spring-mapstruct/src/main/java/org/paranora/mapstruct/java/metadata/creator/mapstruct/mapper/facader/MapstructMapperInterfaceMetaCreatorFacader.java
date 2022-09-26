@@ -5,7 +5,7 @@ import org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper.MapstructMa
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 
-public class MapstructMapperInterfaceMetaCreatorFacader extends AbsInterfaceMetaCreatorFacader<ClassMeta,InterfaceMeta> {
+public class MapstructMapperInterfaceMetaCreatorFacader extends AbsInterfaceMetaCreatorFacader<ClassMeta, InterfaceMeta, InterfaceMeta> {
 
     @Override
     protected InterfaceMetaCreatorFactory<ClassMeta, InterfaceMeta> defaultFactory() {
