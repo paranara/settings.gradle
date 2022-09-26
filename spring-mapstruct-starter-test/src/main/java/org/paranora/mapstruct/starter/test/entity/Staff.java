@@ -25,6 +25,7 @@ public class Staff {
     @PMapping
     private Integer age;
 
+    @PMapping(target = "staffSex", expression = "java(1)")
     private Integer sex;
 
     private Company company;

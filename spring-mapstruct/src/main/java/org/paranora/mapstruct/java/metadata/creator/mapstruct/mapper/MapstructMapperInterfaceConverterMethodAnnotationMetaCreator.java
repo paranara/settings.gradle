@@ -56,16 +56,16 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                                     .build();
                             meta.getFields().put(targetField.getName(), targetField);
                         }
-
-                        AnnotationFieldMeta sourceField = AnnotationFieldMeta.builder()
-                                .name("source")
-                                .packageName(String.class.getPackage().getName())
-                                .typeName(TypeName.get(String.class))
-                                .value(f.getName())
-                                .build();
-                        meta.getFields().put(sourceField.getName(), sourceField);
+                        if (!meta.getFields().containsKey("expression")) {
+                            AnnotationFieldMeta sourceField = AnnotationFieldMeta.builder()
+                                    .name("source")
+                                    .packageName(String.class.getPackage().getName())
+                                    .typeName(TypeName.get(String.class))
+                                    .value(f.getName())
+                                    .build();
+                            meta.getFields().put(sourceField.getName(), sourceField);
+                        }
                     }
-
                     return meta;
                 })
                 .filter(m -> null != m && m.getFields().size() > 0)
