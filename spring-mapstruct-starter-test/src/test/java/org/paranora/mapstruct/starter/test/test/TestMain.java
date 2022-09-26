@@ -13,11 +13,14 @@ import org.paranora.mapstruct.java.generator.poet.DefaultInterfaceGenerator;
 import org.paranora.mapstruct.java.generator.poet.InterfaceJavapoetGenerator;
 import org.paranora.mapstruct.starter.test.entity.Company;
 import org.paranora.mapstruct.starter.test.entity.Staff;
+import org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -34,6 +37,8 @@ import java.util.stream.Collectors;
 @Import({})
 public class TestMain {
 
+    @Autowired
+    ConversionService conversionService;
 
     @Test
     public void test_main_method_a() throws Exception {
@@ -45,9 +50,20 @@ public class TestMain {
 //        }
 
 //        testC();
-        testE();
+        testF();
 
         print("test_main_method_a  end");
+    }
+
+    public void testF(){
+        Staff staff=Staff.builder()
+                .name("paranora")
+                .age(18)
+                .build();
+
+        StaffRequestDTO staffRequestDTO=conversionService.convert(staff,StaffRequestDTO.class);
+
+        print("end");
     }
 
     public void testE() {
