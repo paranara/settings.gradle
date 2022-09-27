@@ -25,7 +25,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
 
     public static final String PMapperAnnotationName = "org.paranora.mapstruct.annotations.PMapper";
 
-    protected InterfaceMetaCreator<ClassMeta, InterfaceMeta> interfaceMetaCreator = new MapstructMapperInterfaceMetaCreatorFacader();
+    protected InterfaceMetaCreator interfaceMetaCreator = new MapstructMapperInterfaceMetaCreatorFacader();
 
     protected InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
 
@@ -35,7 +35,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
             ElementClassMetaExtractor elementClassDefinitionExtractor = new DefaultElementClassMetaExtractor();
             ClassMeta clz = elementClassDefinitionExtractor.extract((TypeElement) element);
 
-            InterfaceMeta interfaceMeta = interfaceMetaCreator.create(clz, null, null);
+            InterfaceMeta interfaceMeta = (InterfaceMeta) interfaceMetaCreator.create(clz, null, null);
             TypeSpec typeSpec = interfaceJavapoetGenerator.create(interfaceMeta);
             print("InterfaceMeta -> TypeSpec : begin");
             print(typeSpec.toString());
