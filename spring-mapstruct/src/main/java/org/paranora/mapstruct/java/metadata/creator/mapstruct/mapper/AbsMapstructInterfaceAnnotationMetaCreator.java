@@ -2,6 +2,7 @@ package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 import org.paranora.mapstruct.java.metadata.converter.AnnotationMetaConverter;
 import org.paranora.mapstruct.java.metadata.converter.DefaultAnnotationMetaConverter;
+import org.paranora.mapstruct.java.metadata.creator.mapstruct.AbsMapstructAnnotationMetaCreator;
 import org.paranora.mapstruct.java.metadata.merger.AnnotationMetaMerger;
 import org.paranora.mapstruct.java.metadata.merger.DefaultAnnotationMetaMerger;
 

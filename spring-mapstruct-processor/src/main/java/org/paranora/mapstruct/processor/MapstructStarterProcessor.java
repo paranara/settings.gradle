@@ -5,7 +5,7 @@ import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.java.generator.poet.DefaultInterfaceGenerator;
 import org.paranora.mapstruct.java.generator.poet.InterfaceJavapoetGenerator;
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
-import org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper.facader.MapstructMapperInterfaceMetaCreatorFacader;
+import org.paranora.mapstruct.java.metadata.creator.facader.MapstructMapperInterfaceMetaCreatorFacader;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import org.paranora.mapstruct.java.metadata.extractor.DefaultElementClassMetaExtractor;

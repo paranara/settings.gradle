@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper.facader;
+package org.paranora.mapstruct.java.metadata.creator.facader;
 
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
 import org.paranora.mapstruct.java.metadata.creator.factory.InterfaceMetaCreatorFactory;
@@ -24,7 +24,7 @@ public abstract class AbsInterfaceMetaCreatorFacader<S extends Object, T extends
 
     @Override
     protected T createRoot(S source, TP parent, Class<?> clasz) {
-        return (T) factory.InterfaceCreator().create(source, null, clasz);
+        return (T) factory.typeMetaCreator().create(source, null, clasz);
     }
 
     protected List<MethodMeta> createRootMethods(S source, TP parent, Class<?> clasz) {

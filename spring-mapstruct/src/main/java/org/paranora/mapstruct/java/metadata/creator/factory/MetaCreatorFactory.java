@@ -7,7 +7,7 @@ import org.paranora.mapstruct.java.metadata.entity.Meta;
 
 import java.util.List;
 
-public interface MetaCreatorFactory<S extends Object,TP extends Meta> {
+public interface MetaCreatorFactory<S extends Object,T extends Meta,TP extends Meta> {
     AnnotationMetaCreator<S,TP> annotationCreator();
 
 }

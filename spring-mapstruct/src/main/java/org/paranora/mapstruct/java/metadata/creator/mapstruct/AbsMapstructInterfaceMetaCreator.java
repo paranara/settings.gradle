@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
+package org.paranora.mapstruct.java.metadata.creator.mapstruct;
 
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;

@@ -2,6 +2,7 @@ package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.annotations.PMapper;
+import org.paranora.mapstruct.java.metadata.creator.mapstruct.AbsMapstructInterfaceMetaCreator;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;

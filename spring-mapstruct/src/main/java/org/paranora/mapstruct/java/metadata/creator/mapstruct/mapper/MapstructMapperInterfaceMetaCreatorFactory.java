@@ -11,8 +11,7 @@ import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapstructMapperInterfaceMetaCreatorFactory implements InterfaceMetaCreatorFactory<ClassMeta, InterfaceMeta> {
-
+public class MapstructMapperInterfaceMetaCreatorFactory implements InterfaceMetaCreatorFactory<ClassMeta, InterfaceMeta, InterfaceMeta> {
 
     @Override
     public List<MethodMetaCreatorFactory<ClassMeta, InterfaceMeta>> methodCreatorFactorys() {
@@ -20,7 +19,7 @@ public class MapstructMapperInterfaceMetaCreatorFactory implements InterfaceMeta
     }
 
     @Override
-    public InterfaceMetaCreator<ClassMeta, InterfaceMeta> InterfaceCreator() {
+    public InterfaceMetaCreator<ClassMeta, InterfaceMeta> typeMetaCreator() {
         return new MapstructMapperInterfaceMetaCreator();
     }
 
