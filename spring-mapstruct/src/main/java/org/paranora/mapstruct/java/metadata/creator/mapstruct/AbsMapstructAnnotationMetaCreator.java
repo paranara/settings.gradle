@@ -5,8 +5,11 @@ import org.paranora.mapstruct.java.metadata.creator.mapstruct.AbsMapstructMultip
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
+import org.paranora.mapstruct.java.metadata.entity.TypeMeta;
 
-public abstract class AbsMapstructAnnotationMetaCreator extends AbsMapstructMultipleMetaCreator<AnnotationMeta> implements AnnotationMetaCreator<ClassMeta, InterfaceMeta> {
+public abstract class AbsMapstructAnnotationMetaCreator<S extends TypeMeta, TP extends TypeMeta>
+        extends AbsMapstructMultipleMetaCreator<S, AnnotationMeta, TP>
+        implements AnnotationMetaCreator<S, TP> {
 
     public AbsMapstructAnnotationMetaCreator() {
         init();

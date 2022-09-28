@@ -91,7 +91,6 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         meta.setAccessLevels(Arrays.asList(Modifier.PUBLIC));
         meta.setSuperInterfaces(createSuperInterfaces(source));
         meta.setName(createInterfaceName(source, meta));
-
         return meta;
     }
 

@@ -44,17 +44,19 @@ public abstract class AbsJavapoetTypeGenerator<D extends TypeMeta, T extends Typ
         this.methodJavapoetGenerator = methodJavapoetGenerator;
     }
 
-
     @Override
     public T create(D meta) {
         return (T) initTypeSpec(meta).build();
     }
 
     protected List<TypeName> createSuperinterfaces(D meta) {
-        return meta.getSuperInterfaces()
-                .stream()
-                .map(si -> ParameterizedTypeName.get(ClassName.get(si.getPackageName(), si.getName()), si.getGenericTypes().toArray(new TypeName[]{})))
-                .collect(Collectors.toList());
+        if (null != meta && null != meta.getSuperInterfaces() && meta.getSuperInterfaces().size() > 0) {
+            return meta.getSuperInterfaces()
+                    .stream()
+                    .map(si -> ParameterizedTypeName.get(ClassName.get(si.getPackageName(), si.getName()), si.getGenericTypes().toArray(new TypeName[]{})))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
     protected List<Modifier> createModifiers(D meta) {
@@ -62,21 +64,43 @@ public abstract class AbsJavapoetTypeGenerator<D extends TypeMeta, T extends Typ
     }
 
     protected List<AnnotationSpec> createAnnotations(D meta) {
-        return meta.getAnnotations().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList());
+        if (null != meta && null != meta.getAnnotations() && meta.getAnnotations().size() > 0) {
+            return meta.getAnnotations().stream().map(a -> annotationJavapoetGenerator.create(a)).collect(Collectors.toList());
+        }
+        return null;
     }
 
     protected List<MethodSpec> createMethods(D meta) {
-        return meta.getMethods().stream().map(m -> methodJavapoetGenerator.create(m)).collect(Collectors.toList());
+        if (null != meta && null != meta.getMethods()&&meta.getMethods().size()>0) {
+            return meta.getMethods().stream().map(m -> methodJavapoetGenerator.create(m)).collect(Collectors.toList());
+        }
+        return null;
     }
 
     protected abstract TypeSpec.Builder createTypeSpec(D meta);
 
     protected TypeSpec.Builder initTypeSpec(D meta) {
-        return createTypeSpec(meta)
-                .addSuperinterfaces(createSuperinterfaces(meta))
-                .addModifiers(createModifiers(meta).toArray(new Modifier[]{}))
-                .addAnnotations(createAnnotations(meta))
-                .addMethods(createMethods(meta));
+        TypeSpec.Builder builder = createTypeSpec(meta);
+        List<TypeName> superinterfaces = createSuperinterfaces(meta);
+        if (null != superinterfaces) {
+            builder.addSuperinterfaces(createSuperinterfaces(meta));
+        }
+
+        List<Modifier> modifiers = createModifiers(meta);
+        if (null != modifiers && modifiers.size() > 0) {
+            builder.addModifiers(modifiers.toArray(new Modifier[]{}));
+        }
+
+        List<AnnotationSpec> annotations = createAnnotations(meta);
+        if (null != annotations && annotations.size() > 0) {
+            builder.addAnnotations(annotations);
+        }
+
+        List<MethodSpec> methods = createMethods(meta);
+        if (null != methods && methods.size() > 0) {
+            builder.addMethods(methods);
+        }
+        return builder;
     }
 
 }

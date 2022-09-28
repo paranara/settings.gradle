@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class MethodMeta extends BaseMeta {
+public class MethodMeta extends BaseValueMeta {
     protected TypeName returnType;
 
     @Builder.Default

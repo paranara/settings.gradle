@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 public class MapstructClassMetaCreator extends AbsMapstructClassMetaCreator {
 
-
     @Override
     public ClassMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
         ClassMeta meta = new ClassMeta();

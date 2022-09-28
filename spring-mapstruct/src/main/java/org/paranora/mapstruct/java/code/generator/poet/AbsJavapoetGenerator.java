@@ -4,7 +4,6 @@ package org.paranora.mapstruct.java.code.generator.poet;
 import org.paranora.mapstruct.java.code.generator.JavaCodeGenerator;
 import org.paranora.mapstruct.java.metadata.entity.Meta;
 
-
 public abstract class AbsJavapoetGenerator<D extends Meta, T extends Object> implements JavaCodeGenerator<D, T> {
 
     protected ValueJavapoetGenerator valueJavapoetGenerator;

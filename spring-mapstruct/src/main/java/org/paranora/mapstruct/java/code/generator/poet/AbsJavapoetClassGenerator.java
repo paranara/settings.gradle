@@ -21,12 +21,16 @@ public abstract class AbsJavapoetClassGenerator<D extends ClassMeta, T extends T
         this.fieldJavapoetGenerator = fieldJavapoetGenerator;
     }
 
-    protected List<FieldSpec> createFields(D meta){
-        return meta.getFields()
-                .values()
-                .stream()
-                .map(f->this.fieldJavapoetGenerator.create(f))
-                .collect(Collectors.toList());
+    protected List<FieldSpec> createFields(D meta) {
+        if(null!=meta&& null!=meta.getFields()&& meta.getFields().size()>0) {
+            return meta.getFields()
+                    .values()
+                    .stream()
+                    .map(f -> this.fieldJavapoetGenerator.create(f))
+                    .filter(f -> null != f)
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
     @Override
@@ -43,7 +47,10 @@ public abstract class AbsJavapoetClassGenerator<D extends ClassMeta, T extends T
     @Override
     protected TypeSpec.Builder initTypeSpec(D meta) {
         TypeSpec.Builder builder = super.initTypeSpec(meta);
-        builder.addFields(createFields(meta));
+        List<FieldSpec> fields=createFields(meta);
+        if(null!=fields && fields.size()>0){
+            builder.addFields(fields);
+        }
         return builder;
     }
 }
