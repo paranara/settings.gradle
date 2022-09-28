@@ -6,6 +6,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME )
 //@Repeatable(MPMappers.class)
 public @interface PMapper {
+
+    public static final String ClassFullName="org.paranora.mapstruct.annotations.PMapper";
+
     public static final String DefaultPackageName="org.paranora.mapstruct.starter.generated";
 
     public static final String ComponentModel="componentModel";

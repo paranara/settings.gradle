@@ -2,8 +2,8 @@ package org.paranora.mapstruct.processor;
 
 import com.squareup.javapoet.*;
 import org.paranora.mapstruct.annotations.PMapper;
-import org.paranora.mapstruct.java.generator.poet.DefaultInterfaceGenerator;
-import org.paranora.mapstruct.java.generator.poet.InterfaceJavapoetGenerator;
+import org.paranora.mapstruct.java.code.poet.DefaultInterfaceGenerator;
+import org.paranora.mapstruct.java.code.poet.InterfaceJavapoetGenerator;
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
 import org.paranora.mapstruct.java.metadata.creator.facader.MapstructMapperInterfaceMetaCreatorFacader;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
@@ -19,11 +19,9 @@ import javax.lang.model.element.*;
 import java.io.IOException;
 import java.util.*;
 
-@SupportedAnnotationTypes(MapstructStarterProcessor.PMapperAnnotationName)
+@SupportedAnnotationTypes(PMapper.ClassFullName)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class MapstructStarterProcessor extends AbsProcessor {
-
-    public static final String PMapperAnnotationName = "org.paranora.mapstruct.annotations.PMapper";
 
     protected InterfaceMetaCreator interfaceMetaCreator = new MapstructMapperInterfaceMetaCreatorFacader();
 

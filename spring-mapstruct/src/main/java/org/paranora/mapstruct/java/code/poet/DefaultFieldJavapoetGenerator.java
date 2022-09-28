@@ -1,4 +1,4 @@
-package org.paranora.mapstruct.java.generator.poet;
+package org.paranora.mapstruct.java.code.poet;
 
 
 import com.squareup.javapoet.FieldSpec;

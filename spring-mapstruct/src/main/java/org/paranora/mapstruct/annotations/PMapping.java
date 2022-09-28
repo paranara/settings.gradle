@@ -15,6 +15,8 @@ import java.lang.annotation.*;
 @Mapping(target = "")
 public @interface PMapping {
 
+    public static final String ClassFullName="org.paranora.mapstruct.annotations.PMapping";
+
     public static final String TARGET="target";
 
     public static final String SOURCE="source";
