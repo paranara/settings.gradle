@@ -2,8 +2,8 @@ package org.paranora.mapstruct.processor;
 
 import com.squareup.javapoet.*;
 import org.paranora.mapstruct.annotations.PMapper;
-import org.paranora.mapstruct.java.code.poet.DefaultInterfaceGenerator;
-import org.paranora.mapstruct.java.code.poet.InterfaceJavapoetGenerator;
+import org.paranora.mapstruct.java.code.generator.poet.DefaultInterfaceGenerator;
+import org.paranora.mapstruct.java.code.generator.poet.InterfaceJavapoetGenerator;
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
 import org.paranora.mapstruct.java.metadata.creator.facader.MapstructMapperInterfaceMetaCreatorFacader;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;

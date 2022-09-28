@@ -1,0 +1,1 @@
+package org.paranora.mapstruct.java.code;
