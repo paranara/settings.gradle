@@ -12,7 +12,7 @@ public class DefaultAnnotationGenerator extends AbsJavapoetGenerator<AnnotationM
         AnnotationSpec.Builder builder = AnnotationSpec.builder(ClassName.get(meta.getPackageName(), meta.getName()));
         if (null != meta.getFields() && meta.getFields().size() > 0) {
             meta.getFields().values().stream().forEach(f -> {
-                builder.addMember(f.getName(), this.valueJavapoetGenerator.create(ValueMeta.builder().typeName(f.getTypeName()).value(f.getValue()).build()));
+                builder.addMember(f.getName(), this.valueJavapoetGenerator.create(f.getValue()));
             });
         }
         return builder.build();

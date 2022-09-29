@@ -26,11 +26,11 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
     protected TypeName getTargetClassType(ClassMeta source) {
         AnnotationFieldMeta fieldMeta = readAnnotationField(source.getAnnotations(), PMapper.class, "target");
         TypeName tn = null;
-        if (fieldMeta.getValue() instanceof TypeMirror) {
-            tn = TypeName.get((TypeMirror) fieldMeta.getValue());
+        if (fieldMeta.getValue().getValue() instanceof TypeMirror) {
+            tn = TypeName.get((TypeMirror) fieldMeta.getValue().getValue());
         }
-        if (fieldMeta.getValue() instanceof Class) {
-            tn = TypeName.get((Class) fieldMeta.getValue());
+        if (fieldMeta.getValue().getValue() instanceof Class) {
+            tn = TypeName.get((Class) fieldMeta.getValue().getValue());
         }
         return tn;
     }

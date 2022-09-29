@@ -2,6 +2,7 @@ package org.paranora.mapstruct.java.metadata.extractor;
 
 import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
+import org.paranora.mapstruct.java.metadata.entity.ValueMeta;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
@@ -20,7 +21,10 @@ public class DefaultReflectAnnotationMetaExtractor extends AbsAnnotationMetaExtr
                         , AnnotationFieldMeta.builder()
                                 .name(method.getName())
                                 .typeName(TypeName.get(method.getReturnType()))
-                                .value(method.invoke(annotationObj, new Object[]{}))
+                                .value(ValueMeta.builder()
+                                        .typeName(TypeName.get(method.getReturnType()))
+                                        .value(method.invoke(annotationObj, new Object[]{}))
+                                        .build())
                                 .build());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);

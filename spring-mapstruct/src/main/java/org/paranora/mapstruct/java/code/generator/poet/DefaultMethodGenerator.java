@@ -2,6 +2,7 @@ package org.paranora.mapstruct.java.code.generator.poet;
 
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.java.metadata.entity.MethodMeta;
 
 import java.util.stream.Collectors;
@@ -49,8 +50,8 @@ public class DefaultMethodGenerator extends AbsJavapoetGenerator<MethodMeta, Met
                 .addParameters(meta.getParameters().stream().map(p -> parameterJavapoetGenerator.create(p)).filter(p -> null != p).collect(Collectors.toList()))
                 .addModifiers(meta.getAccessLevels())
                 .returns(meta.getReturnType());
-        if (null != meta.getValue() && meta.getValue() instanceof CodeBlock) {
-            builder.addStatement((CodeBlock) meta.getValue());
+        if (null != meta.getValue()) {
+            builder.addCode(this.valueJavapoetGenerator.create(meta.getValue()));
         }
         meta.getAnnotationClazs().forEach(ac -> builder.addAnnotation(ac));
         return builder.build();

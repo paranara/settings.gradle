@@ -2,13 +2,11 @@ package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
 import com.squareup.javapoet.TypeName;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 import org.paranora.mapstruct.annotations.PMapping;
 import org.paranora.mapstruct.java.metadata.converter.AnnotationMetaConverter;
 import org.paranora.mapstruct.java.metadata.converter.DefaultAnnotationMetaConverter;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
-import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
-import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
-import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
+import org.paranora.mapstruct.java.metadata.entity.*;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -21,7 +19,6 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
     protected AnnotationMetaConverter annotationMetaConverter;
 
     protected MapstructMapperInterfaceConverterMethodAnnotationMetaCreator() {
-
     }
 
     protected void init() {
@@ -52,7 +49,10 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                                     .name(PMapping.TARGET)
                                     .packageName(String.class.getPackage().getName())
                                     .typeName(TypeName.get(String.class))
-                                    .value(f.getName())
+                                    .value(ValueMeta.builder()
+                                            .typeName(TypeName.get(String.class))
+                                            .value(f.getName())
+                                            .build())
                                     .build();
                             meta.getFields().put(targetField.getName(), targetField);
                         }
@@ -61,7 +61,10 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                                     .name(PMapping.SOURCE)
                                     .packageName(String.class.getPackage().getName())
                                     .typeName(TypeName.get(String.class))
-                                    .value(f.getName())
+                                    .value(ValueMeta.builder()
+                                            .typeName(TypeName.get(String.class))
+                                            .value(f.getName())
+                                            .build())
                                     .build();
                             meta.getFields().put(sourceField.getName(), sourceField);
                         }

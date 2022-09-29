@@ -11,5 +11,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper=false)
 public class BaseValueMeta extends BaseMeta {
 
-    protected Object value;
+    protected ValueMeta value;
 }

@@ -4,6 +4,7 @@ import com.squareup.javapoet.TypeName;
 import org.paranora.mapstruct.java.metadata.CustomAnnotationValueVisitor;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationFieldMeta;
+import org.paranora.mapstruct.java.metadata.entity.ValueMeta;
 
 import javax.lang.model.element.*;
 import java.util.HashMap;
@@ -54,7 +55,11 @@ public class DefaultElementAnnotationMetaExtractor extends AbsAnnotationMetaExtr
                     , AnnotationFieldMeta.builder()
                             .name(key)
                             .typeName(returnType)
-                            .value(value)
+                            .value(ValueMeta.builder()
+                                    .name(key)
+                                    .typeName(returnType)
+                                    .value(value)
+                                    .build())
                             .build());
         });
         return metaMap;

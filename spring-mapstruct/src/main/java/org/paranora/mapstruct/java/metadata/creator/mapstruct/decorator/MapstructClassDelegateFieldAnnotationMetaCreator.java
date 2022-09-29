@@ -1,5 +1,6 @@
 package org.paranora.mapstruct.java.metadata.creator.mapstruct.decorator;
 
+import com.squareup.javapoet.MethodSpec;
 import org.paranora.mapstruct.java.metadata.creator.mapstruct.AbsMapstructAnnotationMetaCreator;
 import org.paranora.mapstruct.java.metadata.entity.AnnotationMeta;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;

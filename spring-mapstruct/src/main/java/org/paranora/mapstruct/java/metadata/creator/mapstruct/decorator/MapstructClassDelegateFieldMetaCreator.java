@@ -17,7 +17,6 @@ import java.util.List;
 
 public class MapstructClassDelegateFieldMetaCreator extends AbsMapstructFieldMetaCreator<InterfaceMeta, ClassMeta> {
 
-
     @Override
     public FieldMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
         return null;

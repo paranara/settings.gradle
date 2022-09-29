@@ -103,7 +103,7 @@ public class TestMain {
         Map<String, FieldMeta> map = Arrays.asList(
                         FieldMeta.builder()
                                 .name("aaa")
-                                .value("paranora")
+                                .value(ValueMeta.builder().value("a").build())
                                 .accessLevels(Arrays.asList(Modifier.PUBLIC))
                                 .build()
                 )
@@ -125,17 +125,17 @@ public class TestMain {
         meta.setSuperInterfaces(Arrays.asList(InterfaceMeta.builder().packageName("org.springframework.core.convert.converter").name("Converter").genericTypes(Arrays.asList(TypeName.get(Company.class), TypeName.get(Staff.class))).build()));
         meta.setAnnotations(Arrays.asList(AnnotationMeta.builder().name(PMapper.class.getSimpleName()).packageName(PMapper.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
                     {
-                        put("name", AnnotationFieldMeta.builder().name("name").typeName(TypeName.get(String.class)).value("abc").build());
-                        put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(Class.class)).value("org.paranora.mapstruct.starter.test.entity.Staff.class").build());
+                        put("name", AnnotationFieldMeta.builder().name("name").typeName(TypeName.get(String.class)).value(ValueMeta.builder().value("abc").build()).build());
+                        put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(Class.class)).value(ValueMeta.builder().value("org.paranora.mapstruct.starter.test.entity.Staff.class").build()).build());
                     }
                 }).build())
             );
 
         meta.setMethods(Arrays.asList(MethodMeta.builder().annotations(Arrays.asList(AnnotationMeta.builder().name(Mapping.class.getSimpleName()).packageName(Mapping.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
                             {
-                                put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(String.class)).value("abc").build());
-                                put("source", AnnotationFieldMeta.builder().name("source").typeName(TypeName.get(String.class)).value("abc").build());
-                                put("nullValueCheckStrategy", AnnotationFieldMeta.builder().name("nullValueCheckStrategy").typeName(TypeName.get(NullValueCheckStrategy.class)).value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION).build());
+                                put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(String.class)).value(ValueMeta.builder().value("abc").build()).build());
+                                put("source", AnnotationFieldMeta.builder().name("source").typeName(TypeName.get(String.class)).value(ValueMeta.builder().value("abc").build()).build());
+                                put("nullValueCheckStrategy", AnnotationFieldMeta.builder().name("nullValueCheckStrategy").typeName(TypeName.get(NullValueCheckStrategy.class)).value(ValueMeta.builder().typeName(TypeName.get(NullValueCheckStrategy.class)).value(NullValueCheckStrategy.ON_IMPLICIT_CONVERSION).build()).build());
                             }
                         }).build())
                 )
@@ -158,9 +158,13 @@ public class TestMain {
         CodeBlock codeBlockA = CodeBlock.of("$T.$L", String.class, "a");
 
         String[] dependsOn = new String[]{"a", "b"};
-        CodeBlock codeBlockB = CodeBlock.builder().add("$L", Arrays.stream(dependsOn).map(type -> CodeBlock.of("$T.$L", String.class, type)).collect(CodeBlock.joining(",", "{", "}"))).build();
+        CodeBlock codeBlockB = CodeBlock.builder()
+                .add("$L", Arrays.stream(dependsOn).map(type -> CodeBlock.of("$T.$L", String.class, type)).collect(CodeBlock.joining(",", "{", "}"))).build();
 
         String str = codeBlockB.toString();
+
+        CodeBlock.Builder codeBlockc = CodeBlock.builder();
+
         print(str);
     }
 
@@ -226,7 +230,11 @@ public class TestMain {
 
         CodeBlock codeBlockA = CodeBlock.builder().add("$T.$L", NullValueCheckStrategy.class, "ON_IMPLICIT_CONVERSION").build();
 
-        MethodSpec setItemNameMethod = MethodSpec.methodBuilder("setTest").addModifiers(Modifier.PUBLIC).returns(void.class).addParameter(String.class, "itemName").addStatement("this.$L=$L", itemName.name, itemName.name).build();
+        MethodSpec setItemNameMethod = MethodSpec.methodBuilder("setTest")
+                .addModifiers(Modifier.PUBLIC).returns(void.class)
+                .addParameter(String.class, "itemName")
+                .addStatement("this.$L=$L", itemName.name, itemName.name)
+                .build();
 
         AnnotationSpec annotationSpecA = AnnotationSpec.builder(ClassName.get(Override.class)).build();
     }
