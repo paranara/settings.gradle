@@ -8,8 +8,7 @@ import org.paranora.mapstruct.java.metadata.entity.ParameterMeta;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapstructMapperClassConverterMethodParameterMetaCreator extends AbsMapstructClassMethodParameterMetaCreator {
-
+public class MapstructClassConverterMethodParameterMetaCreator extends AbsMapstructClassMethodParameterMetaCreator {
 
     @Override
     public List<ParameterMeta> creates(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {

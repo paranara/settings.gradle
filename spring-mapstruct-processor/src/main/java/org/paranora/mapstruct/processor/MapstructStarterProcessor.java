@@ -94,21 +94,21 @@ public class MapstructStarterProcessor extends AbsProcessor {
 //                            });
 //                        });
 
-//                clz.getFields().forEach((fk, f) -> {
-//                    print("package : %s , class %s , field : %s ", clz.getPackageName(), clz.getName(), f.getName());
-//                    f.getAnnotations().forEach((at) -> {
-//                        at.getFields().forEach((atfk, atf) -> {
-//                            print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
-//                                    , at.getPackageName()
-//                                    , at.getName()
-//                                    , f.getName()
-//                                    , atf.getName()
-//                                    , atf.getTypeName()
-//                                    , atf.getValue()
-//                                    , atf.getValue().getClass());
-//                        });
-//                    });
-//                });
+                clz.getFields().forEach((fk, f) -> {
+                    print("package : %s , class %s , field : %s ", clz.getPackageName(), clz.getName(), f.getName());
+                    f.getAnnotations().forEach((at) -> {
+                        at.getFields().forEach((atfk, atf) -> {
+                            print("package : %s , class : %s , field : %s , annotation key : %s , type : %s , value : %s ,value class : %s"
+                                    , at.getPackageName()
+                                    , at.getName()
+                                    , f.getName()
+                                    , atf.getName()
+                                    , atf.getTypeName()
+                                    , atf.getValue()
+                                    , atf.getValue().getClass());
+                        });
+                    });
+                });
         });
         return false;
     }

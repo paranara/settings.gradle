@@ -5,7 +5,7 @@ import org.paranora.mapstruct.java.metadata.creator.mapstruct.AbsMapstructMethod
 import org.paranora.mapstruct.java.metadata.entity.TypeMeta;
 
 
-public abstract class MapstructMapperClassMethodMetaCreator<S extends TypeMeta,TP extends TypeMeta> extends AbsMapstructMethodMetaCreator<S,TP> {
+public abstract class AbsMapstructClassMethodMetaCreator<S extends TypeMeta,TP extends TypeMeta> extends AbsMapstructMethodMetaCreator<S,TP> {
 
 
     protected abstract CodeBlock createBody(S source, TP parent, Class<?> clasz);

@@ -1,5 +1,6 @@
 package org.paranora.mapstruct.converter;
 
+import org.springframework.core.convert.ConversionService;
 
-public class MapstructConversionService extends CustomConversionService {
+public interface MapstructConversionService extends ConversionService {
 }

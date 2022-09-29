@@ -1,13 +1,13 @@
 package org.paranora.mapstruct.starter;
 
 import org.paranora.mapstruct.annotations.PMapper;
-import org.paranora.mapstruct.converter.CustomConversionService;
+import org.paranora.mapstruct.converter.DefaultMapstructConversionService;
+import org.paranora.mapstruct.converter.DefaultMapstructMapperConversionService;
 import org.paranora.mapstruct.converter.MapstructConversionService;
 import org.paranora.mapstruct.converter.MapstructMapperConversionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.List;
@@ -19,9 +19,10 @@ public class MapstructAutoConfiguration {
     @Autowired
     private List<Converter> converters;
 
+    @Primary
     @Bean("MapstructConversionService")
-    public MapstructConversionService conversionService() {
-        MapstructConversionService conversionService = new MapstructConversionService();
+    public MapstructConversionService mapperConversionService() {
+        DefaultMapstructConversionService conversionService = new DefaultMapstructConversionService();
 
         if (null != converters && converters.size() > 0) {
             converters.stream()
@@ -35,8 +36,8 @@ public class MapstructAutoConfiguration {
     }
 
     @Bean("MapstructMapperConversionService")
-    public MapstructMapperConversionService mapperConversionService() {
-        MapstructMapperConversionService conversionService = new MapstructMapperConversionService();
+    public MapstructMapperConversionService mapperMapperConversionService() {
+        DefaultMapstructMapperConversionService conversionService = new DefaultMapstructMapperConversionService();
 
         if (null != converters && converters.size() > 0) {
             converters.stream()

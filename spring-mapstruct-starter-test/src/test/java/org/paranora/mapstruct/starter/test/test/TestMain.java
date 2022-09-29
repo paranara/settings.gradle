@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.annotations.PMapping;
+import org.paranora.mapstruct.converter.MapstructConversionService;
 import org.paranora.mapstruct.java.metadata.entity.*;
 import org.paranora.mapstruct.java.code.generator.poet.DefaultInterfaceGenerator;
 import org.paranora.mapstruct.java.code.generator.poet.InterfaceJavapoetGenerator;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
 public class TestMain {
 
     @Autowired
-    ConversionService conversionService;
+    MapstructConversionService conversionService;
 
     @Test
     public void test_main_method_a() throws Exception {
@@ -50,9 +51,15 @@ public class TestMain {
 //        }
 
 //        testC();
-        testF();
+        testG();
 
         print("test_main_method_a  end");
+    }
+
+    public void testG(){
+        TypeName typeName=TypeName.get(Date.class);
+
+        print("end");
     }
 
     public void testF(){

@@ -30,8 +30,9 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
                                 .name("value")
                                 .typeName(TypeName.get(Class.class))
                                 .value(ValueMeta.builder()
+                                        .name(createDecoratorName(source, parent, clasz))
                                         .typeName(TypeName.get(Class.class))
-                                        .value(String.format("%s.%sDecorator.class", parent.getPackageName(), parent.getName()))
+                                        .value(createDecoratorClassFullPathName(source, parent, clasz))
                                         .build())
                                 .build())
                         .stream()
@@ -75,4 +76,11 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
         return Arrays.asList(resultMapper);
     }
 
+    protected String createDecoratorName(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
+        return String.format("%sDecorator", parent.getName());
+    }
+
+    protected String createDecoratorClassFullPathName(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {
+        return String.format("%s.%s.class", parent.getPackageName(), createDecoratorName(source, parent, clasz));
+    }
 }

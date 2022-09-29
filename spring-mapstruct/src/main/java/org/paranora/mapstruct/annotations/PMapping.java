@@ -23,6 +23,10 @@ public @interface PMapping {
 
     public static final String EXPRESSION="expression";
 
+    public static final String NEST="nest";
+
+    boolean nest() default false;
+
     @AliasFor(
             annotation = Mapping.class
     )

@@ -9,7 +9,7 @@ import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapstructMapperClassConverterMethodAnnotationMetaCreator extends AbsMapstructAnnotationMetaCreator<InterfaceMeta, ClassMeta> {
+public class MapstructClassConverterMethodAnnotationMetaCreator extends AbsMapstructAnnotationMetaCreator<InterfaceMeta, ClassMeta> {
 
     @Override
     public List<AnnotationMeta> creates(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
