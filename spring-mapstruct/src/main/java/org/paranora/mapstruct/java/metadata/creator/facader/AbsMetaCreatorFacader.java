@@ -8,7 +8,7 @@ import org.paranora.mapstruct.java.metadata.entity.Meta;
 
 import java.util.List;
 
-public abstract class AbsMetaCreatorFacader<S extends Object, T extends BaseMeta, TP extends Meta,F extends MetaCreatorFactory>
+public abstract class AbsMetaCreatorFacader<S extends Object, T extends BaseMeta, TP extends Meta, F extends MetaCreatorFactory>
         implements MetaCreator<S, T, TP> {
 
     protected F factory;
@@ -26,7 +26,10 @@ public abstract class AbsMetaCreatorFacader<S extends Object, T extends BaseMeta
     @Override
     public T create(S source, TP parent, Class<?> clasz) {
         T meta = createRoot(source, null, clasz);
-        meta.setAnnotations(createRootAnnotationMetas(source, (TP) meta, clasz));
+        List<AnnotationMeta> annotations = createRootAnnotationMetas(source, (TP) meta, clasz);
+        if (null != annotations && annotations.size() > 0) {
+            meta.setAnnotations(annotations);
+        }
         return (T) meta;
     }
 
