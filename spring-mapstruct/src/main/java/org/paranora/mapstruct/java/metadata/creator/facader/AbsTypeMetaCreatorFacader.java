@@ -7,13 +7,13 @@ import org.paranora.mapstruct.java.metadata.entity.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AbsTypeMetaCreatorFacader<S extends Object, T extends TypeMeta, TP extends BaseMeta, F extends TypeMetaCreatorFactory>
+public abstract class AbsTypeMetaCreatorFacader<S extends Object, T extends TypeMeta, TP extends TypeMeta, F extends TypeMetaCreatorFactory>
         extends AbsMetaCreatorFacader<S, T, TP, F> {
 
     @Override
     public T create(S source, TP parent, Class<?> clasz) {
         T meta = (T) super.create(source, parent, clasz);
-        List<MethodMeta> methods = createRootMethods(source, parent, clasz);
+        List<MethodMeta> methods = createRootMethods(source, (TP) meta, clasz);
         if (null != methods && methods.size() > 0) {
             meta.setMethods(methods);
         }
