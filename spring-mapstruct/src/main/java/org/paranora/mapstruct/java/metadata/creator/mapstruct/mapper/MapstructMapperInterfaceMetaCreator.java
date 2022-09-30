@@ -99,6 +99,7 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
         TypeName targetClassType = getTargetClassType(source);
         return Arrays.asList(
                 InterfaceMeta.builder()
+                        .typeName(TypeName.get(Converter.class))
                         .packageName(Converter.class.getPackage().getName())
                         .name(Converter.class.getSimpleName())
                         .genericTypes(Arrays.asList(sourceClassType, targetClassType))

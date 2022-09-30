@@ -4,7 +4,9 @@ import com.squareup.javapoet.*;
 import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.java.code.generator.poet.DefaultInterfaceGenerator;
 import org.paranora.mapstruct.java.code.generator.poet.InterfaceJavapoetGenerator;
+import org.paranora.mapstruct.java.metadata.creator.ClassMetaCreator;
 import org.paranora.mapstruct.java.metadata.creator.InterfaceMetaCreator;
+import org.paranora.mapstruct.java.metadata.creator.facader.MapstructDecoratorClassMetaCreatorFacader;
 import org.paranora.mapstruct.java.metadata.creator.facader.MapstructMapperInterfaceMetaCreatorFacader;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
@@ -24,6 +26,7 @@ import java.util.*;
 public class MapstructStarterProcessor extends AbsProcessor {
 
     protected InterfaceMetaCreator interfaceMetaCreator = new MapstructMapperInterfaceMetaCreatorFacader();
+    protected ClassMetaCreator classMetaCreator = new MapstructDecoratorClassMetaCreatorFacader();
 
     protected InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
 
@@ -34,19 +37,29 @@ public class MapstructStarterProcessor extends AbsProcessor {
             ClassMeta clz = elementClassDefinitionExtractor.extract((TypeElement) element);
 
             InterfaceMeta interfaceMeta = (InterfaceMeta) interfaceMetaCreator.create(clz, null, null);
+            ClassMeta classMeta = (ClassMeta) classMetaCreator.create(interfaceMeta, null, null);
+
+
             TypeSpec typeSpec = interfaceJavapoetGenerator.create(interfaceMeta);
             print("InterfaceMeta -> TypeSpec : begin");
-            print(typeSpec.toString());
-
-            try {
-                JavaFile.builder(interfaceMeta.getPackageName(), typeSpec)
-                        .build()
-                        .writeTo(filer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
+//            print(typeSpec.toString());
             print("InterfaceMeta -> TypeSpec : end");
+            print("===============\r\n\r\n");
+
+//            TypeSpec classSpec=interfaceJavapoetGenerator.create(classMeta);
+//            print("classMeta -> TypeSpec : begin");
+//            print(classSpec.toString());
+//            print("classMeta -> TypeSpec : end");
+
+//            try {
+//                JavaFile.builder(interfaceMeta.getPackageName(), typeSpec)
+//                        .build()
+//                        .writeTo(filer);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+
+
 
 //                interfaceMeta.getAnnotations().forEach((at) -> {
 //                    print("package : %s , class : %s , annotation  : %s  , class : %s"

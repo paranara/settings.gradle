@@ -57,6 +57,9 @@ public class TestMain {
     }
 
     public void testG(){
+
+        ClassName className=ClassName.get("org.paranora.mapstruct.starter.generated","CompanyToCompanyRequestDTOMapper");
+
         TypeName typeName=TypeName.get(Date.class);
 
         print("end");

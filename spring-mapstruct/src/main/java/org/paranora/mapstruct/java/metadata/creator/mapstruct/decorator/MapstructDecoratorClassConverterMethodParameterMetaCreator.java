@@ -15,7 +15,7 @@ public class MapstructDecoratorClassConverterMethodParameterMetaCreator extends 
 
         ParameterMeta parameter = ParameterMeta.builder()
                 .name(crateMethodName(source,parent,clasz))
-                .typeName(parent.getSuperInterfaces().get(0).getGenericTypes().get(0))
+                .typeName(source.getSuperInterfaces().get(0).getGenericTypes().get(0))
                 .build();
         return Arrays.asList(parameter);
     }

@@ -25,6 +25,7 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
 
         AnnotationMeta decorated = AnnotationMeta.builder()
                 .name(DecoratedWith.class.getSimpleName())
+                .typeName(TypeName.get(DecoratedWith.class))
                 .packageName(DecoratedWith.class.getPackage().getName())
                 .fields(Arrays.asList(AnnotationFieldMeta.builder()
                                 .name("value")
@@ -41,6 +42,7 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
 
         AnnotationMeta mapper = AnnotationMeta.builder()
                 .name(Mapper.class.getSimpleName())
+                .typeName(TypeName.get(Mapper.class))
                 .packageName(Mapper.class.getPackage().getName())
                 .fields(Arrays.asList(
                                 AnnotationFieldMeta.builder()
@@ -73,7 +75,7 @@ public class MapstructMapperInterfaceAnnotationMetaCreator extends AbsMapstructI
 
         AnnotationMeta resultMapper = annotationMetaMerger.merge(mapper, convertMapper);
 
-        return Arrays.asList(resultMapper);
+        return Arrays.asList(resultMapper,decorated);
     }
 
     protected String createDecoratorName(ClassMeta source, InterfaceMeta parent, Class<?> clasz) {

@@ -18,7 +18,7 @@ public class MapstructDecoratorClassConverterMethodMetaCreator extends AbsMapstr
     public MethodMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
         MethodMeta meta = MethodMeta.builder()
                 .accessLevels(Arrays.asList(Modifier.PUBLIC, Modifier.ABSTRACT))
-                .returnType(parent.getSuperInterfaces().get(0).getGenericTypes().get(1))
+                .returnType(source.getSuperInterfaces().get(0).getGenericTypes().get(1))
                 .name("convert")
                 .value(ValueMeta.builder()
                         .typeName(TypeName.get(CodeBlock.class))

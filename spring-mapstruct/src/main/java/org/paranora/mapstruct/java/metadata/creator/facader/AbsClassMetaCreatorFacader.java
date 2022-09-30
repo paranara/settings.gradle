@@ -6,6 +6,8 @@ import org.paranora.mapstruct.java.metadata.creator.factory.FieldMetaCreatorFact
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,7 @@ public abstract class AbsClassMetaCreatorFacader<S extends Object, T extends Cla
                     }
                     return fields;
                 })
+                .flatMap(s -> ((ArrayList) s).stream())
                 .collect(Collectors.toList());
     }
 }

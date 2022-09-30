@@ -20,6 +20,7 @@ public class DefaultAnnotationMetaConverter implements AnnotationMetaConverter {
         AnnotationMeta meta = AnnotationMeta.builder().build();
         meta.setPackageName(targetClass.getPackage().getName());
         meta.setName(targetClass.getSimpleName());
+        meta.setTypeName(TypeName.get(targetClass));
         getClassMethods(targetClass)
                 .stream()
                 .forEach(m -> {

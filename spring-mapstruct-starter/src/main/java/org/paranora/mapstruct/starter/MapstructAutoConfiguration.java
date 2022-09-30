@@ -16,7 +16,7 @@ import java.util.List;
 @ComponentScan({PMapper.DefaultPackageName})
 public class MapstructAutoConfiguration {
 
-    @Autowired
+    @Autowired(required = false)
     private List<Converter> converters;
 
     @Primary
