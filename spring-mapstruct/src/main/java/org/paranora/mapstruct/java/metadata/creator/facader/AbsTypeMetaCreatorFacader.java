@@ -13,10 +13,7 @@ public abstract class AbsTypeMetaCreatorFacader<S extends Object, T extends Type
     @Override
     public T create(S source, TP parent, Class<?> clasz) {
         T meta = (T) super.create(source, parent, clasz);
-        List<MethodMeta> methods = createRootMethods(source, (TP) meta, clasz);
-        if (null != methods && methods.size() > 0) {
-            meta.setMethods(methods);
-        }
+        meta = createRootMethods(source, (TP) meta, clasz);
         return (T) meta;
     }
 
@@ -25,7 +22,15 @@ public abstract class AbsTypeMetaCreatorFacader<S extends Object, T extends Type
         return (T) factory.typeMetaCreator().create(source, null, clasz);
     }
 
-    protected List<MethodMeta> createRootMethods(S source, TP parent, Class<?> clasz) {
+    protected T createRootMethods(S source, TP parent, Class<?> clasz) {
+        List<MethodMeta> methods = createRootMethodMetas(source, parent, clasz);
+        if (null != methods && methods.size() > 0) {
+            parent.setMethods(methods);
+        }
+        return (T) parent;
+    }
+
+    protected List<MethodMeta> createRootMethodMetas(S source, TP parent, Class<?> clasz) {
         return (List<MethodMeta>) factory.methodCreatorFactorys()
                 .stream()
                 .map(mf -> {
