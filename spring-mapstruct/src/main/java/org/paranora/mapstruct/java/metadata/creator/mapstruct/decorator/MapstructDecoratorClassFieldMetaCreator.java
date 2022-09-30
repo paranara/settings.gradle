@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapstructClassFieldMetaCreator extends AbsMapstructFieldMetaCreator<InterfaceMeta, ClassMeta> {
+public class MapstructDecoratorClassFieldMetaCreator extends AbsMapstructFieldMetaCreator<InterfaceMeta, ClassMeta> {
 
     @Override
     public FieldMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {

@@ -11,26 +11,26 @@ import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapstructClassMetaCreatorFactory implements ClassMetaCreatorFactory<InterfaceMeta, ClassMeta> {
+public class MapstructDecoratorClassMetaCreatorFactory implements ClassMetaCreatorFactory<InterfaceMeta, ClassMeta> {
 
 
     @Override
     public List<FieldMetaCreatorFactory<InterfaceMeta, ClassMeta>> fieldMetaCreatorFactorys() {
-        return Arrays.asList(new MapstructClassFieldMetaCreatorFactory());
+        return Arrays.asList(new MapstructDecoratorClassFieldMetaCreatorFactory());
     }
 
     @Override
     public AnnotationMetaCreator<InterfaceMeta, ClassMeta> annotationCreator() {
-        return new MapstructClassAnnotationMetaCreator();
+        return new MapstructDecoratorClassAnnotationMetaCreator();
     }
 
     @Override
     public List<MethodMetaCreatorFactory<InterfaceMeta, ClassMeta>> methodCreatorFactorys() {
-        return Arrays.asList(new MapstructClassConverterMethodMetaCreatorFactory());
+        return Arrays.asList(new MapstructDecoratorClassConverterMethodMetaCreatorFactory());
     }
 
     @Override
     public TypeMetaCreator typeMetaCreator() {
-        return new MapstructClassMetaCreator();
+        return new MapstructDecoratorClassMetaCreator();
     }
 }

@@ -6,15 +6,15 @@ import org.paranora.mapstruct.java.metadata.creator.factory.FieldMetaCreatorFact
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 
-public class MapstructClassFieldMetaCreatorFactory implements FieldMetaCreatorFactory<InterfaceMeta, ClassMeta> {
+public class MapstructDecoratorClassFieldMetaCreatorFactory implements FieldMetaCreatorFactory<InterfaceMeta, ClassMeta> {
 
     @Override
     public FieldMetaCreator<InterfaceMeta, ClassMeta> fIeldMetaCreator() {
-        return new MapstructClassFieldMetaCreator();
+        return new MapstructDecoratorClassFieldMetaCreator();
     }
 
     @Override
     public AnnotationMetaCreator<InterfaceMeta, ClassMeta> annotationCreator() {
-        return new MapstructClassFieldAnnotationMetaCreator();
+        return new MapstructDecoratorClassFieldAnnotationMetaCreator();
     }
 }

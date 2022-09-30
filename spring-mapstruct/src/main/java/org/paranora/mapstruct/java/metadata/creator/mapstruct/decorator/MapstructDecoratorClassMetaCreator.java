@@ -9,7 +9,7 @@ import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 import javax.lang.model.element.Modifier;
 import java.util.Arrays;
 
-public class MapstructClassMetaCreator extends AbsMapstructClassMetaCreator {
+public class MapstructDecoratorClassMetaCreator extends AbsMapstructClassMetaCreator {
 
     @Override
     public ClassMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {

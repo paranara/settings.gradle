@@ -7,20 +7,20 @@ import org.paranora.mapstruct.java.metadata.creator.factory.MethodMetaCreatorFac
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
 
-public class MapstructClassConverterMethodMetaCreatorFactory implements MethodMetaCreatorFactory<InterfaceMeta,ClassMeta> {
+public class MapstructDecoratorClassConverterMethodMetaCreatorFactory implements MethodMetaCreatorFactory<InterfaceMeta,ClassMeta> {
 
     @Override
     public AnnotationMetaCreator<InterfaceMeta, ClassMeta> annotationCreator() {
-        return new MapstructClassConverterMethodAnnotationMetaCreator();
+        return new MapstructDecoratorClassConverterMethodAnnotationMetaCreator();
     }
 
     @Override
     public MethodMetaCreator<InterfaceMeta, ClassMeta> methodCreator() {
-        return new MapstructClassConverterMethodMetaCreator();
+        return new MapstructDecoratorClassConverterMethodMetaCreator();
     }
 
     @Override
     public ParameterMetaCreator parameterCreator() {
-        return new MapstructClassConverterMethodParameterMetaCreator();
+        return new MapstructDecoratorClassConverterMethodParameterMetaCreator();
     }
 }

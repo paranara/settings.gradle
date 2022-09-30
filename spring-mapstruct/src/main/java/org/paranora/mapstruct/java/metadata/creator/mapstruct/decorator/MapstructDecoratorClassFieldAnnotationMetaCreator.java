@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Lazy;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapstructClassFieldAnnotationMetaCreator extends AbsMapstructAnnotationMetaCreator<InterfaceMeta,ClassMeta> {
+public class MapstructDecoratorClassFieldAnnotationMetaCreator extends AbsMapstructAnnotationMetaCreator<InterfaceMeta,ClassMeta> {
 
 
     @Override

@@ -12,7 +12,7 @@ import org.springframework.core.convert.converter.Converter;
 import javax.lang.model.element.Modifier;
 import java.util.Arrays;
 
-public class MapstructClassConverterMethodMetaCreator extends AbsMapstructClassMethodMetaCreator<InterfaceMeta, ClassMeta> {
+public class MapstructDecoratorClassConverterMethodMetaCreator extends AbsMapstructClassMethodMetaCreator<InterfaceMeta, ClassMeta> {
 
     @Override
     public MethodMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
