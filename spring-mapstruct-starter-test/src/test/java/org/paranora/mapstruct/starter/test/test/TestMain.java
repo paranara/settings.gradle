@@ -21,7 +21,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -51,7 +50,7 @@ public class TestMain {
 //        }
 
 //        testC();
-        testG();
+        testF();
 
         print("test_main_method_a  end");
     }

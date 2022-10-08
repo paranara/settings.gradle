@@ -53,7 +53,13 @@ public abstract class AbsJavapoetTypeGenerator<D extends TypeMeta, T extends Typ
         if (null != meta && null != meta.getSuperInterfaces() && meta.getSuperInterfaces().size() > 0) {
             return meta.getSuperInterfaces()
                     .stream()
-                    .map(si -> ParameterizedTypeName.get(ClassName.get(si.getPackageName(), si.getName()), si.getGenericTypes().toArray(new TypeName[]{})))
+                    .map(si -> {
+                        if (null != si.getGenericTypes() && si.getGenericTypes().size() > 0) {
+                            return ParameterizedTypeName.get(ClassName.get(si.getPackageName(), si.getName()), si.getGenericTypes().toArray(new TypeName[]{}));
+                        } else {
+                            return ClassName.get(si.getPackageName(), si.getName());
+                        }
+                    })
                     .collect(Collectors.toList());
         }
         return null;
@@ -71,7 +77,7 @@ public abstract class AbsJavapoetTypeGenerator<D extends TypeMeta, T extends Typ
     }
 
     protected List<MethodSpec> createMethods(D meta) {
-        if (null != meta && null != meta.getMethods()&&meta.getMethods().size()>0) {
+        if (null != meta && null != meta.getMethods() && meta.getMethods().size() > 0) {
             return meta.getMethods().stream().map(m -> methodJavapoetGenerator.create(m)).collect(Collectors.toList());
         }
         return null;

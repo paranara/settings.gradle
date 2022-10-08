@@ -13,7 +13,7 @@ public abstract class AbsJavapoetGenerator<D extends Meta, T extends Object> imp
     }
 
     protected void init(){
-        this.valueJavapoetGenerator =defaultCodeJavapoetGenerator();
+        defaultCodeJavapoetGenerator(defaultCodeJavapoetGenerator());
     }
 
     protected ValueJavapoetGenerator defaultCodeJavapoetGenerator() {

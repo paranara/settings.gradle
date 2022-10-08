@@ -28,7 +28,7 @@ public class Staff {
     @PMapping(target = "staffSex", expression = "java(1)")
     private Integer sex;
 
-    @PMapping(nest = false)
+    @PMapping(nest = true)
     private Company company;
 
     private Date birth;

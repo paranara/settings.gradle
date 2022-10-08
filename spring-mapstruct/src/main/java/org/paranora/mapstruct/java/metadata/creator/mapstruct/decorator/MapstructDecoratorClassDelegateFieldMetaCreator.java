@@ -1,7 +1,6 @@
 package org.paranora.mapstruct.java.metadata.creator.mapstruct.decorator;
 
-import com.squareup.javapoet.TypeName;
-import org.paranora.mapstruct.converter.MapstructConversionService;
+import com.squareup.javapoet.ClassName;
 import org.paranora.mapstruct.java.metadata.creator.mapstruct.AbsMapstructFieldMetaCreator;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.FieldMeta;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapstructDecoratorClassFieldMetaCreator extends AbsMapstructFieldMetaCreator<InterfaceMeta, ClassMeta> {
+public class MapstructDecoratorClassDelegateFieldMetaCreator extends AbsMapstructFieldMetaCreator<InterfaceMeta, ClassMeta> {
 
     @Override
     public FieldMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
@@ -22,17 +21,12 @@ public class MapstructDecoratorClassFieldMetaCreator extends AbsMapstructFieldMe
     @Override
     public List<FieldMeta> creates(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
         List<FieldMeta> fieldMetas = new ArrayList<>();
-//        fieldMetas.add(FieldMeta.builder()
-//                .name("mapperConversionService")
-//                .accessLevels(Arrays.asList(Modifier.PRIVATE))
-//                .typeName(TypeName.get(MapstructMapperConversionService.class))
-//                .build());
-
         fieldMetas.add(FieldMeta.builder()
-                .name("conversionService")
+                .name("delegate")
                 .accessLevels(Arrays.asList(Modifier.PRIVATE))
-                .typeName(TypeName.get(MapstructConversionService.class))
+                .typeName(ClassName.get(source.getPackageName(),source.getName()))
                 .build());
+
         return fieldMetas;
     }
 }

@@ -17,7 +17,7 @@ public class MapstructDecoratorClassConverterMethodMetaCreator extends AbsMapstr
     @Override
     public MethodMeta create(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
         MethodMeta meta = MethodMeta.builder()
-                .accessLevels(Arrays.asList(Modifier.PUBLIC, Modifier.ABSTRACT))
+                .accessLevels(Arrays.asList(Modifier.PUBLIC))
                 .returnType(source.getSuperInterfaces().get(0).getGenericTypes().get(1))
                 .name("convert")
                 .value(ValueMeta.builder()
@@ -34,14 +34,19 @@ public class MapstructDecoratorClassConverterMethodMetaCreator extends AbsMapstr
         TypeName sourceTypeName = superInterface.getGenericTypes().get(0);
         TypeName targetTypeName = superInterface.getGenericTypes().get(1);
 
-        String mapperConversionServiceName = parent.getFields().values().stream().filter(f -> f.getTypeName().equals(TypeName.get(MapstructMapperConversionService.class))).findFirst().get().getName();
+//        String mapperConversionServiceName = parent.getFields().values().stream().filter(f -> f.getTypeName().equals(TypeName.get(MapstructMapperConversionService.class))).findFirst().get().getName();
+        String delegate=parent.getFields().values().stream().filter(f -> f.getName().equalsIgnoreCase("delegate")).findFirst().get().getName();
         String resultName = "result";
         String parameterName = source.getMethods().get(0).getParameters().get(0).getName();
         String methodName = source.getMethods().get(0).getName();
         CodeBlock.Builder builder = CodeBlock.builder();
-        builder.addStatement("$T $L = $L.$L($L)", targetTypeName, resultName, mapperConversionServiceName, methodName, parameterName);
+//        builder.addStatement("$T $L = $L.$L($L,$L.class)", targetTypeName, resultName, mapperConversionServiceName, methodName, parameterName, targetTypeName);
 
-        builder.add("return $L", resultName);
+        builder.addStatement("$T $L = $L.$L($L)", targetTypeName, resultName, delegate, methodName, parameterName);
+
+
+
+        builder.add("return $L;", resultName);
         return builder.build();
     }
 }

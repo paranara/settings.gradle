@@ -12,7 +12,6 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 //@Repeatable(MPMappings.class)
-@Mapping(target = "")
 public @interface PMapping {
 
     public static final String ClassFullName="org.paranora.mapstruct.annotations.PMapping";
@@ -26,6 +25,11 @@ public @interface PMapping {
     public static final String NEST="nest";
 
     boolean nest() default false;
+
+    @AliasFor(
+            annotation = Mapping.class
+    )
+    String source() default "";
 
     @AliasFor(
             annotation = Mapping.class

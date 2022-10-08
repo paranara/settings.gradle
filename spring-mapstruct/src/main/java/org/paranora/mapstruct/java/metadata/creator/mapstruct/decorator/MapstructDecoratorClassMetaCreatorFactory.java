@@ -16,7 +16,7 @@ public class MapstructDecoratorClassMetaCreatorFactory implements ClassMetaCreat
 
     @Override
     public List<FieldMetaCreatorFactory<InterfaceMeta, ClassMeta>> fieldMetaCreatorFactorys() {
-        return Arrays.asList(new MapstructDecoratorClassFieldMetaCreatorFactory());
+        return Arrays.asList(new MapstructDecoratorClassFieldMetaCreatorFactory(), new MapstructDecoratorClassDelegateFieldMetaCreatorFactory());
     }
 
     @Override

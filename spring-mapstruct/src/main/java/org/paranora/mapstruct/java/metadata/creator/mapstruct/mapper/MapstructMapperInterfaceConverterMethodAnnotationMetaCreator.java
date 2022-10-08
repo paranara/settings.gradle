@@ -42,9 +42,13 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                 .map(f -> {
                     AnnotationMeta meta = null;
                     Optional<AnnotationMeta> pmapping = f.getAnnotations().stream().filter(v -> v.getName().equalsIgnoreCase(PMapping.class.getSimpleName())).findFirst();
-                    if (pmapping.isPresent()
-                            && (!pmapping.get().getFields().containsKey(PMapping.NEST) || false == (boolean) pmapping.get().getFields().get(PMapping.NEST).getValue().getValue())) {
-                        meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
+                    if (pmapping.isPresent()) {
+                        if (!pmapping.get().getFields().containsKey(PMapping.NEST) || false == (boolean) pmapping.get().getFields().get(PMapping.NEST).getValue().getValue()) {
+                            meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
+                        } else {
+                            meta = pmapping.get();
+                            System.out.println(String.format(" =====================>> a meta name : %s , type name : %s",meta.getName(),meta.getTypeName()));
+                        }
                         if (!meta.getFields().containsKey(PMapping.TARGET)) {
                             AnnotationFieldMeta targetField = AnnotationFieldMeta.builder()
                                     .name(PMapping.TARGET)

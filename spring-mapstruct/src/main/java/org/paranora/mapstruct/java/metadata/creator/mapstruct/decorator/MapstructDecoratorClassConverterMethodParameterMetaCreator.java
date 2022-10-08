@@ -14,13 +14,13 @@ public class MapstructDecoratorClassConverterMethodParameterMetaCreator extends 
     public List<ParameterMeta> creates(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
 
         ParameterMeta parameter = ParameterMeta.builder()
-                .name(crateMethodName(source,parent,clasz))
+                .name(crateMethodParameterName(source,parent,clasz))
                 .typeName(source.getSuperInterfaces().get(0).getGenericTypes().get(0))
                 .build();
         return Arrays.asList(parameter);
     }
 
-    protected String crateMethodName(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
-        return source.getMethods().get(0).getName();
+    protected String crateMethodParameterName(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
+        return source.getMethods().get(0).getParameters().get(0).getName();
     }
 }
