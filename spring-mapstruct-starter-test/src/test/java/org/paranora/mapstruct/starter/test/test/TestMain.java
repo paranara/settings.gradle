@@ -68,6 +68,11 @@ public class TestMain {
         Staff staff=Staff.builder()
                 .name("paranora")
                 .age(18)
+                .company(Company.builder()
+                        .name("www")
+                        .address("sh-pd")
+                        .fax("123456")
+                        .build())
                 .build();
 
         StaffRequestDTO staffRequestDTO=conversionService.convert(staff,StaffRequestDTO.class);

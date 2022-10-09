@@ -47,7 +47,18 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                             meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
                         } else {
                             meta = pmapping.get();
-                            System.out.println(String.format(" =====================>> a meta name : %s , type name : %s",meta.getName(),meta.getTypeName()));
+                            if (!meta.getFields().containsKey(PMapping.SOURCETYPE)) {
+                                AnnotationFieldMeta souceType = AnnotationFieldMeta.builder()
+                                        .name(PMapping.SOURCETYPE)
+                                        .packageName(f.getPackageName())
+                                        .typeName(f.getTypeName())
+                                        .value(ValueMeta.builder()
+                                                .typeName(f.getTypeName())
+                                                .value(f.getTypeName())
+                                                .build())
+                                        .build();
+                                meta.getFields().put(PMapping.SOURCETYPE, souceType);
+                            }
                         }
                         if (!meta.getFields().containsKey(PMapping.TARGET)) {
                             AnnotationFieldMeta targetField = AnnotationFieldMeta.builder()

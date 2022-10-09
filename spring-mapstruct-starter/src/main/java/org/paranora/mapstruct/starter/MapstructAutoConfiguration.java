@@ -16,7 +16,7 @@ import java.util.List;
 @ComponentScan({PMapper.DefaultPackageName})
 public class MapstructAutoConfiguration {
 
-    @Autowired(required = false)
+    @Autowired
     private List<Converter> converters;
 
     @Primary
@@ -26,7 +26,7 @@ public class MapstructAutoConfiguration {
 
         if (null != converters && converters.size() > 0) {
             converters.stream()
-                    .filter(c -> !c.getClass().isAnnotationPresent(Qualifier.class))
+                    .filter(c -> c.getClass().isAnnotationPresent(Primary.class))
                     .forEach(c -> {
                         conversionService.addConverter(c);
                     });
@@ -35,19 +35,19 @@ public class MapstructAutoConfiguration {
         return conversionService;
     }
 
-    @Bean("MapstructMapperConversionService")
-    public MapstructMapperConversionService mapperMapperConversionService() {
-        DefaultMapstructMapperConversionService conversionService = new DefaultMapstructMapperConversionService();
-
-        if (null != converters && converters.size() > 0) {
-            converters.stream()
-                    .filter(c -> c.getClass().isAnnotationPresent(Qualifier.class) && !c.getClass().isAnnotationPresent(Primary.class))
-                    .forEach(c -> {
-                        conversionService.addConverter(c);
-                    });
-        }
-
-        return conversionService;
-    }
+//    @Bean("MapstructMapperConversionService")
+//    public MapstructMapperConversionService mapperMapperConversionService() {
+//        DefaultMapstructMapperConversionService conversionService = new DefaultMapstructMapperConversionService();
+//
+//        if (null != converters && converters.size() > 0) {
+//            converters.stream()
+//                    .filter(c -> c.getClass().isAnnotationPresent(Qualifier.class) && !c.getClass().isAnnotationPresent(Primary.class))
+//                    .forEach(c -> {
+//                        conversionService.addConverter(c);
+//                    });
+//        }
+//
+//        return conversionService;
+//    }
 
 }

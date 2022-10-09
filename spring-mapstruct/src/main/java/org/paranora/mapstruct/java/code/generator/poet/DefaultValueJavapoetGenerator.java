@@ -54,12 +54,14 @@ public class DefaultValueJavapoetGenerator implements ValueJavapoetGenerator {
             codeBlock = createArraryCode(meta);
         } else if (typeName.equals(TypeName.get(String.class)) && value instanceof java.lang.String) {
             codeBlock = createStringCode(meta);
-        } else if (typeName.equals(TypeName.get(Class.class)) || value instanceof TypeMirror || value instanceof Class) {
+        } else if (typeName.equals(TypeName.get(Class.class)) || value instanceof TypeMirror || value instanceof Class || value instanceof TypeName) {
             codeBlock = createClassCode(meta);
         } else if (value instanceof VariableElement || value instanceof Enum) {
             codeBlock = createEnumCode(meta);
         } else if (typeName.equals(TypeName.get(CodeBlock.class))) {
             codeBlock = (CodeBlock) meta.getValue();
+        } else {
+
         }
         return codeBlock;
     }

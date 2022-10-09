@@ -30,6 +30,7 @@ import java.util.*;
 public class MapstructStarterProcessor extends AbsProcessor {
 
     protected InterfaceMetaCreator interfaceMetaCreator = new MapstructMapperInterfaceMetaCreatorFacader();
+
     protected ClassMetaCreator classMetaCreator = new MapstructDecoratorClassMetaCreatorFacader();
 
     protected InterfaceJavapoetGenerator interfaceJavapoetGenerator = new DefaultInterfaceGenerator();
@@ -48,8 +49,6 @@ public class MapstructStarterProcessor extends AbsProcessor {
                 JavaFile.builder(interfaceMeta.getPackageName(), typeSpec)
                         .build()
                         .writeTo(filer);
-
-                print("===================================\r\n");
 
                 ClassMeta classMeta = (ClassMeta) classMetaCreator.create(interfaceMeta, null, null);
                 TypeSpec classSpec = classJavapoetGenerator.create(classMeta);

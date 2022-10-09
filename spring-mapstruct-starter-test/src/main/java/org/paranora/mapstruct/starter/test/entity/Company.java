@@ -16,7 +16,10 @@ import org.paranora.mapstruct.starter.test.entity.dto.CompanyRequestDTO;
 @PMapper(target = CompanyRequestDTO.class)
 public class Company {
 
+    @PMapping(target = "companyName")
     private String name;
+
+    @PMapping(target = "companyFax")
     private String fax;
 
     @PMapping

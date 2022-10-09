@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.annotations.PMapping;
+import org.paranora.mapstruct.starter.test.entity.dto.CompanyRequestDTO;
 import org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO;
 
 import java.util.Date;
@@ -28,7 +29,7 @@ public class Staff {
     @PMapping(target = "staffSex", expression = "java(1)")
     private Integer sex;
 
-    @PMapping(nest = true)
+    @PMapping(nest = true,targetType = CompanyRequestDTO.class)
     private Company company;
 
     private Date birth;
