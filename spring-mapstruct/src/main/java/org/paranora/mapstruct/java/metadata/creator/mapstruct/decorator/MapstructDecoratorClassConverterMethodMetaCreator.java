@@ -58,14 +58,11 @@ public class MapstructDecoratorClassConverterMethodMetaCreator extends AbsMapstr
                         Object targetTypeValue = opt.get().getFields().get(PMapping.TARGETTYPE).getValue().getValue();
                         TypeName sourceType = objectToTypeName(sourceTypeValue);
                         TypeName targetType = objectToTypeName(targetTypeValue);
-
                         String sourceVarName = String.format("%sValue_s", sourceName);
                         String targetVarName = String.format("%sValue_t", targetName);
-
-                        builder.addStatement("$L $L=$L.get$L()", sourceType, sourceVarName, parameterName, sourceName.substring(0, 1).toUpperCase() + sourceName.substring(1));
-                        builder.addStatement("$L $L=$L.$L($L,$L.class)", targetType, targetVarName, conversionServiceName, methodName, sourceVarName, targetType);
+                        builder.addStatement("$T $L = $L.get$L()", sourceType, sourceVarName, parameterName, sourceName.substring(0, 1).toUpperCase() + sourceName.substring(1));
+                        builder.addStatement("$T $L = $L.$L($L,$T.class)", targetType, targetVarName, conversionServiceName, methodName, sourceVarName, targetType);
                         builder.addStatement("$L.set$L($L)", resultName, targetName.substring(0, 1).toUpperCase() + sourceName.substring(1),targetVarName);
-
                     }
                 });
 

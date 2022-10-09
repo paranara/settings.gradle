@@ -1,5 +1,7 @@
 package org.paranora.mapstruct.java.metadata.creator.mapstruct.decorator;
 
+import com.squareup.javapoet.TypeName;
+import org.mapstruct.DecoratedWith;
 import org.paranora.mapstruct.java.metadata.creator.mapstruct.AbsMapstructClassMetaCreator;
 import org.paranora.mapstruct.java.metadata.entity.ClassMeta;
 import org.paranora.mapstruct.java.metadata.entity.InterfaceMeta;
@@ -20,6 +22,6 @@ public class MapstructDecoratorClassMetaCreator extends AbsMapstructClassMetaCre
     }
 
     protected String createClassName(InterfaceMeta source, ClassMeta parent, Class<?> clasz) {
-        return String.format("%sDecorator", source.getName());
+        return source.getAnnotations().stream().filter(a -> a.getName().equals(DecoratedWith.class.getSimpleName())).findFirst().get().getFields().get("value").getValue().getName();
     }
 }
