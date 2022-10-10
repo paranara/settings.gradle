@@ -43,11 +43,11 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                     AnnotationMeta meta = null;
                     Optional<AnnotationMeta> pmapping = f.getAnnotations().stream().filter(v -> v.getName().equalsIgnoreCase(PMapping.class.getSimpleName())).findFirst();
                     if (pmapping.isPresent()) {
-                        if (!pmapping.get().getFields().containsKey(PMapping.NEST) || false == (boolean) pmapping.get().getFields().get(PMapping.NEST).getValue().getValue()) {
+                        if (!pmapping.get().containsField(PMapping.NEST) || false == pmapping.get().field(PMapping.NEST).value().value(boolean.class)) {
                             meta = annotationMetaConverter.convert(pmapping.get(), Mapping.class);
                         } else {
                             meta = pmapping.get();
-                            if (!meta.getFields().containsKey(PMapping.SOURCETYPE)) {
+                            if (!meta.containsField(PMapping.SOURCETYPE)) {
                                 AnnotationFieldMeta souceType = AnnotationFieldMeta.builder()
                                         .name(PMapping.SOURCETYPE)
                                         .packageName(f.getPackageName())
@@ -57,10 +57,10 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                                                 .value(f.getTypeName())
                                                 .build())
                                         .build();
-                                meta.getFields().put(PMapping.SOURCETYPE, souceType);
+                                meta.setField(souceType);
                             }
                         }
-                        if (!meta.getFields().containsKey(PMapping.TARGET)) {
+                        if (!meta.containsField(PMapping.TARGET)) {
                             AnnotationFieldMeta targetField = AnnotationFieldMeta.builder()
                                     .name(PMapping.TARGET)
                                     .packageName(String.class.getPackage().getName())
@@ -70,9 +70,9 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                                             .value(f.getName())
                                             .build())
                                     .build();
-                            meta.getFields().put(targetField.getName(), targetField);
+                            meta.setField(targetField);
                         }
-                        if (!meta.getFields().containsKey(PMapping.EXPRESSION)) {
+                        if (!meta.containsField(PMapping.EXPRESSION)) {
                             AnnotationFieldMeta sourceField = AnnotationFieldMeta.builder()
                                     .name(PMapping.SOURCE)
                                     .packageName(String.class.getPackage().getName())
@@ -82,7 +82,7 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                                             .value(f.getName())
                                             .build())
                                     .build();
-                            meta.getFields().put(sourceField.getName(), sourceField);
+                            meta.setField(sourceField);
                         }
                     }
                     return meta;

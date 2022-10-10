@@ -12,10 +12,26 @@ import java.util.Map;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class ClassMeta extends InterfaceMeta {
 
     @Builder.Default
-    protected Map<String,FieldMeta> fields=new HashMap<>();
+    protected Map<String, FieldMeta> fields = new HashMap<>();
     protected ClassMeta superClass;
+
+    public FieldMeta field(Object fieldName) {
+        return this.fields.get(fieldName);
+    }
+
+    public boolean containsField(Object fieldName) {
+        return this.fields.containsKey(fieldName);
+    }
+
+    public void setField(FieldMeta field) {
+        this.fields.put(field.getName(), field);
+    }
+
+    public void setField(String fieldName, FieldMeta field) {
+        this.fields.put(fieldName, field);
+    }
 }

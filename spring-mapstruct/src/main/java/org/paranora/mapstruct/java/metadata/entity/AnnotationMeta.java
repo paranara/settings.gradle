@@ -27,4 +27,7 @@ public class AnnotationMeta extends BaseMeta {
         return this.fields.containsKey(fieldName);
     }
 
+    public void setField(AnnotationFieldMeta field) {
+        this.fields.put(field.getName(), field);
+    }
 }

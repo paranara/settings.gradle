@@ -35,7 +35,7 @@ public class DefaultElementClassMetaExtractor extends AbsElementTypeMetaExtracto
                     .stream()
                     .filter(e -> ElementKind.FIELD == e.getKind())
                     .forEach(e -> {
-                        meta.getFields().put(e.getSimpleName().toString(),((ElementFieldMetaExtractor) metaExtractor).extract((VariableElement) e));
+                        meta.setField(e.getSimpleName().toString(),((ElementFieldMetaExtractor) metaExtractor).extract((VariableElement) e));
                     });
         } else {
 
