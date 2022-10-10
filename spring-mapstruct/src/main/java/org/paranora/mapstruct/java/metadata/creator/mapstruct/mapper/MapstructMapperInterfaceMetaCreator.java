@@ -11,7 +11,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.ObjectUtils;
 
 import javax.lang.model.element.Modifier;
-import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +24,7 @@ public class MapstructMapperInterfaceMetaCreator extends AbsMapstructInterfaceMe
 
     protected TypeName getTargetClassType(ClassMeta source) {
         AnnotationFieldMeta fieldMeta = readAnnotationField(source.getAnnotations(), PMapper.class, "target");
-        TypeName tn = null;
-        if (fieldMeta.getValue().getValue() instanceof TypeMirror) {
-            tn = TypeName.get((TypeMirror) fieldMeta.getValue().getValue());
-        }
-        if (fieldMeta.getValue().getValue() instanceof Class) {
-            tn = TypeName.get((Class) fieldMeta.getValue().getValue());
-        }
-        return tn;
+        return fieldMeta.value().value(TypeName.class);
     }
 
     protected AnnotationFieldMeta readAnnotationField(List<AnnotationMeta> annotations, Function<AnnotationMeta, Boolean> filter, String fieldName) {

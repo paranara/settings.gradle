@@ -29,7 +29,7 @@ public class Staff {
     @PMapping(target = "staffSex", expression = "java(1)")
     private Integer sex;
 
-    @PMapping(nest = true,targetType = CompanyRequestDTO.class)
+    @PMapping(nest = true, target = "staffCompany", sourceType = Company.class, targetType = CompanyRequestDTO.class)
     private Company company;
 
     private Date birth;

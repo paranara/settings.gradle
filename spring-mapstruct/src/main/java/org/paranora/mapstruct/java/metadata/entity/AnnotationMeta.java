@@ -19,4 +19,12 @@ public class AnnotationMeta extends BaseMeta {
     @Builder.Default
     protected Map<String, AnnotationFieldMeta> fields = new HashMap();
 
+    public AnnotationFieldMeta field(Object fieldName) {
+        return this.fields.get(fieldName);
+    }
+
+    public boolean containsField(Object fieldName) {
+        return this.fields.containsKey(fieldName);
+    }
+
 }

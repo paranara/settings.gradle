@@ -1,5 +1,7 @@
 package org.paranora.mapstruct.java.metadata;
 
+import com.squareup.javapoet.TypeName;
+
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.AnnotationValueVisitor;
@@ -97,7 +99,8 @@ public class CustomAnnotationValueVisitor implements AnnotationValueVisitor<Obje
     @Override
     public Object visitType(TypeMirror typeMirror, Object o) {
         print(String.format("visitType ,  value %s ,  Object  : %s , key : %s", typeMirror.toString(), o, key));
-        return typeMirror;
+        TypeName typeName=TypeName.get(typeMirror);
+        return typeName;
     }
 
     @Override

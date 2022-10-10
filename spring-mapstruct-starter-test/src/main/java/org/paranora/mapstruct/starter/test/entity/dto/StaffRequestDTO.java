@@ -18,5 +18,6 @@ public class StaffRequestDTO {
     @PMapping(target = "sex")
     private Integer staffSex;
     private String birth;
-    private CompanyRequestDTO company;
+
+    private CompanyRequestDTO staffCompany;
 }

@@ -12,4 +12,12 @@ import lombok.experimental.SuperBuilder;
 public class ValueMeta extends Meta {
     protected Object value;
 
+    public Object value() {
+        return this.value;
+    }
+
+    public <T> T value(Class<T> claz) {
+        return (T) value();
+    }
+
 }
