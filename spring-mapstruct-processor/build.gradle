@@ -1,4 +1,5 @@
-apply from: rootProject.file("build-publish-mavencentral.gradle")
+//apply from: rootProject.file("build-publish-mavencentral.gradle")
+apply from: rootProject.file("build-publish-private.gradle")
 
 dependencies {
     implementation project(':spring-mapstruct')
