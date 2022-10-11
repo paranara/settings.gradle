@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestMain {
 
     @Autowired
-    MapstructConversionService conversionService;
+    private MapstructConversionService conversionService;
 
     @Test
     public void test_main_method_a() throws Exception {
