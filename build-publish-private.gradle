@@ -39,8 +39,8 @@ publishing {
     }
     repositories {
         maven {
-            def releasesRepoUrl = "http://nexus.aist.io/nexus/repository/maven-releasess/"
-            def snapshotsRepoUrl = "http://nexus.aist.io/nexus/repository/maven-snapshots/"
+            def releasesRepoUrl = "http://p.nexus.io/nexus/repository/maven-releasess/"
+            def snapshotsRepoUrl = "http://p.nexus.io/nexus/repository/maven-snapshots/"
             url = isReleasedVersion ? releasesRepoUrl : snapshotsRepoUrl
             credentials {
                 username findProperty("nexusUsername") ?: System.getenv("NEXUS_USERNAME")
