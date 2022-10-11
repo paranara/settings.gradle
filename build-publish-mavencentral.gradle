@@ -10,11 +10,11 @@ publishing {
             pom {
                 name = project.name
                 description = project.name
-                url = "https://github.com/paranara/spring-shiro-starter"
+                url = "https://github.com/paranara/spring-mapstruct-starter"
                 scm {
-                    connection = "scm:git:git@github.com:paranara/spring-shiro-starter.git"
-                    developerConnection = "scm:git:ssh://github.com/paranara/spring-shiro-starter.git"
-                    url = "https://github.com/paranara/spring-shiro-starter.git"
+                    connection = "scm:git:git@github.com:paranara/spring-mapstruct-starter.git"
+                    developerConnection = "scm:git:ssh://github.com/paranara/spring-mapstruct-starter.git"
+                    url = "https://github.com/paranara/spring-mapstruct-starter.git"
                 }
                 licenses {
                     license {
