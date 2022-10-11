@@ -14,5 +14,9 @@ public class Meta {
     protected String name;
     protected TypeName typeName;
     protected Meta parent;
+    protected TypeName contentType;
 
+    public TypeName type() {
+        return this.typeName;
+    }
 }

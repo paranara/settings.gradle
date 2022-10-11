@@ -55,27 +55,47 @@ public class TestMain {
         print("test_main_method_a  end");
     }
 
-    public void testG(){
+    public void testH() {
+        String[] arrs = new String[]{"a", "b", "c"};
 
-        ClassName className=ClassName.get("org.paranora.mapstruct.starter.generated","CompanyToCompanyRequestDTOMapper");
+        for (String a : arrs) {
+            print(a);
+        }
 
-        TypeName typeName=TypeName.get(Date.class);
+        print("-----------------------------");
+
+        List<String> strList = Arrays.asList("e", "f", "g");
+
+        for (String a : strList) {
+            print(a);
+        }
 
         print("end");
     }
 
-    public void testF(){
-        Staff staff=Staff.builder()
+    public void testG() {
+
+        ClassName className = ClassName.get("org.paranora.mapstruct.starter.generated", "CompanyToCompanyRequestDTOMapper");
+
+        TypeName typeName = TypeName.get(Date.class);
+
+        print("end");
+    }
+
+    public void testF() {
+        Staff staff = Staff.builder()
                 .name("paranora")
                 .age(18)
-                .company(Company.builder()
-                        .name("www")
-                        .address("sh-pd")
-                        .fax("123456")
-                        .build())
+                .company(
+                        Arrays.asList(Company.builder()
+                                .name("www")
+                                .address("sh-pd")
+                                .fax("123456")
+                                .build()
+                        ))
                 .build();
 
-        StaffRequestDTO staffRequestDTO=conversionService.convert(staff,StaffRequestDTO.class);
+        StaffRequestDTO staffRequestDTO = conversionService.convert(staff, StaffRequestDTO.class);
 
         print("end");
     }
@@ -143,7 +163,7 @@ public class TestMain {
                         put("target", AnnotationFieldMeta.builder().name("target").typeName(TypeName.get(Class.class)).value(ValueMeta.builder().value("org.paranora.mapstruct.starter.test.entity.Staff.class").build()).build());
                     }
                 }).build())
-            );
+        );
 
         meta.setMethods(Arrays.asList(MethodMeta.builder().annotations(Arrays.asList(AnnotationMeta.builder().name(Mapping.class.getSimpleName()).packageName(Mapping.class.getPackage().getName()).fields(new HashMap<String, AnnotationFieldMeta>() {
                             {

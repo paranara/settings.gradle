@@ -56,7 +56,7 @@ public class MapstructStarterProcessor extends AbsProcessor {
                         .build()
                         .writeTo(filer);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 

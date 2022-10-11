@@ -51,6 +51,7 @@ public class DefaultElementAnnotationMetaExtractor extends AbsAnnotationMetaExtr
             TypeName returnType = TypeName.get(entry.getKey().getReturnType());
             String key = entry.getKey().getSimpleName().toString();
             Object value = entry.getValue().accept(this.annotationValueVisitor, null);
+
             metaMap.put(key
                     , AnnotationFieldMeta.builder()
                             .name(key)

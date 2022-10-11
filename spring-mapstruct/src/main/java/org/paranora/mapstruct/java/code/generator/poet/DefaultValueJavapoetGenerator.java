@@ -7,6 +7,7 @@ import org.paranora.mapstruct.java.metadata.entity.ValueMeta;
 
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import java.util.Collection;
 import java.util.List;
 
 public class DefaultValueJavapoetGenerator implements ValueJavapoetGenerator {
@@ -48,6 +49,7 @@ public class DefaultValueJavapoetGenerator implements ValueJavapoetGenerator {
         TypeName typeName = meta.getTypeName();
         Object value = meta.getValue();
         CodeBlock codeBlock = null;
+
         if (meta.getTypeName().isPrimitive()) {
             codeBlock = createPrimitiveCode(meta);
         } else if (value instanceof List && typeName instanceof ArrayTypeName) {

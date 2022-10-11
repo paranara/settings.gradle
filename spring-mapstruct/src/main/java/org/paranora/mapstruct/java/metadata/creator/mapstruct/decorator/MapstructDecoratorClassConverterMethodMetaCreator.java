@@ -1,7 +1,6 @@
 package org.paranora.mapstruct.java.metadata.creator.mapstruct.decorator;
 
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.*;
 import org.paranora.mapstruct.annotations.PMapping;
 import org.paranora.mapstruct.converter.MapstructConversionService;
 import org.paranora.mapstruct.converter.MapstructMapperConversionService;
@@ -10,7 +9,10 @@ import org.springframework.core.convert.converter.Converter;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class MapstructDecoratorClassConverterMethodMetaCreator extends AbsMapstructClassMethodMetaCreator<InterfaceMeta, ClassMeta> {
@@ -50,18 +52,34 @@ public class MapstructDecoratorClassConverterMethodMetaCreator extends AbsMapstr
                     Optional<AnnotationMeta> opt = m.getAnnotations().stream().filter(a -> a.getTypeName().equals(TypeName.get(PMapping.class))).findFirst();
                     if (opt.isPresent() && true == opt.get().field(PMapping.NEST).value().value(Boolean.class) && opt.get().containsField(PMapping.TARGETTYPE)) {
                         AnnotationMeta a = opt.get();
-                        System.out.println(String.format("======================>>>>>>>>>>>>> typeName : %s"));
                         String sourceName = a.field(PMapping.SOURCE).value().value(String.class);
                         String targetName = a.field(PMapping.TARGET).value().value(String.class);
                         TypeName sourceType = a.field(PMapping.SOURCETYPE).value().value(TypeName.class);
                         TypeName targetType = a.field(PMapping.TARGETTYPE).value().value(TypeName.class);
                         String sourceVarName = String.format("%sValue_s", sourceName);
                         String targetVarName = String.format("%sValue_t", targetName);
-                        builder.addStatement("$T $L = $L.get$L()", sourceType, sourceVarName, parameterName, sourceName.substring(0, 1).toUpperCase() + sourceName.substring(1))
-                                .beginControlFlow("if(null!=$L)", sourceVarName)
-                                .addStatement("$T $L = $L.$L($L,$T.class)", targetType, targetVarName, conversionServiceName, MethodName, sourceVarName, targetType)
-                                .addStatement("$L.set$L($L)", resultName, targetName.substring(0, 1).toUpperCase() + targetName.substring(1), targetVarName)
-                                .endControlFlow();
+
+                        if (a.field(PMapping.SOURCETYPE).getTypeName() instanceof ClassName) {
+                            builder.addStatement("$T $L = $L.get$L()", sourceType, sourceVarName, parameterName, sourceName.substring(0, 1).toUpperCase() + sourceName.substring(1))
+                                    .beginControlFlow("if(null!=$L)", sourceVarName)
+                                    .addStatement("$T $L = $L.$L($L,$T.class)", targetType, targetVarName, conversionServiceName, MethodName, sourceVarName, targetType)
+                                    .addStatement("$L.set$L($L)", resultName, targetName.substring(0, 1).toUpperCase() + targetName.substring(1), targetVarName)
+                                    .endControlFlow();
+                        } else if (a.field(PMapping.SOURCETYPE).getTypeName() instanceof ParameterizedTypeName) {
+                            ParameterizedTypeName pt = (ParameterizedTypeName) a.field(PMapping.SOURCETYPE).getTypeName();
+                            if (pt.rawType.equals(ClassName.get(List.class))) {
+                                builder.addStatement("$T<$T> $L = $L.get$L()", TypeName.get(List.class), sourceType, sourceVarName, parameterName, sourceName.substring(0, 1).toUpperCase() + sourceName.substring(1))
+                                        .beginControlFlow("if(null!=$L && $L.size()>0)", sourceVarName, sourceVarName)
+                                        .addStatement("$L.set$L(new $T())", resultName, targetName.substring(0, 1).toUpperCase() + targetName.substring(1), ArrayList.class)
+                                        .beginControlFlow("for($T v : $L)", sourceType, sourceVarName)
+                                        .addStatement("$T $L = $L.$L($L,$T.class)", targetType, targetVarName, conversionServiceName, MethodName, "v", targetType)
+                                        .addStatement("$L.get$L().add($L)", resultName, targetName.substring(0, 1).toUpperCase() + targetName.substring(1), targetVarName)
+                                        .endControlFlow()
+                                        .endControlFlow();
+                            }
+                        } else {
+
+                        }
                     }
                 });
 

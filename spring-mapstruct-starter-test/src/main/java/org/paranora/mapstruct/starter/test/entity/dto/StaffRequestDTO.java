@@ -6,6 +6,8 @@ import org.paranora.mapstruct.annotations.PMapper;
 import org.paranora.mapstruct.annotations.PMapping;
 import org.paranora.mapstruct.starter.test.entity.Staff;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,5 +21,5 @@ public class StaffRequestDTO {
     private Integer staffSex;
     private String birth;
 
-    private CompanyRequestDTO staffCompany;
+    private List<CompanyRequestDTO> staffCompany;
 }

@@ -1,5 +1,8 @@
 package org.paranora.mapstruct.java.metadata.creator.mapstruct.mapper;
 
+import com.squareup.javapoet.ArrayTypeName;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
@@ -52,12 +55,26 @@ public class MapstructMapperInterfaceConverterMethodAnnotationMetaCreator extend
                                         .name(PMapping.SOURCETYPE)
                                         .packageName(f.getPackageName())
                                         .typeName(f.getTypeName())
-                                        .value(ValueMeta.builder()
-                                                .typeName(f.getTypeName())
-                                                .value(f.getTypeName())
-                                                .build())
                                         .build();
-                                meta.setField(souceType);
+                                if (f.getTypeName() instanceof ClassName) {
+                                    souceType.setValue(ValueMeta.builder()
+                                            .typeName(f.getTypeName())
+                                            .value(f.getTypeName())
+                                            .build());
+                                    meta.setField(souceType);
+                                } else if (f.getTypeName() instanceof ParameterizedTypeName) {
+                                    ParameterizedTypeName pt = (ParameterizedTypeName) f.getTypeName();
+                                    if (pt.rawType.equals(ClassName.get(List.class))) {
+                                        TypeName tn = pt.typeArguments.get(0);
+                                        souceType.setValue(ValueMeta.builder()
+                                                        .typeName(tn)
+                                                        .value(tn)
+                                                        .build());
+                                        meta.setField(souceType);
+                                    } else {
+
+                                    }
+                                }
                             }
                         }
                         if (!meta.containsField(PMapping.TARGET)) {

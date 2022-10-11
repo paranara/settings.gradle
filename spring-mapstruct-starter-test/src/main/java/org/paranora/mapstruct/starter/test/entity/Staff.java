@@ -12,6 +12,7 @@ import org.paranora.mapstruct.starter.test.entity.dto.CompanyRequestDTO;
 import org.paranora.mapstruct.starter.test.entity.dto.StaffRequestDTO;
 
 import java.util.Date;
+import java.util.List;
 
 @PMapper(target = StaffRequestDTO.class)
 @Data
@@ -29,8 +30,8 @@ public class Staff {
     @PMapping(target = "staffSex", expression = "java(1)")
     private Integer sex;
 
-    @PMapping(nest = true, target = "staffCompany", sourceType = Company.class, targetType = CompanyRequestDTO.class)
-    private Company company;
+    @PMapping(nest = true, target = "staffCompany", targetType = CompanyRequestDTO.class)
+    private List<Company> company;
 
     private Date birth;
 
