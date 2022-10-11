@@ -87,12 +87,11 @@ public class TestMain {
                 .name("paranora")
                 .age(18)
                 .company(
-                        Arrays.asList(Company.builder()
+                        Company.builder()
                                 .name("www")
                                 .address("sh-pd")
                                 .fax("123456")
-                                .build()
-                        ))
+                                .build())
                 .build();
 
         StaffRequestDTO staffRequestDTO = conversionService.convert(staff, StaffRequestDTO.class);

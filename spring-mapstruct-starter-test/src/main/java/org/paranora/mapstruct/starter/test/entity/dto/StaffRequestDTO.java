@@ -21,5 +21,5 @@ public class StaffRequestDTO {
     private Integer staffSex;
     private String birth;
 
-    private List<CompanyRequestDTO> staffCompany;
+    private CompanyRequestDTO staffCompany;
 }

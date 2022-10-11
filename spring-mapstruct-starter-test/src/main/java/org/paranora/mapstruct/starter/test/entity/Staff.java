@@ -31,7 +31,7 @@ public class Staff {
     private Integer sex;
 
     @PMapping(nest = true, target = "staffCompany", targetType = CompanyRequestDTO.class)
-    private List<Company> company;
+    private Company company;
 
     private Date birth;
 
