@@ -8,7 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.io.IOException;
 
-//@ExtensionMethod({Extension.class})
+@ExtensionMethod({Extension.class})
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class Application {
 
