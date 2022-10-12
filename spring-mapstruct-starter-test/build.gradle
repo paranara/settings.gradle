@@ -1,10 +1,13 @@
 
 
 dependencies {
-    implementation project(':spring-mapstruct')
-    implementation project(':spring-mapstruct-starter')
+//    implementation project(':spring-mapstruct')
+//    implementation project(':spring-mapstruct-starter')
+//    annotationProcessor project(':spring-mapstruct-processor')
 
-    annotationProcessor project(':spring-mapstruct-processor')
+    implementation group: 'io.github.paranara', name: 'spring-mapstruct', version: version
+    implementation group: 'io.github.paranara', name: 'spring-mapstruct-starter', version: version
+    annotationProcessor group: 'io.github.paranara', name: 'spring-mapstruct-processor', version: version
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
 
